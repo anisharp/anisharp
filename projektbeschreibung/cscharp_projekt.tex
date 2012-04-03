@@ -1,0 +1,36 @@
+\documentclass{scrartcl}
+
+\usepackage[utf8]{inputenc}
+
+\title{Beschreibung: Client für die Datenbank AniDB}
+\author{Daniel Alt\\Robert Edelmann\\Denis Moskal\\Jonas Weber}
+\date{3. April 2012}
+
+\begin{document}
+\maketitle
+
+\section*{Beschreibung}
+
+Client für die Onlinedatenbank AniDB.
+Der Client verbindet sich per UDP API mit der Datenbank. Das Programm hasht lokale Video-Dateien und 
+vergleicht diese mit den online verfügbaren Informationen. Werden Treffer gefunden, lädt das Programm
+zusätzliche Informationen von AniDB und stellt diese übersichtlich dar. Das Programm selbst wird die Video-Dateien mit 
+den vorhandenen Daten und vorgegebenen Patterns umbenennen und verschieben.
+Diese Informationen werden aus Caching-Gründen auch in einer lokalen Datenbank vorgehalten.
+
+\section*{Verwendete Technologien}
+
+Als Technologien werden wie gefordert das Windows Presentation Framework, das Entity Framework und Multithreading
+verwendet.
+
+\subsection*{Einschränkungen der AniDB-API}
+
+Für die Verwendung der AniDB-API als Free-User gibt es einige Einschränkungen: Es darf zum Beispiel
+nur maximal ein Paket pro zwei Sekunden versendet werden. Dies wird durch eingebaute Mechanismen erreicht.
+
+\section*{Relevanz / Anwendunsgebiete}
+
+Zwei Leute aus unserer Gruppe sind absolute Freaks und brauchen eine solche Software zur Verwaltung
+ihrer riesigen Serienbestände, die sie eh nie angucken können.
+
+\end{document}
