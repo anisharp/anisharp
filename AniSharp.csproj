@@ -98,6 +98,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>AniSharpDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="AniSharpDB.edmx.sqlce" />
     <None Include="App.Config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

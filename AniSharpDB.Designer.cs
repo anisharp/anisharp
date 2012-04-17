@@ -16,6 +16,11 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 
 [assembly: EdmSchemaAttribute()]
+#region EDM Relationship Metadata
+
+[assembly: EdmRelationshipAttribute("AniSharpDBModel", "EpisodeSerie", "Episode", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(AniSharp.Episode), "Serie", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(AniSharp.Serie), true)]
+
+#endregion
 
 namespace AniSharp
 {
@@ -63,10 +68,269 @@ namespace AniSharp
     
         #endregion
     
+        #region ObjectSet Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Serie> Series
+        {
+            get
+            {
+                if ((_Series == null))
+                {
+                    _Series = base.CreateObjectSet<Serie>("Series");
+                }
+                return _Series;
+            }
+        }
+        private ObjectSet<Serie> _Series;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Episode> Episodes
+        {
+            get
+            {
+                if ((_Episodes == null))
+                {
+                    _Episodes = base.CreateObjectSet<Episode>("Episodes");
+                }
+                return _Episodes;
+            }
+        }
+        private ObjectSet<Episode> _Episodes;
+
+        #endregion
+        #region AddTo Methods
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Series EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToSeries(Serie serie)
+        {
+            base.AddObject("Series", serie);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Episodes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToEpisodes(Episode episode)
+        {
+            base.AddObject("Episodes", episode);
+        }
+
+        #endregion
     }
     
 
     #endregion
     
+    #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="AniSharpDBModel", Name="Episode")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Episode : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Episode object.
+        /// </summary>
+        /// <param name="epsiodeId">Initial value of the EpsiodeId property.</param>
+        /// <param name="serie">Initial value of the Serie property.</param>
+        public static Episode CreateEpisode(global::System.Int32 epsiodeId, global::System.Int32 serie)
+        {
+            Episode episode = new Episode();
+            episode.EpsiodeId = epsiodeId;
+            episode.Serie = serie;
+            return episode;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 EpsiodeId
+        {
+            get
+            {
+                return _EpsiodeId;
+            }
+            set
+            {
+                if (_EpsiodeId != value)
+                {
+                    OnEpsiodeIdChanging(value);
+                    ReportPropertyChanging("EpsiodeId");
+                    _EpsiodeId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("EpsiodeId");
+                    OnEpsiodeIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _EpsiodeId;
+        partial void OnEpsiodeIdChanging(global::System.Int32 value);
+        partial void OnEpsiodeIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Serie
+        {
+            get
+            {
+                return _Serie;
+            }
+            set
+            {
+                OnSerieChanging(value);
+                ReportPropertyChanging("Serie");
+                _Serie = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Serie");
+                OnSerieChanged();
+            }
+        }
+        private global::System.Int32 _Serie;
+        partial void OnSerieChanging(global::System.Int32 value);
+        partial void OnSerieChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "EpisodeSerie", "Serie")]
+        public Serie Series
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Serie>("AniSharpDBModel.EpisodeSerie", "Serie").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Serie>("AniSharpDBModel.EpisodeSerie", "Serie").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Serie> SeriesReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Serie>("AniSharpDBModel.EpisodeSerie", "Serie");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Serie>("AniSharpDBModel.EpisodeSerie", "Serie", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="AniSharpDBModel", Name="Serie")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Serie : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Serie object.
+        /// </summary>
+        /// <param name="serieId">Initial value of the SerieId property.</param>
+        public static Serie CreateSerie(global::System.Int32 serieId)
+        {
+            Serie serie = new Serie();
+            serie.SerieId = serieId;
+            return serie;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 SerieId
+        {
+            get
+            {
+                return _SerieId;
+            }
+            set
+            {
+                if (_SerieId != value)
+                {
+                    OnSerieIdChanging(value);
+                    ReportPropertyChanging("SerieId");
+                    _SerieId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("SerieId");
+                    OnSerieIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _SerieId;
+        partial void OnSerieIdChanging(global::System.Int32 value);
+        partial void OnSerieIdChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "EpisodeSerie", "Episode")]
+        public EntityCollection<Episode> Episode
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Episode>("AniSharpDBModel.EpisodeSerie", "Episode");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Episode>("AniSharpDBModel.EpisodeSerie", "Episode", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+
+    #endregion
     
 }

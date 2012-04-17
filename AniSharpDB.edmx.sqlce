@@ -1,0 +1,81 @@
+
+-- --------------------------------------------------
+-- Entity Designer DDL Script for SQL Server Compact Edition
+-- --------------------------------------------------
+-- Date Created: 04/17/2012 14:12:44
+-- Generated from EDMX file: C:\Users\Alc\Documents\Visual Studio 2010\Projects\AniSharp\AniSharp\AniSharpDB.edmx
+-- --------------------------------------------------
+
+
+-- --------------------------------------------------
+-- Dropping existing FOREIGN KEY constraints
+-- NOTE: if the constraint does not exist, an ignorable error will be reported.
+-- --------------------------------------------------
+
+    ALTER TABLE [Episodes] DROP CONSTRAINT [FK_EpisodeSerie];
+GO
+
+-- --------------------------------------------------
+-- Dropping existing tables
+-- NOTE: if the table does not exist, an ignorable error will be reported.
+-- --------------------------------------------------
+
+    DROP TABLE [Series];
+GO
+    DROP TABLE [Episodes];
+GO
+
+-- --------------------------------------------------
+-- Creating all tables
+-- --------------------------------------------------
+
+-- Creating table 'Series'
+CREATE TABLE [Series] (
+    [SerieId] int IDENTITY(1,1) NOT NULL
+);
+GO
+
+-- Creating table 'Episodes'
+CREATE TABLE [Episodes] (
+    [EpsiodeId] int IDENTITY(1,1) NOT NULL,
+    [Serie] int  NOT NULL
+);
+GO
+
+-- --------------------------------------------------
+-- Creating all PRIMARY KEY constraints
+-- --------------------------------------------------
+
+-- Creating primary key on [SerieId] in table 'Series'
+ALTER TABLE [Series]
+ADD CONSTRAINT [PK_Series]
+    PRIMARY KEY ([SerieId] );
+GO
+
+-- Creating primary key on [EpsiodeId] in table 'Episodes'
+ALTER TABLE [Episodes]
+ADD CONSTRAINT [PK_Episodes]
+    PRIMARY KEY ([EpsiodeId] );
+GO
+
+-- --------------------------------------------------
+-- Creating all FOREIGN KEY constraints
+-- --------------------------------------------------
+
+-- Creating foreign key on [Serie] in table 'Episodes'
+ALTER TABLE [Episodes]
+ADD CONSTRAINT [FK_EpisodeSerie]
+    FOREIGN KEY ([Serie])
+    REFERENCES [Series]
+        ([SerieId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EpisodeSerie'
+CREATE INDEX [IX_FK_EpisodeSerie]
+ON [Episodes]
+    ([Serie]);
+GO
+
+-- --------------------------------------------------
+-- Script has ended
+-- --------------------------------------------------

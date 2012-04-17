@@ -4,22 +4,102 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AniSharpDBModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
-        <EntityContainer Name="AniSharpDBModelStoreContainer" />
-      </Schema>
-    </edmx:StorageModels>
+    <Schema Namespace="AniSharpDBModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="AniSharpDBModelStoreContainer">
+    <EntitySet Name="Series" EntityType="AniSharpDBModel.Store.Series" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Episodes" EntityType="AniSharpDBModel.Store.Episodes" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="EpisodeSerie" Association="AniSharpDBModel.Store.EpisodeSerie">
+      <End Role="Episode" EntitySet="Episodes" />
+      <End Role="Serie" EntitySet="Series" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Series">
+    <Key>
+      <PropertyRef Name="SerieId" />
+    </Key>
+    <Property Name="SerieId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Episodes">
+    <Key>
+      <PropertyRef Name="EpsiodeId" />
+    </Key>
+    <Property Name="EpsiodeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Serie" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="EpisodeSerie">
+    <End Role="Episode" Type="AniSharpDBModel.Store.Episodes" Multiplicity="*" />
+    <End Role="Serie" Type="AniSharpDBModel.Store.Series" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Serie">
+        <PropertyRef Name="SerieId" />
+      </Principal>
+      <Dependent Role="Episode">
+        <PropertyRef Name="Serie" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AniSharpDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-        <EntityContainer Name="AniSharpDBEntities" annotation:LazyLoadingEnabled="true" />
+        <EntityContainer Name="AniSharpDBEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Series" EntityType="AniSharpDBModel.Serie" />
+          <EntitySet Name="Episodes" EntityType="AniSharpDBModel.Episode" />
+          <AssociationSet Name="EpisodeSerie" Association="AniSharpDBModel.EpisodeSerie">
+            <End Role="Episode" EntitySet="Episodes" />
+            <End Role="Serie" EntitySet="Series" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Serie">
+          <Key>
+            <PropertyRef Name="SerieId" />
+          </Key>
+          <Property Type="Int32" Name="SerieId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Episode" Relationship="AniSharpDBModel.EpisodeSerie" FromRole="Serie" ToRole="Episode" />
+        </EntityType>
+        <EntityType Name="Episode">
+          <Key>
+            <PropertyRef Name="EpsiodeId" />
+          </Key>
+          <Property Type="Int32" Name="EpsiodeId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="Serie" Nullable="false" />
+          <NavigationProperty Name="Series" Relationship="AniSharpDBModel.EpisodeSerie" FromRole="Episode" ToRole="Serie" />
+        </EntityType>
+        <Association Name="EpisodeSerie">
+          <End Type="AniSharpDBModel.Episode" Role="Episode" Multiplicity="*" />
+          <End Type="AniSharpDBModel.Serie" Role="Serie" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Serie">
+              <PropertyRef Name="SerieId" />
+            </Principal>
+            <Dependent Role="Episode">
+              <PropertyRef Name="Serie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="AniSharpDBModelStoreContainer" CdmEntityContainer="AniSharpDBEntities" />
-      </Mapping>
-    </edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AniSharpDBModelStoreContainer" CdmEntityContainer="AniSharpDBEntities">
+    <EntitySetMapping Name="Series">
+      <EntityTypeMapping TypeName="IsTypeOf(AniSharpDBModel.Serie)">
+        <MappingFragment StoreEntitySet="Series">
+          <ScalarProperty Name="SerieId" ColumnName="SerieId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Episodes">
+      <EntityTypeMapping TypeName="IsTypeOf(AniSharpDBModel.Episode)">
+        <MappingFragment StoreEntitySet="Episodes">
+          <ScalarProperty Name="EpsiodeId" ColumnName="EpsiodeId" />
+          <ScalarProperty Name="Serie" ColumnName="Serie" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
@@ -37,7 +117,14 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="Model1" />
+      <Diagram Name="Model1" >
+        <EntityTypeShape EntityType="AniSharpDBModel.Serie" Width="1.5" PointX="0.5" PointY="0.5" Height="1.2636116536458335" />
+        <EntityTypeShape EntityType="AniSharpDBModel.Episode" Width="1.5" PointX="4.25" PointY="0.5" Height="1.427958984375" />
+        <AssociationConnector Association="AniSharpDBModel.EpisodeSerie">
+          <ConnectorPoint PointX="4.25" PointY="1.1318058268229168" />
+          <ConnectorPoint PointX="2" PointY="1.1318058268229168" />
+        </AssociationConnector>
+      </Diagram>
     </Diagrams>
   </Designer>
 </edmx:Edmx>
