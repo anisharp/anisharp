@@ -87,7 +87,7 @@ namespace AniSharp
 
         public void activateStart()
         {
-            Dispatcher.Invoke(new Action(() => {btStart.IsEnabled=true;}));
+            Dispatcher.Invoke(new Action(() => { btStart.IsEnabled = true; }));
         }
         
         private void hashGen()
