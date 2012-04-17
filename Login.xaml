@@ -1,0 +1,12 @@
+﻿<Window x:Class="AniSharp.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Login" Height="146" Width="261">
+    <Grid>
+        <Label Content="Benutzername:" Height="28" HorizontalAlignment="Left" Margin="12,12,0,0" Name="lblUser" VerticalAlignment="Top" />
+        <Label Content="Passwort:" Height="28" HorizontalAlignment="Left" Margin="12,46,0,0" Name="lblPassword" VerticalAlignment="Top" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="104,14,0,0" Name="tbUser" VerticalAlignment="Top" Width="120" />
+        <PasswordBox Height="23" HorizontalAlignment="Left" Margin="104,51,0,0" Name="pbPassword" VerticalAlignment="Top" Width="120" />
+        <Button Content="Login" Height="23" HorizontalAlignment="Left" Margin="0,80,0,0" Name="button1" VerticalAlignment="Top" Width="239" Click="button1_Click" />
+    </Grid>
+</Window>
