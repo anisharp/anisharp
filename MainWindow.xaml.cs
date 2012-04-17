@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace AniSharp
 {
@@ -21,6 +22,19 @@ namespace AniSharp
     public partial class MainWindow : Window
     {
         System.Threading.Thread _fileParser;
+        private String FileFilter
+        {
+            get
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(".*.(?i)(");
+                foreach (ListBoxItem s in lbExtensions.Items)
+                    sb.Append(s.Content + "|");
+                sb.Remove(sb.Length - 1, 1);
+                sb.Append(")$");
+                return sb.ToString();
+            }
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -47,11 +61,13 @@ namespace AniSharp
         /// <param name="isDir">Übergabe ist ein Verzeichnis</param>
         void lbFiles_AddFile(String sFile,bool isDir=false)
         {
+            Regex rg = new Regex(FileFilter);
+            //rg.Options = RegexOptions.IgnoreCase;
             if (!isDir)
             {
                 if (!System.IO.Directory.Exists(sFile))
                 {
-                    if (!lbFiles.Items.Contains(sFile))
+                    if (rg.IsMatch(sFile)&&!lbFiles.Items.Contains(sFile))
                         lbFiles_Add(sFile);
                 }
                 else
@@ -63,7 +79,7 @@ namespace AniSharp
                 {
                     foreach (String s in Directory.GetFiles(sFile))
                     {
-                        if (!lbFiles.Items.Contains(s))
+                        if (rg.IsMatch(s) && !lbFiles.Items.Contains(s))
                             lbFiles_Add(s);
                     }
                 }
@@ -157,8 +173,38 @@ namespace AniSharp
             Dispatcher.Invoke(new Action(() => { lbLog.Items.Add(sText); }));
         }
 
-        private void lbFiles_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void tbExtension_KeyUp(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Enter && !String.IsNullOrEmpty(tbExtension.Text.ToString()))
+            {
+                ListBoxItem lb = new ListBoxItem();
+                lb.Content = tbExtension.Text;
+                lbExtensions.Items.Add(lb);
+                //lbExtensions.Items.Add(new ListBoxItem(tbExtension.Text));
+                tbExtension.Clear();
+            }
+        }
+
+        private void chkAdd_Unchecked(object sender, RoutedEventArgs e)
+        {
+            cbState.IsEnabled = false;
+            tbSource.IsEnabled = false;
+            tbStorage.IsEnabled = false;
+            chkWatched.IsEnabled = false;
+            tbOther.IsEnabled = false;
+        }
+
+        private void chkAdd_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                cbState.IsEnabled = true;
+                tbSource.IsEnabled = true;
+                tbStorage.IsEnabled = true;
+                chkWatched.IsEnabled = true;
+                tbOther.IsEnabled = true;
+            }
+            catch (Exception) { }//fängt fehler bei der initialisierung
         }
     }
 }
