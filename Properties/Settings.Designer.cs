@@ -38,12 +38,12 @@ namespace AniSharp.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9000")]
-        public int Port {
+        public int RemotePort {
             get {
-                return ((int)(this["Port"]));
+                return ((int)(this["RemotePort"]));
             }
             set {
-                this["Port"] = value;
+                this["RemotePort"] = value;
             }
         }
         
@@ -56,6 +56,36 @@ namespace AniSharp.Properties {
             }
             set {
                 this["Username"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("42118")]
+        public int LocalPort {
+            get {
+                return ((int)(this["LocalPort"]));
+            }
+            set {
+                this["LocalPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("AniSharp")]
+        public string ClientName {
+            get {
+                return ((string)(this["ClientName"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int Version {
+            get {
+                return ((int)(this["Version"]));
             }
         }
     }
