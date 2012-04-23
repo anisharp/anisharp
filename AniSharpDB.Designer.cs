@@ -18,7 +18,8 @@ using System.Runtime.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("AniSharpDBModel", "EpisodeSerie", "Episode", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(AniSharp.Episode), "Serie", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(AniSharp.Serie), true)]
+[assembly: EdmRelationshipAttribute("AniSharpDBModel", "epsiode_groups", "groups", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(AniSharp.groups), "episode", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(AniSharp.episode), true)]
+[assembly: EdmRelationshipAttribute("AniSharpDBModel", "epsiode_serie", "serie", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(AniSharp.serie), "episode", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(AniSharp.episode), true)]
 
 #endregion
 
@@ -73,52 +74,76 @@ namespace AniSharp
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Serie> Series
+        public ObjectSet<episode> episode
         {
             get
             {
-                if ((_Series == null))
+                if ((_episode == null))
                 {
-                    _Series = base.CreateObjectSet<Serie>("Series");
+                    _episode = base.CreateObjectSet<episode>("episode");
                 }
-                return _Series;
+                return _episode;
             }
         }
-        private ObjectSet<Serie> _Series;
+        private ObjectSet<episode> _episode;
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Episode> Episodes
+        public ObjectSet<groups> groups
         {
             get
             {
-                if ((_Episodes == null))
+                if ((_groups == null))
                 {
-                    _Episodes = base.CreateObjectSet<Episode>("Episodes");
+                    _groups = base.CreateObjectSet<groups>("groups");
                 }
-                return _Episodes;
+                return _groups;
             }
         }
-        private ObjectSet<Episode> _Episodes;
+        private ObjectSet<groups> _groups;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<serie> serie
+        {
+            get
+            {
+                if ((_serie == null))
+                {
+                    _serie = base.CreateObjectSet<serie>("serie");
+                }
+                return _serie;
+            }
+        }
+        private ObjectSet<serie> _serie;
 
         #endregion
         #region AddTo Methods
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Series EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the episode EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToSeries(Serie serie)
+        public void AddToepisode(episode episode)
         {
-            base.AddObject("Series", serie);
+            base.AddObject("episode", episode);
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Episodes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the groups EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToEpisodes(Episode episode)
+        public void AddTogroups(groups groups)
         {
-            base.AddObject("Episodes", episode);
+            base.AddObject("groups", groups);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the serie EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToserie(serie serie)
+        {
+            base.AddObject("serie", serie);
         }
 
         #endregion
@@ -132,23 +157,23 @@ namespace AniSharp
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="AniSharpDBModel", Name="Episode")]
+    [EdmEntityTypeAttribute(NamespaceName="AniSharpDBModel", Name="episode")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class Episode : EntityObject
+    public partial class episode : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new Episode object.
+        /// Create a new episode object.
         /// </summary>
-        /// <param name="epsiodeId">Initial value of the EpsiodeId property.</param>
-        /// <param name="serie">Initial value of the Serie property.</param>
-        public static Episode CreateEpisode(global::System.Int32 epsiodeId, global::System.Int32 serie)
+        /// <param name="animeId">Initial value of the animeId property.</param>
+        /// <param name="episodeId">Initial value of the episodeId property.</param>
+        public static episode Createepisode(global::System.Int32 animeId, global::System.Int32 episodeId)
         {
-            Episode episode = new Episode();
-            episode.EpsiodeId = epsiodeId;
-            episode.Serie = serie;
+            episode episode = new episode();
+            episode.animeId = animeId;
+            episode.episodeId = episodeId;
             return episode;
         }
 
@@ -160,51 +185,486 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 EpsiodeId
+        public global::System.Int32 animeId
         {
             get
             {
-                return _EpsiodeId;
+                return _animeId;
             }
             set
             {
-                if (_EpsiodeId != value)
+                if (_animeId != value)
                 {
-                    OnEpsiodeIdChanging(value);
-                    ReportPropertyChanging("EpsiodeId");
-                    _EpsiodeId = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("EpsiodeId");
-                    OnEpsiodeIdChanged();
+                    OnanimeIdChanging(value);
+                    ReportPropertyChanging("animeId");
+                    _animeId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("animeId");
+                    OnanimeIdChanged();
                 }
             }
         }
-        private global::System.Int32 _EpsiodeId;
-        partial void OnEpsiodeIdChanging(global::System.Int32 value);
-        partial void OnEpsiodeIdChanged();
+        private global::System.Int32 _animeId;
+        partial void OnanimeIdChanging(global::System.Int32 value);
+        partial void OnanimeIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 Serie
+        public global::System.Int32 episodeId
         {
             get
             {
-                return _Serie;
+                return _episodeId;
             }
             set
             {
-                OnSerieChanging(value);
-                ReportPropertyChanging("Serie");
-                _Serie = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Serie");
-                OnSerieChanged();
+                if (_episodeId != value)
+                {
+                    OnepisodeIdChanging(value);
+                    ReportPropertyChanging("episodeId");
+                    _episodeId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("episodeId");
+                    OnepisodeIdChanged();
+                }
             }
         }
-        private global::System.Int32 _Serie;
-        partial void OnSerieChanging(global::System.Int32 value);
-        partial void OnSerieChanged();
+        private global::System.Int32 _episodeId;
+        partial void OnepisodeIdChanging(global::System.Int32 value);
+        partial void OnepisodeIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> groupId
+        {
+            get
+            {
+                return _groupId;
+            }
+            set
+            {
+                OngroupIdChanging(value);
+                ReportPropertyChanging("groupId");
+                _groupId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("groupId");
+                OngroupIdChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _groupId;
+        partial void OngroupIdChanging(Nullable<global::System.Int32> value);
+        partial void OngroupIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> state
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                OnstateChanging(value);
+                ReportPropertyChanging("state");
+                _state = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("state");
+                OnstateChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _state;
+        partial void OnstateChanging(Nullable<global::System.Int32> value);
+        partial void OnstateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int64> size
+        {
+            get
+            {
+                return _size;
+            }
+            set
+            {
+                OnsizeChanging(value);
+                ReportPropertyChanging("size");
+                _size = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("size");
+                OnsizeChanged();
+            }
+        }
+        private Nullable<global::System.Int64> _size;
+        partial void OnsizeChanging(Nullable<global::System.Int64> value);
+        partial void OnsizeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ed2k
+        {
+            get
+            {
+                return _ed2k;
+            }
+            set
+            {
+                Oned2kChanging(value);
+                ReportPropertyChanging("ed2k");
+                _ed2k = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ed2k");
+                Oned2kChanged();
+            }
+        }
+        private global::System.String _ed2k;
+        partial void Oned2kChanging(global::System.String value);
+        partial void Oned2kChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String md5
+        {
+            get
+            {
+                return _md5;
+            }
+            set
+            {
+                Onmd5Changing(value);
+                ReportPropertyChanging("md5");
+                _md5 = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("md5");
+                Onmd5Changed();
+            }
+        }
+        private global::System.String _md5;
+        partial void Onmd5Changing(global::System.String value);
+        partial void Onmd5Changed();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String sha1
+        {
+            get
+            {
+                return _sha1;
+            }
+            set
+            {
+                Onsha1Changing(value);
+                ReportPropertyChanging("sha1");
+                _sha1 = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("sha1");
+                Onsha1Changed();
+            }
+        }
+        private global::System.String _sha1;
+        partial void Onsha1Changing(global::System.String value);
+        partial void Onsha1Changed();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String crc32
+        {
+            get
+            {
+                return _crc32;
+            }
+            set
+            {
+                Oncrc32Changing(value);
+                ReportPropertyChanging("crc32");
+                _crc32 = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("crc32");
+                Oncrc32Changed();
+            }
+        }
+        private global::System.String _crc32;
+        partial void Oncrc32Changing(global::System.String value);
+        partial void Oncrc32Changed();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String quality
+        {
+            get
+            {
+                return _quality;
+            }
+            set
+            {
+                OnqualityChanging(value);
+                ReportPropertyChanging("quality");
+                _quality = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("quality");
+                OnqualityChanged();
+            }
+        }
+        private global::System.String _quality;
+        partial void OnqualityChanging(global::System.String value);
+        partial void OnqualityChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String source
+        {
+            get
+            {
+                return _source;
+            }
+            set
+            {
+                OnsourceChanging(value);
+                ReportPropertyChanging("source");
+                _source = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("source");
+                OnsourceChanged();
+            }
+        }
+        private global::System.String _source;
+        partial void OnsourceChanging(global::System.String value);
+        partial void OnsourceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String audioCodec
+        {
+            get
+            {
+                return _audioCodec;
+            }
+            set
+            {
+                OnaudioCodecChanging(value);
+                ReportPropertyChanging("audioCodec");
+                _audioCodec = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("audioCodec");
+                OnaudioCodecChanged();
+            }
+        }
+        private global::System.String _audioCodec;
+        partial void OnaudioCodecChanging(global::System.String value);
+        partial void OnaudioCodecChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String videoCodec
+        {
+            get
+            {
+                return _videoCodec;
+            }
+            set
+            {
+                OnvideoCodecChanging(value);
+                ReportPropertyChanging("videoCodec");
+                _videoCodec = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("videoCodec");
+                OnvideoCodecChanged();
+            }
+        }
+        private global::System.String _videoCodec;
+        partial void OnvideoCodecChanging(global::System.String value);
+        partial void OnvideoCodecChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String videoResolution
+        {
+            get
+            {
+                return _videoResolution;
+            }
+            set
+            {
+                OnvideoResolutionChanging(value);
+                ReportPropertyChanging("videoResolution");
+                _videoResolution = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("videoResolution");
+                OnvideoResolutionChanged();
+            }
+        }
+        private global::System.String _videoResolution;
+        partial void OnvideoResolutionChanging(global::System.String value);
+        partial void OnvideoResolutionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String dubLanguage
+        {
+            get
+            {
+                return _dubLanguage;
+            }
+            set
+            {
+                OndubLanguageChanging(value);
+                ReportPropertyChanging("dubLanguage");
+                _dubLanguage = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("dubLanguage");
+                OndubLanguageChanged();
+            }
+        }
+        private global::System.String _dubLanguage;
+        partial void OndubLanguageChanging(global::System.String value);
+        partial void OndubLanguageChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String subLanguage
+        {
+            get
+            {
+                return _subLanguage;
+            }
+            set
+            {
+                OnsubLanguageChanging(value);
+                ReportPropertyChanging("subLanguage");
+                _subLanguage = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("subLanguage");
+                OnsubLanguageChanged();
+            }
+        }
+        private global::System.String _subLanguage;
+        partial void OnsubLanguageChanging(global::System.String value);
+        partial void OnsubLanguageChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String epno
+        {
+            get
+            {
+                return _epno;
+            }
+            set
+            {
+                OnepnoChanging(value);
+                ReportPropertyChanging("epno");
+                _epno = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("epno");
+                OnepnoChanged();
+            }
+        }
+        private global::System.String _epno;
+        partial void OnepnoChanging(global::System.String value);
+        partial void OnepnoChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String epName
+        {
+            get
+            {
+                return _epName;
+            }
+            set
+            {
+                OnepNameChanging(value);
+                ReportPropertyChanging("epName");
+                _epName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("epName");
+                OnepNameChanged();
+            }
+        }
+        private global::System.String _epName;
+        partial void OnepNameChanging(global::System.String value);
+        partial void OnepNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String epRomajiName
+        {
+            get
+            {
+                return _epRomajiName;
+            }
+            set
+            {
+                OnepRomajiNameChanging(value);
+                ReportPropertyChanging("epRomajiName");
+                _epRomajiName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("epRomajiName");
+                OnepRomajiNameChanged();
+            }
+        }
+        private global::System.String _epRomajiName;
+        partial void OnepRomajiNameChanging(global::System.String value);
+        partial void OnepRomajiNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String epKanjiName
+        {
+            get
+            {
+                return _epKanjiName;
+            }
+            set
+            {
+                OnepKanjiNameChanging(value);
+                ReportPropertyChanging("epKanjiName");
+                _epKanjiName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("epKanjiName");
+                OnepKanjiNameChanged();
+            }
+        }
+        private global::System.String _epKanjiName;
+        partial void OnepKanjiNameChanging(global::System.String value);
+        partial void OnepKanjiNameChanged();
 
         #endregion
     
@@ -216,16 +676,16 @@ namespace AniSharp
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "EpisodeSerie", "Serie")]
-        public Serie Series
+        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "epsiode_groups", "groups")]
+        public groups groups
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Serie>("AniSharpDBModel.EpisodeSerie", "Serie").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<groups>("AniSharpDBModel.epsiode_groups", "groups").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Serie>("AniSharpDBModel.EpisodeSerie", "Serie").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<groups>("AniSharpDBModel.epsiode_groups", "groups").Value = value;
             }
         }
         /// <summary>
@@ -233,17 +693,55 @@ namespace AniSharp
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Serie> SeriesReference
+        public EntityReference<groups> groupsReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Serie>("AniSharpDBModel.EpisodeSerie", "Serie");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<groups>("AniSharpDBModel.epsiode_groups", "groups");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Serie>("AniSharpDBModel.EpisodeSerie", "Serie", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<groups>("AniSharpDBModel.epsiode_groups", "groups", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "epsiode_serie", "serie")]
+        public serie serie
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<serie>("AniSharpDBModel.epsiode_serie", "serie").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<serie>("AniSharpDBModel.epsiode_serie", "serie").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<serie> serieReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<serie>("AniSharpDBModel.epsiode_serie", "serie");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<serie>("AniSharpDBModel.epsiode_serie", "serie", value);
                 }
             }
         }
@@ -254,21 +752,221 @@ namespace AniSharp
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="AniSharpDBModel", Name="Serie")]
+    [EdmEntityTypeAttribute(NamespaceName="AniSharpDBModel", Name="groups")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class Serie : EntityObject
+    public partial class groups : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new Serie object.
+        /// Create a new groups object.
         /// </summary>
-        /// <param name="serieId">Initial value of the SerieId property.</param>
-        public static Serie CreateSerie(global::System.Int32 serieId)
+        /// <param name="groupsId">Initial value of the groupsId property.</param>
+        public static groups Creategroups(global::System.Int32 groupsId)
         {
-            Serie serie = new Serie();
-            serie.SerieId = serieId;
+            groups groups = new groups();
+            groups.groupsId = groupsId;
+            return groups;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 groupsId
+        {
+            get
+            {
+                return _groupsId;
+            }
+            set
+            {
+                if (_groupsId != value)
+                {
+                    OngroupsIdChanging(value);
+                    ReportPropertyChanging("groupsId");
+                    _groupsId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("groupsId");
+                    OngroupsIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _groupsId;
+        partial void OngroupsIdChanging(global::System.Int32 value);
+        partial void OngroupsIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Double> rating
+        {
+            get
+            {
+                return _rating;
+            }
+            set
+            {
+                OnratingChanging(value);
+                ReportPropertyChanging("rating");
+                _rating = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("rating");
+                OnratingChanged();
+            }
+        }
+        private Nullable<global::System.Double> _rating;
+        partial void OnratingChanging(Nullable<global::System.Double> value);
+        partial void OnratingChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                OnnameChanging(value);
+                ReportPropertyChanging("name");
+                _name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("name");
+                OnnameChanged();
+            }
+        }
+        private global::System.String _name;
+        partial void OnnameChanging(global::System.String value);
+        partial void OnnameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String shortName
+        {
+            get
+            {
+                return _shortName;
+            }
+            set
+            {
+                OnshortNameChanging(value);
+                ReportPropertyChanging("shortName");
+                _shortName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("shortName");
+                OnshortNameChanged();
+            }
+        }
+        private global::System.String _shortName;
+        partial void OnshortNameChanging(global::System.String value);
+        partial void OnshortNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ircChannel
+        {
+            get
+            {
+                return _ircChannel;
+            }
+            set
+            {
+                OnircChannelChanging(value);
+                ReportPropertyChanging("ircChannel");
+                _ircChannel = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ircChannel");
+                OnircChannelChanged();
+            }
+        }
+        private global::System.String _ircChannel;
+        partial void OnircChannelChanging(global::System.String value);
+        partial void OnircChannelChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ircServer
+        {
+            get
+            {
+                return _ircServer;
+            }
+            set
+            {
+                OnircServerChanging(value);
+                ReportPropertyChanging("ircServer");
+                _ircServer = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ircServer");
+                OnircServerChanged();
+            }
+        }
+        private global::System.String _ircServer;
+        partial void OnircServerChanging(global::System.String value);
+        partial void OnircServerChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "epsiode_groups", "episode")]
+        public EntityCollection<episode> episode
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<episode>("AniSharpDBModel.epsiode_groups", "episode");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<episode>("AniSharpDBModel.epsiode_groups", "episode", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="AniSharpDBModel", Name="serie")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class serie : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new serie object.
+        /// </summary>
+        /// <param name="serienId">Initial value of the serienId property.</param>
+        public static serie Createserie(global::System.Int32 serienId)
+        {
+            serie serie = new serie();
+            serie.serienId = serienId;
             return serie;
         }
 
@@ -280,27 +978,219 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 SerieId
+        public global::System.Int32 serienId
         {
             get
             {
-                return _SerieId;
+                return _serienId;
             }
             set
             {
-                if (_SerieId != value)
+                if (_serienId != value)
                 {
-                    OnSerieIdChanging(value);
-                    ReportPropertyChanging("SerieId");
-                    _SerieId = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("SerieId");
-                    OnSerieIdChanged();
+                    OnserienIdChanging(value);
+                    ReportPropertyChanging("serienId");
+                    _serienId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("serienId");
+                    OnserienIdChanged();
                 }
             }
         }
-        private global::System.Int32 _SerieId;
-        partial void OnSerieIdChanging(global::System.Int32 value);
-        partial void OnSerieIdChanged();
+        private global::System.Int32 _serienId;
+        partial void OnserienIdChanging(global::System.Int32 value);
+        partial void OnserienIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String type
+        {
+            get
+            {
+                return _type;
+            }
+            set
+            {
+                OntypeChanging(value);
+                ReportPropertyChanging("type");
+                _type = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("type");
+                OntypeChanged();
+            }
+        }
+        private global::System.String _type;
+        partial void OntypeChanging(global::System.String value);
+        partial void OntypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String category
+        {
+            get
+            {
+                return _category;
+            }
+            set
+            {
+                OncategoryChanging(value);
+                ReportPropertyChanging("category");
+                _category = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("category");
+                OncategoryChanged();
+            }
+        }
+        private global::System.String _category;
+        partial void OncategoryChanging(global::System.String value);
+        partial void OncategoryChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String romajiName
+        {
+            get
+            {
+                return _romajiName;
+            }
+            set
+            {
+                OnromajiNameChanging(value);
+                ReportPropertyChanging("romajiName");
+                _romajiName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("romajiName");
+                OnromajiNameChanged();
+            }
+        }
+        private global::System.String _romajiName;
+        partial void OnromajiNameChanging(global::System.String value);
+        partial void OnromajiNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String kanjiName
+        {
+            get
+            {
+                return _kanjiName;
+            }
+            set
+            {
+                OnkanjiNameChanging(value);
+                ReportPropertyChanging("kanjiName");
+                _kanjiName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("kanjiName");
+                OnkanjiNameChanged();
+            }
+        }
+        private global::System.String _kanjiName;
+        partial void OnkanjiNameChanging(global::System.String value);
+        partial void OnkanjiNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String englishName
+        {
+            get
+            {
+                return _englishName;
+            }
+            set
+            {
+                OnenglishNameChanging(value);
+                ReportPropertyChanging("englishName");
+                _englishName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("englishName");
+                OnenglishNameChanged();
+            }
+        }
+        private global::System.String _englishName;
+        partial void OnenglishNameChanging(global::System.String value);
+        partial void OnenglishNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> amountEpisodes
+        {
+            get
+            {
+                return _amountEpisodes;
+            }
+            set
+            {
+                OnamountEpisodesChanging(value);
+                ReportPropertyChanging("amountEpisodes");
+                _amountEpisodes = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("amountEpisodes");
+                OnamountEpisodesChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _amountEpisodes;
+        partial void OnamountEpisodesChanging(Nullable<global::System.Int32> value);
+        partial void OnamountEpisodesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Double> rating
+        {
+            get
+            {
+                return _rating;
+            }
+            set
+            {
+                OnratingChanging(value);
+                ReportPropertyChanging("rating");
+                _rating = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("rating");
+                OnratingChanged();
+            }
+        }
+        private Nullable<global::System.Double> _rating;
+        partial void OnratingChanging(Nullable<global::System.Double> value);
+        partial void OnratingChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Double> tempRating
+        {
+            get
+            {
+                return _tempRating;
+            }
+            set
+            {
+                OntempRatingChanging(value);
+                ReportPropertyChanging("tempRating");
+                _tempRating = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("tempRating");
+                OntempRatingChanged();
+            }
+        }
+        private Nullable<global::System.Double> _tempRating;
+        partial void OntempRatingChanging(Nullable<global::System.Double> value);
+        partial void OntempRatingChanged();
 
         #endregion
     
@@ -312,18 +1202,18 @@ namespace AniSharp
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "EpisodeSerie", "Episode")]
-        public EntityCollection<Episode> Episode
+        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "epsiode_serie", "episode")]
+        public EntityCollection<episode> episode
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Episode>("AniSharpDBModel.EpisodeSerie", "Episode");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<episode>("AniSharpDBModel.epsiode_serie", "episode");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Episode>("AniSharpDBModel.EpisodeSerie", "Episode", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<episode>("AniSharpDBModel.epsiode_serie", "episode", value);
                 }
             }
         }

@@ -5,75 +5,187 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="AniSharpDBModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.3.5" ProviderManifestToken="3.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
-  <EntityContainer Name="AniSharpDBModelStoreContainer">
-    <EntitySet Name="Series" EntityType="AniSharpDBModel.Store.Series" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Episodes" EntityType="AniSharpDBModel.Store.Episodes" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="EpisodeSerie" Association="AniSharpDBModel.Store.EpisodeSerie">
-      <End Role="Episode" EntitySet="Episodes" />
-      <End Role="Serie" EntitySet="Series" />
-    </AssociationSet>
-  </EntityContainer>
-  <EntityType Name="Series">
-    <Key>
-      <PropertyRef Name="SerieId" />
-    </Key>
-    <Property Name="SerieId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Episodes">
-    <Key>
-      <PropertyRef Name="EpsiodeId" />
-    </Key>
-    <Property Name="EpsiodeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Serie" Type="int" Nullable="false" />
-  </EntityType>
-  <Association Name="EpisodeSerie">
-    <End Role="Episode" Type="AniSharpDBModel.Store.Episodes" Multiplicity="*" />
-    <End Role="Serie" Type="AniSharpDBModel.Store.Series" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="Serie">
-        <PropertyRef Name="SerieId" />
-      </Principal>
-      <Dependent Role="Episode">
-        <PropertyRef Name="Serie" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-</Schema></edmx:StorageModels>
+        <EntityContainer Name="AniSharpDBModelStoreContainer">
+          <EntitySet Name="episode" EntityType="AniSharpDBModel.Store.episode" store:Type="Tables" />
+          <EntitySet Name="groups" EntityType="AniSharpDBModel.Store.groups" store:Type="Tables" />
+          <EntitySet Name="serie" EntityType="AniSharpDBModel.Store.serie" store:Type="Tables" />
+          <AssociationSet Name="epsiode_groups" Association="AniSharpDBModel.Store.epsiode_groups">
+            <End Role="groups" EntitySet="groups" />
+            <End Role="episode" EntitySet="episode" />
+          </AssociationSet>
+          <AssociationSet Name="epsiode_serie" Association="AniSharpDBModel.Store.epsiode_serie">
+            <End Role="serie" EntitySet="serie" />
+            <End Role="episode" EntitySet="episode" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="episode">
+          <Key>
+            <PropertyRef Name="animeId" />
+            <PropertyRef Name="episodeId" />
+          </Key>
+          <Property Name="animeId" Type="int" Nullable="false" />
+          <Property Name="episodeId" Type="int" Nullable="false" />
+          <Property Name="groupId" Type="int" />
+          <Property Name="state" Type="int" />
+          <Property Name="size" Type="bigint" />
+          <Property Name="ed2k" Type="ntext" />
+          <Property Name="md5" Type="ntext" />
+          <Property Name="sha1" Type="ntext" />
+          <Property Name="crc32" Type="ntext" />
+          <Property Name="quality" Type="ntext" />
+          <Property Name="source" Type="ntext" />
+          <Property Name="audioCodec" Type="ntext" />
+          <Property Name="videoCodec" Type="ntext" />
+          <Property Name="videoResolution" Type="ntext" />
+          <Property Name="dubLanguage" Type="ntext" />
+          <Property Name="subLanguage" Type="ntext" />
+          <Property Name="epno" Type="ntext" />
+          <Property Name="epName" Type="ntext" />
+          <Property Name="epRomajiName" Type="ntext" />
+          <Property Name="epKanjiName" Type="ntext" />
+        </EntityType>
+        <EntityType Name="groups">
+          <Key>
+            <PropertyRef Name="groupsId" />
+          </Key>
+          <Property Name="groupsId" Type="int" Nullable="false" />
+          <Property Name="rating" Type="float" />
+          <Property Name="name" Type="ntext" />
+          <Property Name="shortName" Type="ntext" />
+          <Property Name="ircChannel" Type="ntext" />
+          <Property Name="ircServer" Type="ntext" />
+        </EntityType>
+        <EntityType Name="serie">
+          <Key>
+            <PropertyRef Name="serienId" />
+          </Key>
+          <Property Name="serienId" Type="int" Nullable="false" />
+          <Property Name="type" Type="ntext" />
+          <Property Name="category" Type="ntext" />
+          <Property Name="romajiName" Type="ntext" />
+          <Property Name="kanjiName" Type="ntext" />
+          <Property Name="englishName" Type="ntext" />
+          <Property Name="amountEpisodes" Type="int" />
+          <Property Name="rating" Type="float" />
+          <Property Name="tempRating" Type="float" />
+        </EntityType>
+        <Association Name="epsiode_groups">
+          <End Role="groups" Type="AniSharpDBModel.Store.groups" Multiplicity="0..1" />
+          <End Role="episode" Type="AniSharpDBModel.Store.episode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groups">
+              <PropertyRef Name="groupsId" />
+            </Principal>
+            <Dependent Role="episode">
+              <PropertyRef Name="groupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="epsiode_serie">
+          <End Role="serie" Type="AniSharpDBModel.Store.serie" Multiplicity="1" />
+          <End Role="episode" Type="AniSharpDBModel.Store.episode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="serie">
+              <PropertyRef Name="serienId" />
+            </Principal>
+            <Dependent Role="episode">
+              <PropertyRef Name="animeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AniSharpDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="AniSharpDBEntities" annotation:LazyLoadingEnabled="true" >
-          <EntitySet Name="Series" EntityType="AniSharpDBModel.Serie" />
-          <EntitySet Name="Episodes" EntityType="AniSharpDBModel.Episode" />
-          <AssociationSet Name="EpisodeSerie" Association="AniSharpDBModel.EpisodeSerie">
-            <End Role="Episode" EntitySet="Episodes" />
-            <End Role="Serie" EntitySet="Series" />
+          <EntitySet Name="episode" EntityType="AniSharpDBModel.episode" />
+          <EntitySet Name="groups" EntityType="AniSharpDBModel.groups" />
+          <EntitySet Name="serie" EntityType="AniSharpDBModel.serie" />
+          <AssociationSet Name="epsiode_groups" Association="AniSharpDBModel.epsiode_groups">
+            <End Role="groups" EntitySet="groups" />
+            <End Role="episode" EntitySet="episode" />
+          </AssociationSet>
+          <AssociationSet Name="epsiode_serie" Association="AniSharpDBModel.epsiode_serie">
+            <End Role="serie" EntitySet="serie" />
+            <End Role="episode" EntitySet="episode" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Serie">
+        <EntityType Name="episode">
           <Key>
-            <PropertyRef Name="SerieId" />
+            <PropertyRef Name="animeId" />
+            <PropertyRef Name="episodeId" />
           </Key>
-          <Property Type="Int32" Name="SerieId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Episode" Relationship="AniSharpDBModel.EpisodeSerie" FromRole="Serie" ToRole="Episode" />
+          <Property Type="Int32" Name="animeId" Nullable="false" />
+          <Property Type="Int32" Name="episodeId" Nullable="false" />
+          <Property Type="Int32" Name="groupId" />
+          <Property Type="Int32" Name="state" />
+          <Property Type="Int64" Name="size" />
+          <Property Type="String" Name="ed2k" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="md5" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="sha1" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="crc32" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="quality" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="source" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="audioCodec" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="videoCodec" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="videoResolution" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="dubLanguage" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="subLanguage" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="epno" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="epName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="epRomajiName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="epKanjiName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="groups" Relationship="AniSharpDBModel.epsiode_groups" FromRole="episode" ToRole="groups" />
+          <NavigationProperty Name="serie" Relationship="AniSharpDBModel.epsiode_serie" FromRole="episode" ToRole="serie" />
         </EntityType>
-        <EntityType Name="Episode">
+        <EntityType Name="groups">
           <Key>
-            <PropertyRef Name="EpsiodeId" />
+            <PropertyRef Name="groupsId" />
           </Key>
-          <Property Type="Int32" Name="EpsiodeId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="Serie" Nullable="false" />
-          <NavigationProperty Name="Series" Relationship="AniSharpDBModel.EpisodeSerie" FromRole="Episode" ToRole="Serie" />
+          <Property Type="Int32" Name="groupsId" Nullable="false" />
+          <Property Type="Double" Name="rating" />
+          <Property Type="String" Name="name" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="shortName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ircChannel" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ircServer" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="episode" Relationship="AniSharpDBModel.epsiode_groups" FromRole="groups" ToRole="episode" />
         </EntityType>
-        <Association Name="EpisodeSerie">
-          <End Type="AniSharpDBModel.Episode" Role="Episode" Multiplicity="*" />
-          <End Type="AniSharpDBModel.Serie" Role="Serie" Multiplicity="1" />
+        <EntityType Name="serie">
+          <Key>
+            <PropertyRef Name="serienId" />
+          </Key>
+          <Property Type="Int32" Name="serienId" Nullable="false" />
+          <Property Type="String" Name="type" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="category" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="romajiName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="kanjiName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="englishName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="amountEpisodes" />
+          <Property Type="Double" Name="rating" />
+          <Property Type="Double" Name="tempRating" />
+          <NavigationProperty Name="episode" Relationship="AniSharpDBModel.epsiode_serie" FromRole="serie" ToRole="episode" />
+        </EntityType>
+        <Association Name="epsiode_groups">
+          <End Type="AniSharpDBModel.groups" Role="groups" Multiplicity="0..1" />
+          <End Type="AniSharpDBModel.episode" Role="episode" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Serie">
-              <PropertyRef Name="SerieId" />
+            <Principal Role="groups">
+              <PropertyRef Name="groupsId" />
             </Principal>
-            <Dependent Role="Episode">
-              <PropertyRef Name="Serie" />
+            <Dependent Role="episode">
+              <PropertyRef Name="groupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="epsiode_serie">
+          <End Type="AniSharpDBModel.serie" Role="serie" Multiplicity="1" />
+          <End Type="AniSharpDBModel.episode" Role="episode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="serie">
+              <PropertyRef Name="serienId" />
+            </Principal>
+            <Dependent Role="episode">
+              <PropertyRef Name="animeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -83,22 +195,60 @@
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="AniSharpDBModelStoreContainer" CdmEntityContainer="AniSharpDBEntities">
-    <EntitySetMapping Name="Series">
-      <EntityTypeMapping TypeName="IsTypeOf(AniSharpDBModel.Serie)">
-        <MappingFragment StoreEntitySet="Series">
-          <ScalarProperty Name="SerieId" ColumnName="SerieId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Episodes">
-      <EntityTypeMapping TypeName="IsTypeOf(AniSharpDBModel.Episode)">
-        <MappingFragment StoreEntitySet="Episodes">
-          <ScalarProperty Name="EpsiodeId" ColumnName="EpsiodeId" />
-          <ScalarProperty Name="Serie" ColumnName="Serie" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-  </EntityContainerMapping>
+          <EntitySetMapping Name="episode">
+            <EntityTypeMapping TypeName="AniSharpDBModel.episode">
+              <MappingFragment StoreEntitySet="episode">
+                <ScalarProperty Name="epKanjiName" ColumnName="epKanjiName" />
+                <ScalarProperty Name="epRomajiName" ColumnName="epRomajiName" />
+                <ScalarProperty Name="epName" ColumnName="epName" />
+                <ScalarProperty Name="epno" ColumnName="epno" />
+                <ScalarProperty Name="subLanguage" ColumnName="subLanguage" />
+                <ScalarProperty Name="dubLanguage" ColumnName="dubLanguage" />
+                <ScalarProperty Name="videoResolution" ColumnName="videoResolution" />
+                <ScalarProperty Name="videoCodec" ColumnName="videoCodec" />
+                <ScalarProperty Name="audioCodec" ColumnName="audioCodec" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="quality" ColumnName="quality" />
+                <ScalarProperty Name="crc32" ColumnName="crc32" />
+                <ScalarProperty Name="sha1" ColumnName="sha1" />
+                <ScalarProperty Name="md5" ColumnName="md5" />
+                <ScalarProperty Name="ed2k" ColumnName="ed2k" />
+                <ScalarProperty Name="size" ColumnName="size" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="groupId" ColumnName="groupId" />
+                <ScalarProperty Name="episodeId" ColumnName="episodeId" />
+                <ScalarProperty Name="animeId" ColumnName="animeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="groups">
+            <EntityTypeMapping TypeName="AniSharpDBModel.groups">
+              <MappingFragment StoreEntitySet="groups">
+                <ScalarProperty Name="ircServer" ColumnName="ircServer" />
+                <ScalarProperty Name="ircChannel" ColumnName="ircChannel" />
+                <ScalarProperty Name="shortName" ColumnName="shortName" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="groupsId" ColumnName="groupsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="serie">
+            <EntityTypeMapping TypeName="AniSharpDBModel.serie">
+              <MappingFragment StoreEntitySet="serie">
+                <ScalarProperty Name="tempRating" ColumnName="tempRating" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="amountEpisodes" ColumnName="amountEpisodes" />
+                <ScalarProperty Name="englishName" ColumnName="englishName" />
+                <ScalarProperty Name="kanjiName" ColumnName="kanjiName" />
+                <ScalarProperty Name="romajiName" ColumnName="romajiName" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="serienId" ColumnName="serienId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
@@ -111,18 +261,24 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="Model1" >
-        <EntityTypeShape EntityType="AniSharpDBModel.Serie" Width="1.5" PointX="0.5" PointY="0.5" Height="1.2636116536458335" />
-        <EntityTypeShape EntityType="AniSharpDBModel.Episode" Width="1.5" PointX="4.25" PointY="0.5" Height="1.427958984375" />
-        <AssociationConnector Association="AniSharpDBModel.EpisodeSerie">
-          <ConnectorPoint PointX="4.25" PointY="1.1318058268229168" />
-          <ConnectorPoint PointX="2" PointY="1.1318058268229168" />
+        <EntityTypeShape EntityType="AniSharpDBModel.episode" Width="1.5" PointX="3" PointY="1" Height="4.5505582682291656" />
+        <EntityTypeShape EntityType="AniSharpDBModel.groups" Width="1.5" PointX="0.75" PointY="2.25" Height="2.0853483072916652" />
+        <EntityTypeShape EntityType="AniSharpDBModel.serie" Width="1.5" PointX="0.75" PointY="7" Height="2.5783902994791665" />
+        <AssociationConnector Association="AniSharpDBModel.epsiode_groups" >
+          <ConnectorPoint PointX="2.25" PointY="3.2926741536458328" />
+          <ConnectorPoint PointX="3" PointY="3.2926741536458328" />
+        </AssociationConnector>
+        <AssociationConnector Association="AniSharpDBModel.epsiode_serie" >
+          <ConnectorPoint PointX="2.25" PointY="8.2891951497395837" />
+          <ConnectorPoint PointX="3.75" PointY="8.2891951497395837" />
+          <ConnectorPoint PointX="3.75" PointY="5.5505582682291656" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>
