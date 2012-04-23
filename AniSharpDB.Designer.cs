@@ -18,8 +18,8 @@ using System.Runtime.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("AniSharpDBModel", "epsiode_groups", "groups", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(AniSharp.groups), "episode", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(AniSharp.episode), true)]
-[assembly: EdmRelationshipAttribute("AniSharpDBModel", "epsiode_serie", "serie", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(AniSharp.serie), "episode", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(AniSharp.episode), true)]
+[assembly: EdmRelationshipAttribute("AniSharpDBModel", "FK_epsiode_groups", "groups", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(AniSharp.groups), "episode", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(AniSharp.episode), true)]
+[assembly: EdmRelationshipAttribute("AniSharpDBModel", "FK_epsiode_serie", "serie", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(AniSharp.serie), "episode", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(AniSharp.episode), true)]
 
 #endregion
 
@@ -676,16 +676,16 @@ namespace AniSharp
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "epsiode_groups", "groups")]
+        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "FK_epsiode_groups", "groups")]
         public groups groups
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<groups>("AniSharpDBModel.epsiode_groups", "groups").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<groups>("AniSharpDBModel.FK_epsiode_groups", "groups").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<groups>("AniSharpDBModel.epsiode_groups", "groups").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<groups>("AniSharpDBModel.FK_epsiode_groups", "groups").Value = value;
             }
         }
         /// <summary>
@@ -697,13 +697,13 @@ namespace AniSharp
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<groups>("AniSharpDBModel.epsiode_groups", "groups");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<groups>("AniSharpDBModel.FK_epsiode_groups", "groups");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<groups>("AniSharpDBModel.epsiode_groups", "groups", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<groups>("AniSharpDBModel.FK_epsiode_groups", "groups", value);
                 }
             }
         }
@@ -714,16 +714,16 @@ namespace AniSharp
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "epsiode_serie", "serie")]
+        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "FK_epsiode_serie", "serie")]
         public serie serie
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<serie>("AniSharpDBModel.epsiode_serie", "serie").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<serie>("AniSharpDBModel.FK_epsiode_serie", "serie").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<serie>("AniSharpDBModel.epsiode_serie", "serie").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<serie>("AniSharpDBModel.FK_epsiode_serie", "serie").Value = value;
             }
         }
         /// <summary>
@@ -735,13 +735,13 @@ namespace AniSharp
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<serie>("AniSharpDBModel.epsiode_serie", "serie");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<serie>("AniSharpDBModel.FK_epsiode_serie", "serie");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<serie>("AniSharpDBModel.epsiode_serie", "serie", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<serie>("AniSharpDBModel.FK_epsiode_serie", "serie", value);
                 }
             }
         }
@@ -930,18 +930,18 @@ namespace AniSharp
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "epsiode_groups", "episode")]
+        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "FK_epsiode_groups", "episode")]
         public EntityCollection<episode> episode
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<episode>("AniSharpDBModel.epsiode_groups", "episode");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<episode>("AniSharpDBModel.FK_epsiode_groups", "episode");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<episode>("AniSharpDBModel.epsiode_groups", "episode", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<episode>("AniSharpDBModel.FK_epsiode_groups", "episode", value);
                 }
             }
         }
@@ -1202,18 +1202,18 @@ namespace AniSharp
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "epsiode_serie", "episode")]
+        [EdmRelationshipNavigationPropertyAttribute("AniSharpDBModel", "FK_epsiode_serie", "episode")]
         public EntityCollection<episode> episode
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<episode>("AniSharpDBModel.epsiode_serie", "episode");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<episode>("AniSharpDBModel.FK_epsiode_serie", "episode");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<episode>("AniSharpDBModel.epsiode_serie", "episode", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<episode>("AniSharpDBModel.FK_epsiode_serie", "episode", value);
                 }
             }
         }

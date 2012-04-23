@@ -73,7 +73,7 @@ namespace AniSharp.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("AniSharp")]
+        [global::System.Configuration.DefaultSettingValueAttribute("anisharp")]
         public string ClientName {
             get {
                 return ((string)(this["ClientName"]));
@@ -86,6 +86,42 @@ namespace AniSharp.Properties {
         public int Version {
             get {
                 return ((int)(this["Version"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int ApiVersion {
+            get {
+                return ((int)(this["ApiVersion"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("70F8FAC000")]
+        public string fmask {
+            get {
+                return ((string)(this["fmask"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0000F0C0")]
+        public string amask_file {
+            get {
+                return ((string)(this["amask_file"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("92F0E0A0000000")]
+        public string amask_anime {
+            get {
+                return ((string)(this["amask_anime"]));
             }
         }
     }
