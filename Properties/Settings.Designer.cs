@@ -73,7 +73,7 @@ namespace AniSharp.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("AniSharp")]
+        [global::System.Configuration.DefaultSettingValueAttribute("anisharp")]
         public string ClientName {
             get {
                 return ((string)(this["ClientName"]));
