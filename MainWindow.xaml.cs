@@ -29,7 +29,7 @@ namespace AniSharp
                 StringBuilder sb = new StringBuilder();
                 sb.Append(".*.(?i)(");
                 foreach (ListBoxItem s in lbExtensions.Items)
-                    sb.Append(s.Content + "|");
+                    sb.Append(s.Content).Append("|");
                 sb.Remove(sb.Length - 1, 1);
                 sb.Append(")$");
                 return sb.ToString();
@@ -131,11 +131,13 @@ namespace AniSharp
             {
                 lbLog.Height = this.ActualHeight - 100;
                 lbFiles.Height = this.ActualHeight - 100;
+                lbDatabase.Height = this.ActualHeight - 100;
             }
             if (e.WidthChanged)
             {
                 lbLog.Width = this.ActualWidth - 27;
                 lbFiles.Width = this.ActualWidth - 27;
+                lbDatabase.Width = this.ActualWidth - 27;
             }
         }
 
@@ -173,6 +175,11 @@ namespace AniSharp
             Dispatcher.Invoke(new Action(() => { lbLog.Items.Add(sText); }));
         }
 
+        public void lbDatabase_Add(String sText)
+        {
+            Dispatcher.Invoke(new Action(() => { lbDatabase.Items.Add(sText); }));
+        }
+
         private void tbExtension_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && !String.IsNullOrEmpty(tbExtension.Text.ToString()))
@@ -205,6 +212,11 @@ namespace AniSharp
                 tbOther.IsEnabled = true;
             }
             catch (Exception) { }//fängt fehler bei der initialisierung
+        }
+
+        private void btDatabase_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
