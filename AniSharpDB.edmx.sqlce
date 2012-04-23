@@ -1,44 +1,60 @@
-
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server Compact Edition
 -- --------------------------------------------------
--- Date Created: 04/17/2012 14:12:44
--- Generated from EDMX file: C:\Users\Alc\Documents\Visual Studio 2010\Projects\AniSharp\AniSharp\AniSharpDB.edmx
+-- Date Created: 04/23/2012 19:21:24
+-- Generated from EDMX file: C:\Users\Alc\Documents\Visual Studio 2010\Projects\anisharp\anisharp\AniSharpDB.edmx
 -- --------------------------------------------------
-
-
--- --------------------------------------------------
--- Dropping existing FOREIGN KEY constraints
--- NOTE: if the constraint does not exist, an ignorable error will be reported.
--- --------------------------------------------------
-
-    ALTER TABLE [Episodes] DROP CONSTRAINT [FK_EpisodeSerie];
-GO
-
--- --------------------------------------------------
--- Dropping existing tables
--- NOTE: if the table does not exist, an ignorable error will be reported.
--- --------------------------------------------------
-
-    DROP TABLE [Series];
-GO
-    DROP TABLE [Episodes];
-GO
-
 -- --------------------------------------------------
 -- Creating all tables
 -- --------------------------------------------------
 
--- Creating table 'Series'
-CREATE TABLE [Series] (
-    [SerieId] int IDENTITY(1,1) NOT NULL
+-- Creating table 'episode'
+CREATE TABLE [episode] (
+    [animeId] int  NOT NULL,
+    [episodeId] int  NOT NULL,
+    [groupId] int  NULL,
+    [state] int  NULL,
+    [size] bigint  NULL,
+    [ed2k] nvarchar(4000)  NULL,
+    [md5] nvarchar(4000)  NULL,
+    [sha1] nvarchar(4000)  NULL,
+    [crc32] nvarchar(4000)  NULL,
+    [quality] nvarchar(4000)  NULL,
+    [source] nvarchar(4000)  NULL,
+    [audioCodec] nvarchar(4000)  NULL,
+    [videoCodec] nvarchar(4000)  NULL,
+    [videoResolution] nvarchar(4000)  NULL,
+    [dubLanguage] nvarchar(4000)  NULL,
+    [subLanguage] nvarchar(4000)  NULL,
+    [epno] nvarchar(4000)  NULL,
+    [epName] nvarchar(4000)  NULL,
+    [epRomajiName] nvarchar(4000)  NULL,
+    [epKanjiName] nvarchar(4000)  NULL
 );
 GO
 
--- Creating table 'Episodes'
-CREATE TABLE [Episodes] (
-    [EpsiodeId] int IDENTITY(1,1) NOT NULL,
-    [Serie] int  NOT NULL
+-- Creating table 'groups'
+CREATE TABLE [groups] (
+    [groupsId] int  NOT NULL,
+    [rating] float  NULL,
+    [name] nvarchar(4000)  NULL,
+    [shortName] nvarchar(4000)  NULL,
+    [ircChannel] nvarchar(4000)  NULL,
+    [ircServer] nvarchar(4000)  NULL
+);
+GO
+
+-- Creating table 'serie'
+CREATE TABLE [serie] (
+    [serienId] int  NOT NULL,
+    [type] nvarchar(4000)  NULL,
+    [category] nvarchar(4000)  NULL,
+    [romajiName] nvarchar(4000)  NULL,
+    [kanjiName] nvarchar(4000)  NULL,
+    [englishName] nvarchar(4000)  NULL,
+    [amountEpisodes] int  NULL,
+    [rating] float  NULL,
+    [tempRating] float  NULL
 );
 GO
 
@@ -46,34 +62,49 @@ GO
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
 
--- Creating primary key on [SerieId] in table 'Series'
-ALTER TABLE [Series]
-ADD CONSTRAINT [PK_Series]
-    PRIMARY KEY ([SerieId] );
+-- Creating primary key on [animeId], [episodeId] in table 'episode'
+ALTER TABLE [episode]
+ADD CONSTRAINT [PK_episode]
+    PRIMARY KEY ([animeId], [episodeId] );
 GO
 
--- Creating primary key on [EpsiodeId] in table 'Episodes'
-ALTER TABLE [Episodes]
-ADD CONSTRAINT [PK_Episodes]
-    PRIMARY KEY ([EpsiodeId] );
+-- Creating primary key on [groupsId] in table 'groups'
+ALTER TABLE [groups]
+ADD CONSTRAINT [PK_groups]
+    PRIMARY KEY ([groupsId] );
+GO
+
+-- Creating primary key on [serienId] in table 'serie'
+ALTER TABLE [serie]
+ADD CONSTRAINT [PK_serie]
+    PRIMARY KEY ([serienId] );
 GO
 
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
--- Creating foreign key on [Serie] in table 'Episodes'
-ALTER TABLE [Episodes]
-ADD CONSTRAINT [FK_EpisodeSerie]
-    FOREIGN KEY ([Serie])
-    REFERENCES [Series]
-        ([SerieId])
+-- Creating foreign key on [groupId] in table 'episode'
+ALTER TABLE [episode]
+ADD CONSTRAINT [FK_epsiode_groups]
+    FOREIGN KEY ([groupId])
+    REFERENCES [groups]
+        ([groupsId])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 
--- Creating non-clustered index for FOREIGN KEY 'FK_EpisodeSerie'
-CREATE INDEX [IX_FK_EpisodeSerie]
-ON [Episodes]
-    ([Serie]);
+-- Creating non-clustered index for FOREIGN KEY 'FK_epsiode_groups'
+CREATE INDEX [IX_FK_epsiode_groups]
+ON [episode]
+    ([groupId]);
+GO
+
+-- Creating foreign key on [animeId] in table 'episode'
+ALTER TABLE [episode]
+ADD CONSTRAINT [FK_epsiode_serie]
+    FOREIGN KEY ([animeId])
+    REFERENCES [serie]
+        ([serienId])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------
