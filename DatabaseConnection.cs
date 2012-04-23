@@ -19,19 +19,22 @@ namespace AniSharp
 {
     class DatabaseConnection
     {
+        private MainWindow mw = null;
+        public DatabaseConnection(MainWindow mw)
+        {
+            this.mw = mw;
+        }
         public void testConnectivity()
         {
-            MainWindow mw = new MainWindow();
+            //MainWindow mw = new MainWindow();
             try {
                 SqlCeConnection con = new SqlCeConnection(@"Data Source=AniSharpDB.sdf; Persist Security Info=False;");
                 con.Open();  
                 mw.lbDatabase_Add("OK");
-                MessageBox.Show("OK");
                 con.Close();             
             }
             catch (Exception) {
                 mw.lbDatabase_Add("Failed !");
-                MessageBox.Show("Failed !");
             }
         }
     }

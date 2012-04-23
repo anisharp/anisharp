@@ -216,7 +216,7 @@ namespace AniSharp
 
         private void btDatabase_Click(object sender, RoutedEventArgs e)
         {
-            DatabaseConnection dc = new DatabaseConnection();
+            DatabaseConnection dc = new DatabaseConnection(this);
             dc.testConnectivity();
         }
     }
