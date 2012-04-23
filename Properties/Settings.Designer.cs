@@ -88,5 +88,32 @@ namespace AniSharp.Properties {
                 return ((int)(this["Version"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int ApiVersion {
+            get {
+                return ((int)(this["ApiVersion"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("70F8FAC0")]
+        public string fmask {
+            get {
+                return ((string)(this["fmask"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0000F0C0")]
+        public string amask {
+            get {
+                return ((string)(this["amask"]));
+            }
+        }
     }
 }

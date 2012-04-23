@@ -20,5 +20,14 @@
     <Setting Name="Version" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">1</Value>
     </Setting>
+    <Setting Name="ApiVersion" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="fmask" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">70F8FAC0</Value>
+    </Setting>
+    <Setting Name="amask" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">0000F0C0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
