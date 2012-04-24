@@ -19,20 +19,19 @@ namespace AniSharp.API
         private String session = null;
         private Dictionary<String, String> results = new Dictionary<string, string>();
 
+        public const int WAITING_BETWEEN_PACKETS = 2000;
+
         private void senderThreadInit()
         {
             try
             {
                 while (true)
                 {
-
                     String toSend = outQueue.Take();
                     byte[] bytes = Encoding.ASCII.GetBytes(toSend + (session == null ? "" : "&s=" + session));
                     getConnection().Send(bytes, bytes.Length);
 
-                    Thread.Sleep(2000);
-
-
+                    Thread.Sleep(WAITING_BETWEEN_PACKETS);
                 }
             }
             catch (Exception)
@@ -52,8 +51,17 @@ namespace AniSharp.API
                 receiverThread = new Thread(receiverThreadStart);
                 receiverThread.Start();
 
+                ApiRequest loginQ = new ApiRequest("AUTH");
+                loginQ.set("user", username)
+                    .set("pass", password)
+                    .set("protover", AniSharp.Properties.Settings.Default.ApiVersion.ToString())
+                    .set("client", AniSharp.Properties.Settings.Default.ClientName)
+                    .set("clientver", AniSharp.Properties.Settings.Default.Version.ToString());
 
-                String loginQ = "AUTH user=" + username + "&pass=" + password + "&protover=" + AniSharp.Properties.Settings.Default.ApiVersion + "&client=" + AniSharp.Properties.Settings.Default.ClientName + "&clientver=" + AniSharp.Properties.Settings.Default.Version;
+               /* String loginQ = "AUTH user=" + username + "&pass=" + password + "&protover=" + 
+                    AniSharp.Properties.Settings.Default.ApiVersion + "&client=" +
+                    AniSharp.Properties.Settings.Default.ClientName + "&clientver=" +
+                    AniSharp.Properties.Settings.Default.Version;*/
                 String loginA = query(loginQ);
 
                 MessageBox.Show(loginA);
@@ -74,12 +82,63 @@ namespace AniSharp.API
 
         public void closeUDPClient()
         {
-            String logoutQ = "LOGOUT ";
+            ApiRequest logoutQ = new ApiRequest("LOGOUT");
+            //String logoutQ = "LOGOUT ";
             String logoutA = query(logoutQ);
             MessageBox.Show(logoutA);
             senderThread.Interrupt();
             receiverThread.Interrupt();
             udpClient.Close();
+        }
+
+
+        /// <summary>
+        /// checks, if this MethodCall will result in an unauthorized error
+        /// </summary>
+        /// <param name="command">The command-name to execute</param>
+        private void checkMethodSessionKey(String command)
+        {
+            //PING, ENCRYPT, ENCODING, AUTH and VERSION are allowed
+            if (session != null) return; // session set -- ok
+
+            switch (command)
+            {
+                case "PING":
+                case "ENCRYPT":
+                case "ENCODING":
+                case "AUTH":
+                case "VERSION":
+                    return;
+                default:
+                    throw new System.InvalidOperationException("Session not set");
+            }
+        }
+
+        /// <summary>
+        /// sends a command to AniDB. throws InvalidOperationException if session key is not
+        /// set, but mandatory
+        /// </summary>
+        /// <param name="req">The method-request</param>
+        /// <returns>The result</returns>
+        public String query(ApiRequest req)
+        {
+            checkMethodSessionKey(req.Command);
+
+            // set a tag
+            String tag = generateTag();
+            req["tag"] = tag;
+
+            // transmit session-key
+            if (this.session != null)
+                req["s"] = this.session;
+
+            outQueue.Add(req.ToString());
+            while (!results.ContainsKey(tag))
+                lock (results)
+                {
+                    Monitor.Wait(results);
+                }
+            return results[tag];
         }
 
         public String query(String queryS)
