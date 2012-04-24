@@ -27,14 +27,44 @@ namespace AniSharp
         public void testConnectivity()
         {
             //MainWindow mw = new MainWindow();
-            try {
+            try
+            {
                 SqlCeConnection con = new SqlCeConnection(@"Data Source=AniSharpDB.sdf; Persist Security Info=False;");
-                con.Open();  
-                mw.lbDatabase_Add("OK");
-                con.Close();             
+                con.Open();
+                mw.lbDatabase_Add("Connection established.");
+                getFromDatabase(con);
+                con.Close();
             }
-            catch (Exception) {
-                mw.lbDatabase_Add("Failed !");
+            catch (Exception)
+            {
+                mw.lbDatabase_Add("Connection Problem");
+            }
+        }
+        private void getFromDatabase(SqlCeConnection con)
+        {
+
+            SqlCeDataReader rdr = null;
+
+            try
+            {
+                SqlCeCommand cmd = new SqlCeCommand("select * from episode", con);
+                rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    mw.lbDatabase_Add(rdr[0].ToString());
+                }
+            }
+            catch (Exception)
+            {
+                mw.lbDatabase_Add("Check Statement syntax");
+            }
+            finally
+            {
+                // close the reader
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
             }
         }
     }

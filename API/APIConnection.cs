@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Net.Sockets;
 using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading;
-using System.Collections.Concurrent;
 using System.Windows.Forms;
 
 namespace AniSharp.API
@@ -17,30 +17,41 @@ namespace AniSharp.API
         private UdpClient udpClient;
         private BlockingCollection<String> outQueue = new BlockingCollection<String>();
         private String session = null;
+        private Dictionary<String, String> results = new Dictionary<string, string>();
 
         private void senderThreadInit()
         {
-            while (true)
+            try
             {
-                String toSend = outQueue.Take();
-                byte[] bytes = Encoding.ASCII.GetBytes(toSend+(session==null?"":"&s="+session));
-                getConnection().Send(bytes, bytes.Length);
+                while (true)
+                {
 
-                // IPEndPoint object will allow us to read datagrams sent from any source.
-                // IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                    String toSend = outQueue.Take();
+                    byte[] bytes = Encoding.ASCII.GetBytes(toSend + (session == null ? "" : "&s=" + session));
+                    getConnection().Send(bytes, bytes.Length);
 
-                // Blocks until a message returns on this socket from a remote host.
-                // Byte[] receiveBytes = getConnection().Receive(ref RemoteIpEndPoint);
-                // string returnData = Encoding.ASCII.GetString(receiveBytes);
+                    // IPEndPoint object will allow us to read datagrams sent from any source.
+                    // IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
-                Thread.Sleep(2000);
+                    // Blocks until a message returns on this socket from a remote host.
+                    // Byte[] receiveBytes = getConnection().Receive(ref RemoteIpEndPoint);
+                    // string returnData = Encoding.ASCII.GetString(receiveBytes);
+
+
+                    Thread.Sleep(2000);
+
+
+                }
+            }
+            catch (Exception)
+            {
             }
         }
 
         public void establishConnection(String username, String password)
         {
             try
-            {   
+            {
                 udpClient = new UdpClient(AniSharp.Properties.Settings.Default.LocalPort);
                 udpClient.Connect(AniSharp.Properties.Settings.Default.Address, AniSharp.Properties.Settings.Default.RemotePort);
 
@@ -56,7 +67,7 @@ namespace AniSharp.API
                 MessageBox.Show(loginA);
                 this.session = loginA.Split(' ')[2];
 
-               
+
             }
             catch (Exception e)
             {
@@ -71,11 +82,15 @@ namespace AniSharp.API
 
         public void closeUDPClient()
         {
+            String logoutQ = "LOGOUT ";
+            String logoutA = query(logoutQ);
+            MessageBox.Show(logoutA);
             senderThread.Interrupt();
+            receiverThread.Interrupt();
+            senderThread.Join();
+            receiverThread.Join();
             udpClient.Close();
         }
-
-        private Dictionary<String, String> results = new Dictionary<string, string>();
 
         public String query(String queryS)
         {
@@ -83,8 +98,10 @@ namespace AniSharp.API
             queryS += "&tag=" + tag;
             outQueue.Add(queryS);
             while (!results.ContainsKey(tag))
-                Monitor.Wait(results);
-
+                lock (results)
+                {
+                    Monitor.Wait(results);
+                }
             return results[tag];
         }
 
@@ -105,17 +122,26 @@ namespace AniSharp.API
 
         public void receiverThreadStart()
         {
-            while (true)
+            try
             {
-                IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                while (true)
+                {
+                    IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
-                Byte[] receiveBytes = getConnection().Receive(ref RemoteIpEndPoint);
-                String returnData = Encoding.ASCII.GetString(receiveBytes);
+                    Byte[] receiveBytes = getConnection().Receive(ref RemoteIpEndPoint);
+                    String returnData = Encoding.ASCII.GetString(receiveBytes);
 
-                String tag = returnData.Split(' ')[0];
+                    String tag = returnData.Split(' ')[0];
 
-                results.Add(tag, returnData);
-                Monitor.PulseAll(results);
+                    results.Add(tag, returnData);
+                    lock (results)
+                    {
+                        Monitor.PulseAll(results);
+                    };
+                }
+            }
+            catch (Exception)
+            {
             }
         }
     }
