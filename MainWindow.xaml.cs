@@ -21,7 +21,8 @@ namespace AniSharp
     /// </summary>
     public partial class MainWindow : Window
     {
-        System.Threading.Thread _fileParser;
+        private System.Threading.Thread _fileParser = null;
+        private API.APIConnection conn = null;
         private String FileFilter
         {
             get
@@ -151,10 +152,24 @@ namespace AniSharp
 
         private void btLogin_Click(object sender, RoutedEventArgs e)
         {
-            Login login = new Login();
-            Nullable<bool> result = login.ShowDialog();
-            if (result == true)
-                MessageBox.Show(login.sUser + "\n" + login.sPassword);
+            if (btLogin.Content.ToString() == "Login")
+            {
+                Login login = new Login();
+                Nullable<bool> result = login.ShowDialog();
+                if (result == true)
+                {
+                    conn = new API.APIConnection();
+                    conn.establishConnection(login.sUser, login.sPassword);
+                    btLogin.Content = "Logout";
+                }
+            }
+            else
+            {
+                if (conn != null)
+                    conn.closeUDPClient();
+                btLogin.Content = "Login";
+            }
+                
         }
 
         private void btFolders_Click(object sender, RoutedEventArgs e)
