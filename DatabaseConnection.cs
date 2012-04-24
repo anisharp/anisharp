@@ -49,11 +49,9 @@ namespace AniSharp
             {
                 SqlCeCommand cmd = new SqlCeCommand("select * from episode", con);
                 rdr = cmd.ExecuteReader();
-                int i = 0;
                 while (rdr.Read())
                 {
-                    mw.lbDatabase_Add(rdr[i].ToString());
-                    i++;
+                    mw.lbDatabase_Add(rdr[0].ToString());
                 }
             }
             catch (Exception)
@@ -65,7 +63,7 @@ namespace AniSharp
                 // close the reader
                 if (rdr != null)
                 {
-                    //rdr.Close();
+                    rdr.Close();
                 }
             }
         }
