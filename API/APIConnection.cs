@@ -66,5 +66,19 @@ namespace AniSharp.API
             senderThread.Interrupt();
             udpClient.Close();
         }
+
+
+        private static Random RND = new Random();
+        private static String TAG_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        private static int TAG_LEN = 5;
+        private static String generateTag()
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < TAG_LEN; i++)
+            {
+                sb.Append(TAG_CHARS.ElementAt(RND.Next(TAG_CHARS.Length)));
+            }
+            return sb.ToString();
+        }
     }
 }
