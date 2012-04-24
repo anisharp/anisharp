@@ -55,12 +55,18 @@
             </TabItem>
             <TabItem Header="Log" Name="tabLog">
                 <Grid>
-                    <ListBox MinHeight="275" HorizontalAlignment="Left" Name="lbLog" VerticalAlignment="Top" MinWidth="550"/>
+                    <ListBox MinHeight="275" HorizontalAlignment="Left" Name="lbLog" VerticalAlignment="Top" MinWidth="550" IsEnabled="True">
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Copy" Command="Copy"/>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Database" Name="tabItem1">
+            <TabItem Header="Database" Name="tabDatabase" IsEnabled="True">
                 <Grid>
-                    <ListBox MinHeight="275" HorizontalAlignment="Left" Name="lbDatabase" VerticalAlignment="Top" MinWidth="550"/>
+                    <ListBox MinHeight="275" HorizontalAlignment="Left" Name="lbDatabase" VerticalAlignment="Top" MinWidth="550" IsEnabled="True" />
                 </Grid>
             </TabItem>
         </TabControl>
