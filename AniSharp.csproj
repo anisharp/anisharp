@@ -92,6 +92,7 @@
       <DependentUpon>AniSharpDB.edmx</DependentUpon>
     </Compile>
     <Compile Include="API\APIConnection.cs" />
+    <Compile Include="API\ApiRequest.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
