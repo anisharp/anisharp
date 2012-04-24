@@ -30,14 +30,6 @@ namespace AniSharp.API
                     byte[] bytes = Encoding.ASCII.GetBytes(toSend + (session == null ? "" : "&s=" + session));
                     getConnection().Send(bytes, bytes.Length);
 
-                    // IPEndPoint object will allow us to read datagrams sent from any source.
-                    // IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-
-                    // Blocks until a message returns on this socket from a remote host.
-                    // Byte[] receiveBytes = getConnection().Receive(ref RemoteIpEndPoint);
-                    // string returnData = Encoding.ASCII.GetString(receiveBytes);
-
-
                     Thread.Sleep(2000);
 
 
