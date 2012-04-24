@@ -15,14 +15,14 @@ namespace AniSharp.API
         private Thread senderThread;
         private UdpClient udpClient;
         private BlockingCollection<String> outQueue = new BlockingCollection<String>();
-        private String session;
+        private String session = null;
 
         private void senderThreadInit()
         {
             while (true)
             {
                 String toSend = outQueue.Take();
-                byte[] bytes = Encoding.ASCII.GetBytes(toSend+"&s="+session);
+                byte[] bytes = Encoding.ASCII.GetBytes(toSend+(session==null?"":"&s="+session));
                 getConnection().Send(bytes, bytes.Length);
 
                 // IPEndPoint object will allow us to read datagrams sent from any source.
