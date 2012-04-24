@@ -87,8 +87,6 @@ namespace AniSharp.API
             MessageBox.Show(logoutA);
             senderThread.Interrupt();
             receiverThread.Interrupt();
-            senderThread.Join();
-            receiverThread.Join();
             udpClient.Close();
         }
 
