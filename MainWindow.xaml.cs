@@ -154,7 +154,11 @@ namespace AniSharp
             Login login = new Login();
             Nullable<bool> result = login.ShowDialog();
             if (result == true)
-                MessageBox.Show(login.sUser + "\n" + login.sPassword);
+            {
+                API.APIConnection conn = new API.APIConnection();
+                conn.establishConnection(login.sUser, login.sPassword);
+            }
+                
         }
 
         private void btFolders_Click(object sender, RoutedEventArgs e)
