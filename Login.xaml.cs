@@ -29,6 +29,7 @@ namespace AniSharp
         public Login()
         {
             InitializeComponent();
+            tbUser.Text = AniSharp.Properties.Settings.Default.Username ?? "";
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -36,7 +37,13 @@ namespace AniSharp
             if (string.IsNullOrWhiteSpace(sUser) || string.IsNullOrWhiteSpace(sPassword))
                 this.DialogResult = false;
             else
+            {
                 this.DialogResult = true;
+                /* uncomment if ready to publish
+                 * if (AniSharp.Properties.Settings.Default.Username != tbUser.Text)
+                    AniSharp.Properties.Settings.Default.Username = tbUser.Text;
+                 */
+            }
         }
     }
 }

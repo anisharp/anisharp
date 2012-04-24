@@ -21,9 +21,9 @@ namespace AniSharp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private System.Threading.Thread _fileParser = null;
+        private FileParser fileParser = null;
         private API.APIConnection conn = null;
-        private String FileFilter
+        public String FileFilter
         {
             get
             {
@@ -49,8 +49,15 @@ namespace AniSharp
 
         void lbFiles_Drop(object sender, DragEventArgs e)
         {
+            fileParser = new FileParser(this, FileFilter);
+
             foreach (String s in (String[])e.Data.GetData(DataFormats.FileDrop))
-                lbFiles_AddFile(s);
+            {
+                fileParser.setFile(s);
+                System.Threading.Thread thread = new System.Threading.Thread(fileParser.ParseFile);
+                thread.IsBackground = true;
+                thread.Start();
+            }
         }
 
         /// <summary>
@@ -63,7 +70,6 @@ namespace AniSharp
         void lbFiles_AddFile(String sFile,bool isDir=false)
         {
             Regex rg = new Regex(FileFilter);
-            //rg.Options = RegexOptions.IgnoreCase;
             if (!isDir)
             {
                 if (!System.IO.Directory.Exists(sFile))

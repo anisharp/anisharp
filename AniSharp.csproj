@@ -97,6 +97,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DB\DatabaseConnection.cs" />
+    <Compile Include="FileParser.cs" />
+    <Compile Include="FileRenamer.cs" />
     <Compile Include="Hash\CRC32.cs" />
     <Compile Include="Hash\Ed2k.cs" />
     <Compile Include="Hash\HashGenerator.cs" />
