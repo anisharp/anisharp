@@ -91,11 +91,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AniSharpDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="API\APIConnection.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DatabaseConnection.cs" />
+    <Compile Include="DB\DatabaseConnection.cs" />
     <Compile Include="Hash\CRC32.cs" />
     <Compile Include="Hash\Ed2k.cs" />
     <Compile Include="Hash\HashGenerator.cs" />
@@ -169,6 +170,11 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AniSharpDB.sdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
