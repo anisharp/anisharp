@@ -22,7 +22,7 @@ namespace AniSharp
     public partial class MainWindow : Window
     {
         private FileParser fileParser = null;
-        private API.APIConnection conn = null;
+        private API.ApiSession conn = null;
         public String FileFilter
         {
             get
@@ -164,15 +164,15 @@ namespace AniSharp
                 Nullable<bool> result = login.ShowDialog();
                 if (result == true)
                 {
-                    conn = new API.APIConnection();
-                    conn.establishConnection(login.sUser, login.sPassword);
+                    conn = new API.ApiSession();
+                    conn.login(login.sUser, login.sPassword);
                     btLogin.Content = "Logout";
                 }
             }
             else
             {
                 if (conn != null)
-                    conn.closeUDPClient();
+                    conn.shutdown();
                 btLogin.Content = "Login";
             }
                 
@@ -239,6 +239,12 @@ namespace AniSharp
         {
             DatabaseConnection dc = new DatabaseConnection(this);
             dc.testConnectivity();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // logout
+            conn.shutdown();
         }
     }
 }

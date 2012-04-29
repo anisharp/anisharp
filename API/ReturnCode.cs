@@ -1,9 +1,9 @@
 using System;
 
 
-namespace API
+namespace AniSharp.API
 {
-	enum ReturnCode
+	public enum ReturnCode
 	{
 		LOGIN_ACCEPTED                           = 200,
 		LOGIN_ACCEPTED_NEW_VERSION               = 201,
@@ -148,7 +148,7 @@ namespace API
 		ANIDB_OUT_OF_SERVICE                     = 601,
 		SERVER_BUSY                              = 602,
 		NO_DATA                                  = 603,
-		TIMEOUT - DELAY AND RESUBMIT             = 604,
+		TIMEOUT_DELAY_AND_RESUBMIT             = 604,
 		API_VIOLATION                            = 666,
 
 		PUSHACK_CONFIRMED                        = 701,

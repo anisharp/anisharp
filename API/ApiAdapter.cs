@@ -1,29 +1,33 @@
 ﻿
+using System.Net.Sockets;
 using System.Net;
 using System;
+using System.Threading;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Text;
+using AniSharp.API.Transport;
 
 namespace AniSharp.API
 {
-	class ApiDriver
+    /// <summary>
+    /// Sends commands to AniDB, and receives their counterparts
+    /// </summary>
+	class ApiAdapter : Queryable
 	{
 		private BlockingCollection<String> outQueue = new BlockingCollection<String>();
 		private Dictionary<String, String> results = new Dictionary<string, string>();
 		private Thread senderThread;
 		private Thread receiverThread;
-		private UdpClient udpClient;
+
+        private UdpAdapter udpadapter;
 
 		public const int WAITING_BETWEEN_PACKETS = 2000;
 
-		public ApiDriver()
+		public ApiAdapter()
 		{
-		}
-
-		public void connect()
-		{
-			udpClient = new UdpClient(AniSharp.Properties.Settings.Default.LocalPort);
-			udpClient.Connect(AniSharp.Properties.Settings.Default.Address, AniSharp.Properties.Settings.Default.RemotePort);
+            System.Net.IPHostEntry host = System.Net.Dns.GetHostEntry(AniSharp.Properties.Settings.Default.Address);
+			udpadapter = new DefaultUdpAdapter(new IPEndPoint(host.AddressList[0], AniSharp.Properties.Settings.Default.RemotePort));
 
 			senderThread = new Thread(senderThreadInit);
 			senderThread.Start();
@@ -31,11 +35,12 @@ namespace AniSharp.API
 			receiverThread.Start();
 		}
 
-		public void disconnect()
+		public void shutdown()
 		{
 			senderThread.Interrupt();
 			receiverThread.Interrupt();
-			udpClient.Close();
+
+            udpadapter.shutdown();
 		}
 
 
@@ -46,8 +51,7 @@ namespace AniSharp.API
 				while (true)
 				{
 					String toSend = outQueue.Take();
-					byte[] bytes = Encoding.ASCII.GetBytes(toSend + (session == null ? "" : "&s=" + session));
-					udpClient.Send(bytes, bytes.Length);
+                    udpadapter.send(toSend);
 
 					Thread.Sleep(WAITING_BETWEEN_PACKETS);
 				}
@@ -62,10 +66,8 @@ namespace AniSharp.API
 		/// </summary>
 		/// <param name="req">The method-request</param>
 		/// <returns>The result</returns>
-		public String query(ApiRequest req)
+		public ApiAnswer query(ApiRequest req)
 		{
-			checkMethodSessionKey(req.Command);
-
 			// set a tag
 			String tag = generateTag();
 			req["tag"] = tag;
@@ -78,7 +80,7 @@ namespace AniSharp.API
 				}
 			String result = results[tag];
 			// drop answer from dictionary?
-			return result;
+            return ApiAnswer.parse(result);
 		}
 
 		//TODO: uniquify TAGS!
@@ -91,25 +93,27 @@ namespace AniSharp.API
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < TAG_LEN; i++)
 			{
-				sb.Append(TAG_CHARS.ElementAt(RND.Next(TAG_CHARS.Length)));
+                
+				sb.Append(TAG_CHARS[RND.Next(TAG_CHARS.Length)]);
 			}
 			return sb.ToString();
 		}
 
-		public void receiverThreadStart()
+		private void receiverThreadStart()
 		{
 			try
 			{
 				while (true)
 				{
-					IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                    String returnData = udpadapter.receive();
 
-					Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
-					String returnData = Encoding.ASCII.GetString(receiveBytes);
+                    String tag = returnData.Substring(0, TAG_LEN);
 
-					String tag = returnData.Split(' ')[0];
+                    String strippedData = returnData.Substring(TAG_LEN + 1);
 
-					results.Add(tag, returnData);
+                    results.Add(tag, strippedData);
+
+
 					lock (results)
 					{
 						Monitor.PulseAll(results);
