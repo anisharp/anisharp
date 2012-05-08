@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server Compact Edition
 -- --------------------------------------------------
--- Date Created: 05/08/2012 18:21:16
+-- Date Created: 05/08/2012 18:43:44
 -- Generated from EDMX file: D:\VS_Projects\anisharp\AniSharpDB.edmx
 -- --------------------------------------------------
 
@@ -79,8 +79,8 @@ CREATE TABLE [serie] (
     [rating] smallint  NULL,
     [tempRating] smallint  NULL,
     [otherName] nvarchar(4000)  NOT NULL,
-    [highestNoEp] nvarchar(4000)  NOT NULL,
-    [specialEpCount] nvarchar(4000)  NOT NULL
+    [highestNoEp] smallint  NOT NULL,
+    [specialEpCount] smallint  NOT NULL
 );
 GO
 
