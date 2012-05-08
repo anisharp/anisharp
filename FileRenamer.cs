@@ -10,6 +10,8 @@ namespace AniSharp
         private FileRenamer() { }   
         private static volatile FileRenamer instance;
         private static object m_lock=new object();
+        private MainWindow mw = null;
+        private String sPattern = null;
         public static FileRenamer getInstance()
         {
             if(instance==null)
@@ -22,8 +24,26 @@ namespace AniSharp
             return instance;
         }
 
-        public void RenameTo(String sFile,String sNew)
+        public void setMainWindow(MainWindow mw)
         {
+            if (this.mw == null)
+                this.mw = mw;
+        }
+
+        public void setPattern(String sPattern)
+        {
+            if (!String.IsNullOrEmpty(sPattern))
+                this.sPattern = sPattern;
+        }
+
+        public void renameTo(String sFile)
+        {
+            if (!String.IsNullOrEmpty(sPattern))
+            {
+                String sPath = sFile.Substring(0, sFile.LastIndexOf(@"\"));
+                String sName = sFile.Substring(sFile.LastIndexOf(@"\") + 1);
+            }
+            /*
             if (sFile != sNew)
             {
                 String sPath = sFile.Substring(0, sFile.LastIndexOf(@"\"));
@@ -34,7 +54,7 @@ namespace AniSharp
                     String sRename = sNew.Substring(sNew.LastIndexOf(@"\"), sNew.Length);
                     File.Move(sFile, sNew);
                 }
-            }
+            }*/
         }
     }
 }

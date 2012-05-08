@@ -39,6 +39,7 @@ namespace AniSharp
         public MainWindow()
         {
             InitializeComponent();
+            tbRenamePattern.Text = AniSharp.Properties.Settings.Default.RenamePattern;
         }
 
         public void lbFiles_DragOver(object sender, DragEventArgs e)
@@ -239,6 +240,15 @@ namespace AniSharp
         {
             DatabaseConnection dc = new DatabaseConnection(this);
             dc.testConnectivity();
+        }
+
+        private void btSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (tbRenamePattern.Text != AniSharp.Properties.Settings.Default.RenamePattern)
+            {
+                AniSharp.Properties.Settings.Default.RenamePattern = tbRenamePattern.Text;
+                AniSharp.Properties.Settings.Default.Save();
+            }
         }
     }
 }
