@@ -172,7 +172,10 @@ namespace AniSharp
             else
             {
                 if (conn != null)
+                {
                     conn.shutdown();
+                    conn = null;
+                }
                 btLogin.Content = "Login";
             }
                 
@@ -244,7 +247,11 @@ namespace AniSharp
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // logout
-            conn.shutdown();
+            if (conn != null)
+            {
+                conn.shutdown();
+                conn = null;
+            }
         }
     }
 }
