@@ -71,19 +71,3 @@ namespace AniSharp.API.Model.Answer
     }
 }
 
-/*
- < DenisMoskal> jonas: AMask Anime: 
- * 
- * animeID, 
- * type,
- * category list, 
- * romaji name, 
- * kanji name, 
- * english name, 
- * other name, 
- * episodes, 
- * highest episode no., 
- * special ep count, 
- * rating, 
- * temp rating
-*/

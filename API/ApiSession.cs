@@ -52,6 +52,8 @@ namespace AniSharp.API
         {
         }
 
+        // TODO expect 501 and 502 and act accordingly
+
         /// <summary>
         /// logs the Client in using this Session
         /// </summary>
