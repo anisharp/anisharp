@@ -103,7 +103,7 @@ namespace AniSharp.API
 
 		public void shutdown()
 		{
-			ApiAnswer logoutA = decorated.query(new LogoutRequest());
+			ApiAnswer logoutA = query(new LogoutRequest());
             MessageBox.Show(logoutA.GetMessage());
 
             decorated.shutdown();
@@ -117,7 +117,7 @@ namespace AniSharp.API
             else
                 checkMethodSessionKey(req.Command);
 
-			return null;
+            return decorated.query(req);
 		}
 
 

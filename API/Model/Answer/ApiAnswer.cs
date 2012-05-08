@@ -61,6 +61,10 @@ namespace AniSharp.API.Model.Answer
                 case ReturnCode.ANIDB_OUT_OF_SERVICE:
                     return new FailedLoginAnswer(rc, rc.ToString());
 
+                case ReturnCode.LOGGED_OUT:
+                    return new LogoutAnswer(rc);
+                case ReturnCode.NOT_LOGGED_IN:
+                    return new GenericFailAnswer(rc);
 
 
 
