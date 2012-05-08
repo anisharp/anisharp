@@ -12,7 +12,7 @@ namespace AniSharp.API
     /// of this class. It will be set immediately
     /// before sending it.
     /// </summary>
-    class ApiRequest
+    public class ApiRequest
     {
         private Dictionary<String, String> parameters = new Dictionary<string, string>();
         private String command;

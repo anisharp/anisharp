@@ -91,8 +91,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AniSharpDB.edmx</DependentUpon>
     </Compile>
-    <Compile Include="API\APIConnection.cs" />
-    <Compile Include="API\ApiRequest.cs" />
+    <Compile Include="API\Model\Answer\AnimeAnswer.cs" />
+    <Compile Include="API\Model\Answer\ApiAnswer.cs" />
+    <Compile Include="API\ApiSession.cs" />
+    <Compile Include="API\ApiAdapter.cs" />
+    <Compile Include="API\Model\Answer\GenericFailAnswer.cs" />
+    <Compile Include="API\Model\Answer\LogoutAnswer.cs" />
+    <Compile Include="API\Model\Answer\PipedApiAnswer.cs" />
+    <Compile Include="API\Model\Request\AnimeRequest.cs" />
+    <Compile Include="API\Model\Request\ApiRequest.cs" />
+    <Compile Include="API\Model\Answer\LoginAnswer.cs" />
+    <Compile Include="API\Model\Request\AuthRequest.cs" />
+    <Compile Include="API\Queryable.cs" />
+    <Compile Include="API\ReturnCode.cs" />
+    <Compile Include="API\Transport\DefaultUdpAdapter.cs" />
+    <Compile Include="API\Transport\UdpAdapter.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -13,6 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Text.RegularExpressions;
+using AniSharp.API.Model.Request;
+using AniSharp.API.Model.Answer;
 
 namespace AniSharp
 {
@@ -22,7 +24,7 @@ namespace AniSharp
     public partial class MainWindow : Window
     {
         private FileParser fileParser = null;
-        private API.APIConnection conn = null;
+        private API.ApiSession conn = null;
         public String FileFilter
         {
             get
@@ -164,15 +166,19 @@ namespace AniSharp
                 Nullable<bool> result = login.ShowDialog();
                 if (result == true)
                 {
-                    conn = new API.APIConnection();
-                    conn.establishConnection(login.sUser, login.sPassword);
+                    conn = new API.ApiSession();
+                    conn.ApiSessionStatusChanged += onApiSessionStatusChange;
+                    conn.login(login.sUser, login.sPassword);
                     btLogin.Content = "Logout";
                 }
             }
             else
             {
                 if (conn != null)
-                    conn.closeUDPClient();
+                {
+                    conn.shutdown();
+                    conn = null;
+                }
                 btLogin.Content = "Login";
             }
                 
@@ -239,6 +245,45 @@ namespace AniSharp
         {
             DatabaseConnection dc = new DatabaseConnection(this);
             dc.testConnectivity();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // logout
+            if (conn != null)
+            {
+                conn.shutdown();
+                conn = null;
+            }
+        }
+
+        public void onApiSessionStatusChange(bool loggedIn, bool shouldRetry, string Message)
+        {
+            /*
+            if (loggedIn)
+            {
+                System.Diagnostics.Debug.Print("logged in, query starts");
+                ApiAnswer aa = conn.query(new AnimeRequest(1));
+                System.Diagnostics.Debug.Print("we have an answer...");
+
+                if (aa is AnimeAnswer)
+                {
+                    AnimeAnswer ana = (AnimeAnswer)aa;
+                    serie s = (serie)ana;
+                    System.Diagnostics.Debug.Print("WOOHOO!");
+                    MessageBox.Show("ID 1 == " + s.englishName);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.Print("did not work .. will fail");
+                    FailedLoginAnswer e = (FailedLoginAnswer)aa;
+                }
+            }
+            else
+            {
+                System.Diagnostics.Debug.Print("something wrong..." + loggedIn + " " + shouldRetry + ". msg " + Message);
+            }
+            */
         }
     }
 }
