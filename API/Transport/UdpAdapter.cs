@@ -16,5 +16,11 @@ namespace AniSharp.API.Transport
         String receive();
 
         void shutdown();
+
+	Encoding TransportEncoding {
+		get;
+		set;
+	}
+
     }
 }

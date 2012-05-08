@@ -9,6 +9,7 @@ namespace AniSharp.API.Transport
 {
     public class DefaultUdpAdapter : UdpAdapter
     {
+	    private Encoding transportencoding = Encoding.ASCII;
         private UdpClient client;
 
         public DefaultUdpAdapter(IPEndPoint i)
@@ -22,13 +23,13 @@ namespace AniSharp.API.Transport
             IPEndPoint remote = new IPEndPoint(IPAddress.Any, 0);
             byte[] bytes = client.Receive(ref remote);
 
-            return Encoding.ASCII.GetString(bytes);
+            return transportencoding.GetString(bytes);
         }
 
         public void send(String s)
         {
             
-            byte[] bytes = Encoding.ASCII.GetBytes(s);
+            byte[] bytes = transportencoding.GetBytes(s);
             client.Send(bytes, bytes.Length);
         }
 
@@ -36,5 +37,15 @@ namespace AniSharp.API.Transport
         {
             client.Close();
         }
+
+	public Encoding TransportEncoding {
+		get {
+			return transportencoding;
+		}
+
+		set {
+			transportencoding = value;
+		}
+	}
     }
 }

@@ -35,9 +35,6 @@ namespace AniSharp.API.Model {
     }
 
 
-    class LoggedInAnswer : ApiAnswer
-    {
-
-    }
+   
 }
 
