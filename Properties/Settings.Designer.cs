@@ -100,16 +100,16 @@ namespace AniSharp.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("70F8FAC000")]
-        public string fmask {
+        [global::System.Configuration.DefaultSettingValueAttribute("70F8CAC000")]
+        public string fmask_file {
             get {
-                return ((string)(this["fmask"]));
+                return ((string)(this["fmask_file"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0000F0C0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0000F000")]
         public string amask_file {
             get {
                 return ((string)(this["amask_file"]));
