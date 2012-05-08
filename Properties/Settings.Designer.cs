@@ -101,9 +101,9 @@ namespace AniSharp.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("70F8FAC000")]
-        public string fmask {
+        public string fmask_file {
             get {
-                return ((string)(this["fmask"]));
+                return ((string)(this["fmask_file"]));
             }
         }
         

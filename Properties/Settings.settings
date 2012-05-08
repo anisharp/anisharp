@@ -23,7 +23,7 @@
     <Setting Name="ApiVersion" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">3</Value>
     </Setting>
-    <Setting Name="fmask" Type="System.String" Scope="Application">
+    <Setting Name="fmask_file" Type="System.String" Scope="Application">
       <Value Profile="(Default)">70F8FAC000</Value>
     </Setting>
     <Setting Name="amask_file" Type="System.String" Scope="Application">
