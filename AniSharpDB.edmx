@@ -67,8 +67,8 @@
     <Property Name="rating" Type="smallint" Nullable="true" />
     <Property Name="tempRating" Type="smallint" Nullable="true" />
     <Property Name="otherName" Type="nvarchar" Nullable="false" />
-    <Property Name="highestNoEp" Type="nvarchar" Nullable="false" />
-    <Property Name="specialEpCount" Type="nvarchar" Nullable="false" />
+    <Property Name="highestNoEp" Type="smallint" Nullable="false" />
+    <Property Name="specialEpCount" Type="smallint" Nullable="false" />
   </EntityType>
   <Association Name="FK_epsiode_groups">
     <End Role="groups" Type="AniSharpDBModel.Store.groups" Multiplicity="0..1" />
@@ -164,8 +164,8 @@
           <Property Type="Int16" Name="tempRating" />
           <NavigationProperty Name="episode" Relationship="AniSharpDBModel.FK_epsiode_serie" FromRole="serie" ToRole="episode" />
           <Property Type="String" Name="otherName" Nullable="false" />
-          <Property Type="String" Name="highestNoEp" Nullable="false" />
-          <Property Type="String" Name="specialEpCount" Nullable="false" />
+          <Property Type="Int16" Name="highestNoEp" Nullable="false" />
+          <Property Type="Int16" Name="specialEpCount" Nullable="false" />
         </EntityType>
         <Association Name="FK_epsiode_groups">
           <End Type="AniSharpDBModel.groups" Role="groups" Multiplicity="0..1" />

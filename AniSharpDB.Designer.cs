@@ -918,7 +918,7 @@ namespace AniSharp
         /// <param name="otherName">Initial value of the otherName property.</param>
         /// <param name="highestNoEp">Initial value of the highestNoEp property.</param>
         /// <param name="specialEpCount">Initial value of the specialEpCount property.</param>
-        public static serie Createserie(global::System.Int32 serienId, global::System.String otherName, global::System.String highestNoEp, global::System.String specialEpCount)
+        public static serie Createserie(global::System.Int32 serienId, global::System.String otherName, global::System.Int16 highestNoEp, global::System.Int16 specialEpCount)
         {
             serie serie = new serie();
             serie.serienId = serienId;
@@ -1179,7 +1179,7 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String highestNoEp
+        public global::System.Int16 highestNoEp
         {
             get
             {
@@ -1189,13 +1189,13 @@ namespace AniSharp
             {
                 OnhighestNoEpChanging(value);
                 ReportPropertyChanging("highestNoEp");
-                _highestNoEp = StructuralObject.SetValidValue(value, false);
+                _highestNoEp = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("highestNoEp");
                 OnhighestNoEpChanged();
             }
         }
-        private global::System.String _highestNoEp;
-        partial void OnhighestNoEpChanging(global::System.String value);
+        private global::System.Int16 _highestNoEp;
+        partial void OnhighestNoEpChanging(global::System.Int16 value);
         partial void OnhighestNoEpChanged();
     
         /// <summary>
@@ -1203,7 +1203,7 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String specialEpCount
+        public global::System.Int16 specialEpCount
         {
             get
             {
@@ -1213,13 +1213,13 @@ namespace AniSharp
             {
                 OnspecialEpCountChanging(value);
                 ReportPropertyChanging("specialEpCount");
-                _specialEpCount = StructuralObject.SetValidValue(value, false);
+                _specialEpCount = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("specialEpCount");
                 OnspecialEpCountChanged();
             }
         }
-        private global::System.String _specialEpCount;
-        partial void OnspecialEpCountChanging(global::System.String value);
+        private global::System.Int16 _specialEpCount;
+        partial void OnspecialEpCountChanging(global::System.Int16 value);
         partial void OnspecialEpCountChanged();
 
         #endregion
