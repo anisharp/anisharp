@@ -1,9 +1,34 @@
+
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server Compact Edition
 -- --------------------------------------------------
--- Date Created: 04/23/2012 19:21:24
--- Generated from EDMX file: C:\Users\Alc\Documents\Visual Studio 2010\Projects\anisharp\anisharp\AniSharpDB.edmx
+-- Date Created: 05/08/2012 18:43:44
+-- Generated from EDMX file: D:\VS_Projects\anisharp\AniSharpDB.edmx
 -- --------------------------------------------------
+
+
+-- --------------------------------------------------
+-- Dropping existing FOREIGN KEY constraints
+-- NOTE: if the constraint does not exist, an ignorable error will be reported.
+-- --------------------------------------------------
+
+    ALTER TABLE [episode] DROP CONSTRAINT [FK_epsiode_groups];
+GO
+    ALTER TABLE [episode] DROP CONSTRAINT [FK_epsiode_serie];
+GO
+
+-- --------------------------------------------------
+-- Dropping existing tables
+-- NOTE: if the table does not exist, an ignorable error will be reported.
+-- --------------------------------------------------
+
+    DROP TABLE [episode];
+GO
+    DROP TABLE [groups];
+GO
+    DROP TABLE [serie];
+GO
+
 -- --------------------------------------------------
 -- Creating all tables
 -- --------------------------------------------------
@@ -13,7 +38,6 @@ CREATE TABLE [episode] (
     [animeId] int  NOT NULL,
     [episodeId] int  NOT NULL,
     [groupId] int  NULL,
-    [state] int  NULL,
     [size] bigint  NULL,
     [ed2k] nvarchar(4000)  NULL,
     [md5] nvarchar(4000)  NULL,
@@ -21,7 +45,6 @@ CREATE TABLE [episode] (
     [crc32] nvarchar(4000)  NULL,
     [quality] nvarchar(4000)  NULL,
     [source] nvarchar(4000)  NULL,
-    [audioCodec] nvarchar(4000)  NULL,
     [videoCodec] nvarchar(4000)  NULL,
     [videoResolution] nvarchar(4000)  NULL,
     [dubLanguage] nvarchar(4000)  NULL,
@@ -36,7 +59,7 @@ GO
 -- Creating table 'groups'
 CREATE TABLE [groups] (
     [groupsId] int  NOT NULL,
-    [rating] float  NULL,
+    [rating] smallint  NULL,
     [name] nvarchar(4000)  NULL,
     [shortName] nvarchar(4000)  NULL,
     [ircChannel] nvarchar(4000)  NULL,
@@ -52,9 +75,12 @@ CREATE TABLE [serie] (
     [romajiName] nvarchar(4000)  NULL,
     [kanjiName] nvarchar(4000)  NULL,
     [englishName] nvarchar(4000)  NULL,
-    [amountEpisodes] int  NULL,
-    [rating] float  NULL,
-    [tempRating] float  NULL
+    [episodes] int  NULL,
+    [rating] smallint  NULL,
+    [tempRating] smallint  NULL,
+    [otherName] nvarchar(4000)  NOT NULL,
+    [highestNoEp] smallint  NOT NULL,
+    [specialEpCount] smallint  NOT NULL
 );
 GO
 

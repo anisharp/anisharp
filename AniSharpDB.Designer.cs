@@ -263,30 +263,6 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> state
-        {
-            get
-            {
-                return _state;
-            }
-            set
-            {
-                OnstateChanging(value);
-                ReportPropertyChanging("state");
-                _state = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("state");
-                OnstateChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _state;
-        partial void OnstateChanging(Nullable<global::System.Int32> value);
-        partial void OnstateChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
         public Nullable<global::System.Int64> size
         {
             get
@@ -449,30 +425,6 @@ namespace AniSharp
         private global::System.String _source;
         partial void OnsourceChanging(global::System.String value);
         partial void OnsourceChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String audioCodec
-        {
-            get
-            {
-                return _audioCodec;
-            }
-            set
-            {
-                OnaudioCodecChanging(value);
-                ReportPropertyChanging("audioCodec");
-                _audioCodec = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("audioCodec");
-                OnaudioCodecChanged();
-            }
-        }
-        private global::System.String _audioCodec;
-        partial void OnaudioCodecChanging(global::System.String value);
-        partial void OnaudioCodecChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -805,7 +757,7 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Double> rating
+        public Nullable<global::System.Int16> rating
         {
             get
             {
@@ -820,8 +772,8 @@ namespace AniSharp
                 OnratingChanged();
             }
         }
-        private Nullable<global::System.Double> _rating;
-        partial void OnratingChanging(Nullable<global::System.Double> value);
+        private Nullable<global::System.Int16> _rating;
+        partial void OnratingChanging(Nullable<global::System.Int16> value);
         partial void OnratingChanged();
     
         /// <summary>
@@ -963,10 +915,16 @@ namespace AniSharp
         /// Create a new serie object.
         /// </summary>
         /// <param name="serienId">Initial value of the serienId property.</param>
-        public static serie Createserie(global::System.Int32 serienId)
+        /// <param name="otherName">Initial value of the otherName property.</param>
+        /// <param name="highestNoEp">Initial value of the highestNoEp property.</param>
+        /// <param name="specialEpCount">Initial value of the specialEpCount property.</param>
+        public static serie Createserie(global::System.Int32 serienId, global::System.String otherName, global::System.Int16 highestNoEp, global::System.Int16 specialEpCount)
         {
             serie serie = new serie();
             serie.serienId = serienId;
+            serie.otherName = otherName;
+            serie.highestNoEp = highestNoEp;
+            serie.specialEpCount = specialEpCount;
             return serie;
         }
 
@@ -1125,31 +1083,31 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> amountEpisodes
+        public Nullable<global::System.Int32> episodes
         {
             get
             {
-                return _amountEpisodes;
+                return _episodes;
             }
             set
             {
-                OnamountEpisodesChanging(value);
-                ReportPropertyChanging("amountEpisodes");
-                _amountEpisodes = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("amountEpisodes");
-                OnamountEpisodesChanged();
+                OnepisodesChanging(value);
+                ReportPropertyChanging("episodes");
+                _episodes = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("episodes");
+                OnepisodesChanged();
             }
         }
-        private Nullable<global::System.Int32> _amountEpisodes;
-        partial void OnamountEpisodesChanging(Nullable<global::System.Int32> value);
-        partial void OnamountEpisodesChanged();
+        private Nullable<global::System.Int32> _episodes;
+        partial void OnepisodesChanging(Nullable<global::System.Int32> value);
+        partial void OnepisodesChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Double> rating
+        public Nullable<global::System.Int16> rating
         {
             get
             {
@@ -1164,8 +1122,8 @@ namespace AniSharp
                 OnratingChanged();
             }
         }
-        private Nullable<global::System.Double> _rating;
-        partial void OnratingChanging(Nullable<global::System.Double> value);
+        private Nullable<global::System.Int16> _rating;
+        partial void OnratingChanging(Nullable<global::System.Int16> value);
         partial void OnratingChanged();
     
         /// <summary>
@@ -1173,7 +1131,7 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Double> tempRating
+        public Nullable<global::System.Int16> tempRating
         {
             get
             {
@@ -1188,9 +1146,81 @@ namespace AniSharp
                 OntempRatingChanged();
             }
         }
-        private Nullable<global::System.Double> _tempRating;
-        partial void OntempRatingChanging(Nullable<global::System.Double> value);
+        private Nullable<global::System.Int16> _tempRating;
+        partial void OntempRatingChanging(Nullable<global::System.Int16> value);
         partial void OntempRatingChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String otherName
+        {
+            get
+            {
+                return _otherName;
+            }
+            set
+            {
+                OnotherNameChanging(value);
+                ReportPropertyChanging("otherName");
+                _otherName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("otherName");
+                OnotherNameChanged();
+            }
+        }
+        private global::System.String _otherName;
+        partial void OnotherNameChanging(global::System.String value);
+        partial void OnotherNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int16 highestNoEp
+        {
+            get
+            {
+                return _highestNoEp;
+            }
+            set
+            {
+                OnhighestNoEpChanging(value);
+                ReportPropertyChanging("highestNoEp");
+                _highestNoEp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("highestNoEp");
+                OnhighestNoEpChanged();
+            }
+        }
+        private global::System.Int16 _highestNoEp;
+        partial void OnhighestNoEpChanging(global::System.Int16 value);
+        partial void OnhighestNoEpChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int16 specialEpCount
+        {
+            get
+            {
+                return _specialEpCount;
+            }
+            set
+            {
+                OnspecialEpCountChanging(value);
+                ReportPropertyChanging("specialEpCount");
+                _specialEpCount = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("specialEpCount");
+                OnspecialEpCountChanged();
+            }
+        }
+        private global::System.Int16 _specialEpCount;
+        partial void OnspecialEpCountChanging(global::System.Int16 value);
+        partial void OnspecialEpCountChanged();
 
         #endregion
     
