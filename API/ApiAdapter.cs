@@ -6,7 +6,9 @@ using System.Threading;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 using AniSharp.API.Transport;
+using AniSharp.API.Model;
 
 namespace AniSharp.API
 {
@@ -23,6 +25,7 @@ namespace AniSharp.API
         private UdpAdapter udpadapter;
 
 		public const int WAITING_BETWEEN_PACKETS = 2000;
+        public const string TAG_NOT_GIVEN_TAG = String.Empty;
 
 		public ApiAdapter()
 		{
@@ -107,12 +110,26 @@ namespace AniSharp.API
 				{
                     String returnData = udpadapter.receive();
 
-                    String tag = returnData.Substring(0, TAG_LEN);
+                    int index = returnData.IndexOf(' ');
+                    if (index < 0)
+                    {
+                        // we received garbage
+                        System.Diagnostics.Debug.Print("received garbage from AniDB: " + returnData + '\n');
+                        continue;
+                    }
 
-                    String strippedData = returnData.Substring(TAG_LEN + 1);
-
-                    results.Add(tag, strippedData);
-
+                    String firstElem = returnData.Substring(0, index);
+                    if (firstElem.Length == 3 && Int32.Parse(firstElem) > 0)
+                    {
+                        // not tagged
+                        results.Add(TAG_NOT_GIVEN_TAG, returnData);
+                    }
+                    else
+                    {
+                        // we have tag
+                        String strippedData = returnData.Substring(index + 1);
+                        results.Add(firstElem, strippedData);
+                    }
 
 					lock (results)
 					{
