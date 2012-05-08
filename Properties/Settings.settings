@@ -24,10 +24,10 @@
       <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="fmask_file" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">70F8FAC000</Value>
+      <Value Profile="(Default)">70F8CAC000</Value>
     </Setting>
     <Setting Name="amask_file" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">0000F0C0</Value>
+      <Value Profile="(Default)">0000F000</Value>
     </Setting>
     <Setting Name="amask_anime" Type="System.String" Scope="Application">
       <Value Profile="(Default)">92F0E0A0000000</Value>
