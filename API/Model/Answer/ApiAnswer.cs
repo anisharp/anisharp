@@ -37,6 +37,7 @@ namespace AniSharp.API.Model.Answer
         public static ApiAnswer parse(String s)
         {
             String[] parts = s.Split(' ');
+            String[] lines = s.Split('\n');
             int code = Int32.Parse(parts[0]);
             ReturnCode rc;
             try
@@ -66,11 +67,20 @@ namespace AniSharp.API.Model.Answer
                 case ReturnCode.NOT_LOGGED_IN:
                     return new GenericFailAnswer(rc);
 
+                case ReturnCode.ANIME:
+                    return new AnimeAnswer(rc, lines[1]);
+                
+                // generic fails
+                case ReturnCode.NO_SUCH_ANIME:
+                    return new GenericFailAnswer(rc);
+
+    
+
 
 
             }
 
-            return null;
+            return new GenericFailAnswer(rc);
         }
     }
 }
