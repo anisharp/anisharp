@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AniSharp.API.Model.Answer;
 
 namespace AniSharp.API
 {

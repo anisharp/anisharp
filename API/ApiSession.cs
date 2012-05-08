@@ -7,7 +7,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using AniSharp.API.Model;
+using AniSharp.API.Model.Request;
+using AniSharp.API.Model.Answer;
 
 namespace AniSharp.API
 {

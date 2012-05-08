@@ -2,7 +2,7 @@
 using System;
 using AniSharp.API;
 
-namespace AniSharp.API.Model {
+namespace AniSharp.API.Model.Request {
 	
 	/// <summary>
 	/// Encapsulates a login request
@@ -33,8 +33,5 @@ namespace AniSharp.API.Model {
         {
         }
     }
-
-
-   
 }
 

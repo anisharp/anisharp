@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using AniSharp.API.Transport;
-using AniSharp.API.Model;
+using AniSharp.API.Model.Answer;
 
 namespace AniSharp.API
 {

@@ -91,11 +91,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AniSharpDB.edmx</DependentUpon>
     </Compile>
-    <Compile Include="API\ApiAnswer.cs" />
+    <Compile Include="API\Model\Answer\ApiAnswer.cs" />
     <Compile Include="API\ApiSession.cs" />
     <Compile Include="API\ApiAdapter.cs" />
-    <Compile Include="API\ApiRequest.cs" />
-    <Compile Include="API\Model\Authentication.cs" />
+    <Compile Include="API\Model\Request\ApiRequest.cs" />
+    <Compile Include="API\Model\Answer\LoginAnswer.cs" />
+    <Compile Include="API\Model\Request\AuthRequest.cs" />
     <Compile Include="API\Queryable.cs" />
     <Compile Include="API\ReturnCode.cs" />
     <Compile Include="API\Transport\DefaultUdpAdapter.cs" />

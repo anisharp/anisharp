@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AniSharp.API
+namespace AniSharp.API.Model.Answer
 {
 
     /// <summary>
@@ -28,16 +28,9 @@ namespace AniSharp.API
         }
 
 
-        protected ApiAnswer(int code)
+        protected ApiAnswer(ReturnCode code)
         {
-            try
-            {
-                this.code = (ReturnCode)code;
-            }
-            catch (InvalidCastException)
-            {
-                throw new ArgumentException();
-            }
+            this.code = code;
         }
 
 
@@ -60,8 +53,15 @@ namespace AniSharp.API
             {
                 case ReturnCode.LOGIN_ACCEPTED:
                 case ReturnCode.LOGIN_ACCEPTED_NEW_VERSION:
+                    return new SuccessfulLoginAnswer(rc, parts[1]);
+                case ReturnCode.LOGIN_FAILED:
+                case ReturnCode.CLIENT_VERSION_OUTDATED:
+                case ReturnCode.BANNED:
+                case ReturnCode.ILLEGAL_INPUT_OR_ACCESS_DENIED:
+                case ReturnCode.ANIDB_OUT_OF_SERVICE:
+                    return new FailedLoginAnswer(rc, rc.ToString());
 
-                    break;
+
 
 
             }
@@ -70,3 +70,20 @@ namespace AniSharp.API
         }
     }
 }
+
+/*
+ < DenisMoskal> jonas: AMask Anime: 
+ * 
+ * animeID, 
+ * type,
+ * category list, 
+ * romaji name, 
+ * kanji name, 
+ * english name, 
+ * other name, 
+ * episodes, 
+ * highest episode no., 
+ * special ep count, 
+ * rating, 
+ * temp rating
+*/
