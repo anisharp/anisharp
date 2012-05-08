@@ -18,6 +18,19 @@ namespace AniSharp.API
     /// </summary>
 	class ApiSession
 	{
+        /// <summary>
+        /// called to notify of changes in the api-session
+        /// </summary>
+        /// <param name="LoggedIn">true, if logged in, false, if not</param>
+        /// <param name="ShouldRetry">if not logged in, signals, whether to retry</param>
+        /// <param name="Message">what the frontend should tell the user, if any (may be null)</param>
+        public delegate void ApiSessionStatusChangedHandler(bool LoggedIn, bool ShouldRetry, string Message);
+
+        /// <summary>
+        /// fired, when the state of this session changes
+        /// </summary>
+        public event ApiSessionStatusChangedHandler ApiSessionStatusChanged;
+
 		private String session = null;
 
 		private readonly Queryable decorated;
@@ -46,10 +59,44 @@ namespace AniSharp.API
         /// <param name="password">the password</param>
 		public void login(String username, String password)
 		{
-				ApiAnswer loginA = decorated.query(new AuthRequest(username, password));
+				ApiAnswer loginAnswer = decorated.query(new AuthRequest(username, password));
 
-				MessageBox.Show(loginA.GetMessage());
-				//this.session = loginA.Split(' ')[2];
+                if (loginAnswer != null)
+                {
+                    if (loginAnswer is SuccessfulLoginAnswer)
+                    {
+                        SuccessfulLoginAnswer rl = (SuccessfulLoginAnswer)loginAnswer;
+                        this.session = rl.SessionKey;
+
+                        if (rl.Code == ReturnCode.LOGIN_ACCEPTED_NEW_VERSION)
+                        {
+                            //MessageBox.Show("New Version available - please update");
+                            ApiSessionStatusChanged(true, false, "New Version available - please update");
+                        }
+                        else
+                        {
+                            ApiSessionStatusChanged(true, false, null);
+                        }
+                    }
+                    if (loginAnswer is FailedLoginAnswer)
+                    {
+                        FailedLoginAnswer fla = (FailedLoginAnswer)loginAnswer;
+                        //MessageBox.Show("Login failed -- " + fla.Message);
+                        if (fla.Code == ReturnCode.LOGIN_FAILED)
+                        {
+                            ApiSessionStatusChanged(false, true, "Invalid credentials");
+                        }
+                        else
+                        {
+                            ApiSessionStatusChanged(false, false, fla.Message);
+                        }
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("ApiAnswer not parseable");
+                }
 		}
 
 		public void shutdown()
