@@ -59,8 +59,6 @@ namespace AniSharp.API
             switch (rc)
             {
                 case ReturnCode.LOGIN_ACCEPTED:
-
-                    break;
                 case ReturnCode.LOGIN_ACCEPTED_NEW_VERSION:
 
                     break;
