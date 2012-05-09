@@ -15,6 +15,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using AniSharp.API.Model.Request;
 using AniSharp.API.Model.Answer;
+using System.Collections.ObjectModel;
 
 namespace AniSharp
 {
@@ -23,6 +24,36 @@ namespace AniSharp
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region variables
+        ObservableCollection<Anime> _AnimeCollection =
+        new ObservableCollection<Anime>();
+        #region Hilfsklassen
+        public ObservableCollection<Anime> AnimeCollection
+        { get { return _AnimeCollection; } }
+        public class Anime
+        {
+            public string FileName { get; set; }
+            public string FileState { get; set; }
+            public string FileHash { get; set; }
+            public Anime(String s, String d = "", String f = "") { FileName = s; FileState = d; FileHash = f; }
+        }
+
+        public class AnimeComparer : IEqualityComparer<Anime>
+        {
+
+            public bool Equals(Anime a1, Anime a2)
+            {
+                return a1.FileName == a2.FileName;
+            }
+            
+            public int GetHashCode(Anime a)
+            {
+                int hCode = a.FileHash.GetHashCode();
+                return hCode.GetHashCode();
+            }
+
+        }
+        #endregion
         private FileParser fileParser = null;
         private API.ApiSession conn = null;
         public String FileFilter
@@ -38,19 +69,21 @@ namespace AniSharp
                 return sb.ToString();
             }
         }
+        #endregion
+
         public MainWindow()
         {
             InitializeComponent();
             tbRenamePattern.Text = AniSharp.Properties.Settings.Default.RenamePattern;
         }
 
-        public void lbFiles_DragOver(object sender, DragEventArgs e)
+        public void lvFiles_DragOver(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
                 e.Effects = DragDropEffects.Move;
         }
 
-        void lbFiles_Drop(object sender, DragEventArgs e)
+        void lvFiles_Drop(object sender, DragEventArgs e)
         {
             fileParser = new FileParser(this, FileFilter);
 
@@ -61,46 +94,6 @@ namespace AniSharp
                 thread.IsBackground = true;
                 thread.Start();
             }
-        }
-
-        /// <summary>
-        /// fügt alle Dateien bzw. den Inhalt des Verzeichnisses und 
-        /// Unterverzeichnis (rekursiv) der Listbox lbFiles hinzu.
-        /// </summary>
-        /// <remarks>Erste Test implementierung</remarks>
-        /// <param name="sFile">Name der/des Dateie/Verzeichnis</param>
-        /// <param name="isDir">Übergabe ist ein Verzeichnis</param>
-        void lbFiles_AddFile(String sFile,bool isDir=false)
-        {
-            Regex rg = new Regex(FileFilter);
-            if (!isDir)
-            {
-                if (!System.IO.Directory.Exists(sFile))
-                {
-                    if (rg.IsMatch(sFile)&&!lbFiles.Items.Contains(sFile))
-                        lbFiles_Add(sFile);
-                }
-                else
-                    lbFiles_AddFile(sFile, true);
-            }
-            else
-            {
-                try
-                {
-                    foreach (String s in Directory.GetFiles(sFile))
-                    {
-                        if (rg.IsMatch(s) && !lbFiles.Items.Contains(s))
-                            lbFiles_Add(s);
-                    }
-                }
-                catch (Exception) { }
-                try
-                {
-                    foreach (String s in Directory.GetDirectories(sFile))
-                        lbFiles_AddFile(s, true);
-                }
-                catch (Exception) { }
-            }       
         }
 
         private void btStart_Click(object sender, RoutedEventArgs e)
@@ -119,9 +112,9 @@ namespace AniSharp
         private void hashGen()
         {
             Hash.HashGenerator hash;
-            foreach (String s in lbFiles.Items)
+            foreach (Anime s in AnimeCollection)
             {
-                hash = new Hash.HashGenerator(s);
+                hash = new Hash.HashGenerator(s.FileName);
                 hash.Generate(Hash.HashType.Ed2k);
                 lbLog_Add(hash.ToString());
                 hash = null;
@@ -139,14 +132,16 @@ namespace AniSharp
         {
             if(e.HeightChanged)
             {
+                tabControl1.Height = this.ActualHeight-70;
                 lbLog.Height = this.ActualHeight - 100;
-                lbFiles.Height = this.ActualHeight - 100;
+                lvFiles.Height = this.ActualHeight - 100;
                 lbDatabase.Height = this.ActualHeight - 100;
             }
             if (e.WidthChanged)
             {
+                tabControl1.Width = this.ActualWidth-20;
                 lbLog.Width = this.ActualWidth - 27;
-                lbFiles.Width = this.ActualWidth - 27;
+                lvFiles.Width = this.ActualWidth - 27;
                 lbDatabase.Width = this.ActualWidth - 27;
             }
         }
@@ -156,7 +151,13 @@ namespace AniSharp
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
-               lbFiles_AddFile(dlg.FileName);
+            {
+                fileParser = new FileParser(this, FileFilter);
+                fileParser.setFile(dlg.FileName);
+                System.Threading.Thread thread = new System.Threading.Thread(fileParser.ParseFile);
+                thread.IsBackground = true;
+                thread.Start();
+            }
         }
 
         private void btLogin_Click(object sender, RoutedEventArgs e)
@@ -190,12 +191,18 @@ namespace AniSharp
             System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog();
             System.Windows.Forms.DialogResult result = dlg.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
-                lbFiles_AddFile(dlg.SelectedPath, true);
+            {
+                fileParser = new FileParser(this, FileFilter);
+                fileParser.setFile(dlg.SelectedPath);
+                System.Threading.Thread thread = new System.Threading.Thread(fileParser.ParseFile);
+                thread.IsBackground = true;
+                thread.Start();
+            }
         }
 
-        public void lbFiles_Add(String sText)
+        public void lvFiles_Add(String sText)
         {
-            Dispatcher.Invoke(new Action(() => { lbFiles.Items.Add(sText); }));
+            Dispatcher.Invoke(new Action(() => { _AnimeCollection.Add(new Anime(sText,"Wait/Hash"));}));
         }
 
         public void lbLog_Add(String sText)
@@ -215,7 +222,6 @@ namespace AniSharp
                 ListBoxItem lb = new ListBoxItem();
                 lb.Content = tbExtension.Text;
                 lbExtensions.Items.Add(lb);
-                //lbExtensions.Items.Add(new ListBoxItem(tbExtension.Text));
                 tbExtension.Clear();
             }
         }
@@ -244,8 +250,7 @@ namespace AniSharp
 
         private void btDatabase_Click(object sender, RoutedEventArgs e)
         {
-            DatabaseConnection dc = new DatabaseConnection(this);
-            dc.testConnectivity();
+            DatabaseConnection dc = new DatabaseConnection();
         }
 
 
@@ -286,6 +291,11 @@ namespace AniSharp
                 System.Diagnostics.Debug.Print("something wrong..." + loggedIn + " " + shouldRetry + ". msg " + Message);
             }
             */
+        }
+
+        private void btSave_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

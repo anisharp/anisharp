@@ -34,8 +34,8 @@ namespace AniSharp
             {
                 if (!System.IO.Directory.Exists(sFile))
                 {
-                    if (rg.IsMatch(sFile) && !mw.lbFiles.Items.Contains(sFile))
-                        mw.lbFiles_Add(sFile);
+                    if (rg.IsMatch(sFile) && !mw.AnimeCollection.Contains(new AniSharp.MainWindow.Anime(sFile), new AniSharp.MainWindow.AnimeComparer()))
+                        mw.lvFiles_Add(sFile);
                 }
                 else
                     ParseFile(sFile, true);
@@ -46,8 +46,8 @@ namespace AniSharp
                 {
                     foreach (String s in Directory.GetFiles(sFile))
                     {
-                        if (rg.IsMatch(s) && !mw.lbFiles.Items.Contains(s))
-                            mw.lbFiles_Add(s);
+                        if (rg.IsMatch(s) && !mw.AnimeCollection.Contains(new AniSharp.MainWindow.Anime(s),new AniSharp.MainWindow.AnimeComparer()))
+                            mw.lvFiles_Add(s);
                     }
                 }
                 catch (Exception) { }
