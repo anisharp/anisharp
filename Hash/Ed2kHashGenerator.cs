@@ -15,7 +15,7 @@ namespace AniSharp.Hash
         private String _sFile;
         private System.IO.FileStream _FileStream;
         
-        private Int32 _length;
+        private Int64 _length;
 
         private Thread mFileReader;
         private Thread[] mHashCalculators;
@@ -25,7 +25,7 @@ namespace AniSharp.Hash
 
         private byte[][] preHashes;
 
-        public const int chunkSize = 9728000;
+        public const Int64 chunkSize = 9728000;
 
         //private static int workerThreads = AniSharp.Properties.Settings.Default.HashWorkingThreads;
         private static int workerThreads = Environment.ProcessorCount;
@@ -72,9 +72,9 @@ namespace AniSharp.Hash
             _sFile = sFile;
             _FileStream = new System.IO.FileStream(sFile, System.IO.FileMode.Open, System.IO.FileAccess.Read);
            
-            _length = (Int32)(new System.IO.FileInfo(sFile).Length);
+            _length = new System.IO.FileInfo(sFile).Length;
 
-             preHashes = new byte[_length / chunkSize + 1][];
+             preHashes = new byte[_length / chunkSize + 1L][];
 
             
             
@@ -124,7 +124,7 @@ namespace AniSharp.Hash
             int chunkId = 0;
             byte[] buffer = new byte[chunkSize];
             int readNow = 0;
-            while ((readNow = _FileStream.Read(buffer, 0, chunkSize)) > 0)
+            while ((readNow = _FileStream.Read(buffer, 0, (int) chunkSize)) > 0)
             {
                 byte[] thisBuffer = new byte[readNow];
                 Buffer.BlockCopy(buffer, 0, thisBuffer, 0, readNow);
