@@ -251,6 +251,8 @@ namespace AniSharp
         private void btDatabase_Click(object sender, RoutedEventArgs e)
         {
             DatabaseConnection dc = new DatabaseConnection();
+            episode ep = dc.getEpisode("1q2w3e");
+            MessageBox.Show(ep.epKanjiName);
         }
 
 
