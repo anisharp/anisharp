@@ -12,7 +12,7 @@ namespace AniSharp.Hash
     {
         MD4 md4, root;
         int lastLength;
-        const int chunkSize = 9728000;
+        public const int chunkSize = 9728000;
         bool smallFile = true;
 
         public Ed2k() { md4 = new MD4(); root = new MD4(); Reset(); }

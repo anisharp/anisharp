@@ -111,13 +111,10 @@ namespace AniSharp
         
         private void hashGen()
         {
-            Hash.HashGenerator hash;
             foreach (Anime s in AnimeCollection)
             {
-                hash = new Hash.HashGenerator(s.FileName);
-                hash.Generate(Hash.HashType.Ed2k);
-                lbLog_Add(hash.ToString());
-                hash = null;
+                lbLog_Add(new Hash.Ed2kHashGenerator(s.FileName).ToString());
+
                 System.GC.Collect();
             }
             activateStart();

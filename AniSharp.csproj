@@ -114,13 +114,8 @@
     <Compile Include="DB\DatabaseConnection.cs" />
     <Compile Include="FileParser.cs" />
     <Compile Include="FileRenamer.cs" />
-    <Compile Include="Hash\CRC32.cs" />
-    <Compile Include="Hash\Ed2k.cs" />
-    <Compile Include="Hash\HashGenerator.cs" />
-    <Compile Include="Hash\IHash.cs" />
+    <Compile Include="Hash\Ed2kHashGenerator.cs" />
     <Compile Include="Hash\MD4.cs" />
-    <Compile Include="Hash\MD5.cs" />
-    <Compile Include="Hash\SHA1.cs" />
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>

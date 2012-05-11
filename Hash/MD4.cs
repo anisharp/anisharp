@@ -8,7 +8,7 @@ namespace AniSharp.Hash
     /// <summary>
     /// Made by dmitry.baykov@gmail.com
     /// </summary>
-    class MD4:IHash
+    class MD4
     {
         static byte[] padding = { 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                                    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
