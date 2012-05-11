@@ -41,6 +41,7 @@
     <Property Name="epName" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="epRomajiName" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="epKanjiName" Type="nvarchar" Nullable="true" MaxLength="4000" />
+    <Property Name="state" Type="nvarchar" Nullable="true" />
   </EntityType>
   <EntityType Name="groups">
     <Key>
@@ -136,6 +137,7 @@
           <Property Type="String" Name="epKanjiName" MaxLength="4000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="groups" Relationship="AniSharpDBModel.FK_epsiode_groups" FromRole="episode" ToRole="groups" />
           <NavigationProperty Name="serie" Relationship="AniSharpDBModel.FK_epsiode_serie" FromRole="episode" ToRole="serie" />
+          <Property Type="String" Name="state" />
         </EntityType>
         <EntityType Name="groups">
           <Key>
@@ -218,6 +220,7 @@
           <ScalarProperty Name="epName" ColumnName="epName" />
           <ScalarProperty Name="epRomajiName" ColumnName="epRomajiName" />
           <ScalarProperty Name="epKanjiName" ColumnName="epKanjiName" />
+          <ScalarProperty Name="state" ColumnName="state" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -270,8 +273,8 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="AniSharpDB" >
-        <EntityTypeShape EntityType="AniSharpDBModel.episode" Width="1.5" PointX="3" PointY="1.125" Height="4.8648079427083326" />
+      <Diagram Name="AniSharpDB" ZoomLevel="98" >
+        <EntityTypeShape EntityType="AniSharpDBModel.episode" Width="1.5" PointX="3" PointY="1.125" Height="5.0571093749999987" />
         <EntityTypeShape EntityType="AniSharpDBModel.groups" Width="1.5" PointX="0.75" PointY="2.5" Height="2.3648893229166679" />
         <EntityTypeShape EntityType="AniSharpDBModel.serie" Width="1.5" PointX="0.75" PointY="7.25" Height="3.5186979166666656" />
         <AssociationConnector Association="AniSharpDBModel.FK_epsiode_groups" >
@@ -281,7 +284,7 @@
         <AssociationConnector Association="AniSharpDBModel.FK_epsiode_serie" >
           <ConnectorPoint PointX="2.25" PointY="9.0093489583333337" />
           <ConnectorPoint PointX="3.75" PointY="9.0093489583333337" />
-          <ConnectorPoint PointX="3.75" PointY="5.9898079427083326" />
+          <ConnectorPoint PointX="3.75" PointY="6.1821093749999987" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

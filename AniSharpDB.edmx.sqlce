@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server Compact Edition
 -- --------------------------------------------------
--- Date Created: 05/08/2012 18:43:44
+-- Date Created: 05/11/2012 10:23:53
 -- Generated from EDMX file: D:\VS_Projects\anisharp\AniSharpDB.edmx
 -- --------------------------------------------------
 
@@ -52,7 +52,8 @@ CREATE TABLE [episode] (
     [epno] nvarchar(4000)  NULL,
     [epName] nvarchar(4000)  NULL,
     [epRomajiName] nvarchar(4000)  NULL,
-    [epKanjiName] nvarchar(4000)  NULL
+    [epKanjiName] nvarchar(4000)  NULL,
+    [state] nvarchar(4000)  NULL
 );
 GO
 
