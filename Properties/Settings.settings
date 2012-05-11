@@ -24,7 +24,7 @@
       <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="fmask_file" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">70F8CAC000</Value>
+      <Value Profile="(Default)">71F8CAC000</Value>
     </Setting>
     <Setting Name="amask_file" Type="System.String" Scope="Application">
       <Value Profile="(Default)">0000F000</Value>
@@ -34,7 +34,7 @@
     </Setting>
     <Setting Name="RenamePattern" Type="System.String" Scope="User">
       <Value Profile="(Default)">%eng - %enr - %epn - [%res %src]</Value>
-    </Setting>       
+    </Setting>
     <Setting Name="TransportEncoding" Type="System.String" Scope="Application">
       <Value Profile="(Default)">UTF-8</Value>
     </Setting>
