@@ -54,7 +54,7 @@ namespace AniSharp
 
         }
         #endregion
-        private FileParser fileParser = null;
+        public static RoutedCommand DeleteCmd = new RoutedCommand();
         private API.ApiSession conn = null;
         public String FileFilter
         {
@@ -85,23 +85,18 @@ namespace AniSharp
 
         void lvFiles_Drop(object sender, DragEventArgs e)
         {
-            fileParser = new FileParser(this, FileFilter);
+            //fileParser = new FileParser(this, FileFilter);
 
             foreach (String s in (String[])e.Data.GetData(DataFormats.FileDrop))
             {
-                fileParser.setFile(s);
-                System.Threading.Thread thread = new System.Threading.Thread(fileParser.ParseFile);
-                thread.IsBackground = true;
-                thread.Start();
+                FileParser fp = new FileParser(s, this, FileFilter);
+                System.Threading.Thread t = new System.Threading.Thread(fp.ParseFile);
+                t.Start();
+                /*
+                System.Threading.Thread t = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(fileParser.ParseFile));
+                t.IsBackground = true;
+                t.Start(s);*/
             }
-        }
-
-        private void btStart_Click(object sender, RoutedEventArgs e)
-        {
-            btStart.IsEnabled = false;
-            lbLog.Items.Clear();
-            System.Threading.Thread hash = new System.Threading.Thread(hashGen);
-            hash.Start();
         }
 
         public void activateStart()
@@ -120,6 +115,7 @@ namespace AniSharp
             activateStart();
         }
 
+        #region window functions
         /// <summary>
         /// Passt die ListBoxen an die größe des Fensters an
         /// </summary>
@@ -143,17 +139,40 @@ namespace AniSharp
             }
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // logout
+            if (conn != null)
+            {
+                conn.shutdown();
+                conn = null;
+            }
+        }
+        #endregion
+
+        #region button functions
+
+        private void btStart_Click(object sender, RoutedEventArgs e)
+        {
+            btStart.IsEnabled = false;
+            lbLog.Items.Clear();
+            System.Threading.Thread hash = new System.Threading.Thread(hashGen);
+            hash.Start();
+        }
+
         private void btFiles_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {
-                fileParser = new FileParser(this, FileFilter);
-                fileParser.setFile(dlg.FileName);
-                System.Threading.Thread thread = new System.Threading.Thread(fileParser.ParseFile);
-                thread.IsBackground = true;
-                thread.Start();
+                FileParser fp = new FileParser(dlg.FileName, this, FileFilter);
+                System.Threading.Thread t = new System.Threading.Thread(fp.ParseFile);
+                t.Start();
+                /*System.Threading.Thread t = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(fileParser.ParseFile));
+                t.IsBackground = true;
+                t.Start(dlg.FileName);
+                 * */
             }
         }
 
@@ -189,14 +208,26 @@ namespace AniSharp
             System.Windows.Forms.DialogResult result = dlg.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                fileParser = new FileParser(this, FileFilter);
-                fileParser.setFile(dlg.SelectedPath);
-                System.Threading.Thread thread = new System.Threading.Thread(fileParser.ParseFile);
-                thread.IsBackground = true;
-                thread.Start();
+                FileParser fp = new FileParser(dlg.SelectedPath, this, FileFilter);
+                System.Threading.Thread t = new System.Threading.Thread(fp.ParseFile);
+                t.Start();
+                /*
+                System.Threading.Thread t = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(fileParser.ParseFile));
+                t.IsBackground = true;
+                t.Start(dlg.SelectedPath);*/
             }
         }
 
+        private void btnBrowse_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = dlg.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+                tbMove.Text = dlg.SelectedPath;
+        }
+        #endregion
+
+        #region delegate functions
         public void lvFiles_Add(String sText)
         {
             Dispatcher.Invoke(new Action(() => { _AnimeCollection.Add(new Anime(sText,"Wait/Hash"));}));
@@ -211,6 +242,7 @@ namespace AniSharp
         {
             Dispatcher.Invoke(new Action(() => { lbDatabase.Items.Add(sText); }));
         }
+        #endregion
 
         private void tbExtension_KeyUp(object sender, KeyEventArgs e)
         {
@@ -252,17 +284,6 @@ namespace AniSharp
             MessageBox.Show(ep.epKanjiName);
         }
 
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            // logout
-            if (conn != null)
-            {
-                conn.shutdown();
-                conn = null;
-            }
-        }
-        
         public void onApiSessionStatusChange(bool loggedIn, bool shouldRetry, string Message)
         {
             /*
@@ -294,7 +315,19 @@ namespace AniSharp
 
         private void btSave_Click(object sender, RoutedEventArgs e)
         {
-
         }
+
+        #region CommandEventHandler
+        private void DeleteCmdExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if(lvFiles.SelectedItem!=null)
+                AnimeCollection.Remove((Anime)lvFiles.SelectedItem);
+        }
+
+        private void DeleteCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+        #endregion
     }
 }

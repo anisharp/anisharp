@@ -9,33 +9,35 @@ namespace AniSharp
 {
     class FileParser
     {
-        private String sFilePattern;
-        private String sFile;
-        private MainWindow mw;
-        public FileParser(MainWindow mw,String sPattern)
+        private String _FilePattern;
+        private String _File;
+        private MainWindow _mw;
+        private AniSharp.MainWindow.AnimeComparer ac = new MainWindow.AnimeComparer();
+        public FileParser(String File,MainWindow mw,String sPattern)
         {
-            this.mw = mw;
-            this.sFilePattern = sPattern;
-        }
-        public void setFile(String sFile)
-        {
-            this.sFile = sFile;
+            this._File = File;
+            this._mw = mw;
+            this._FilePattern = sPattern;
         }
 
         public void ParseFile()
         {
-            if(!String.IsNullOrEmpty(sFile))
-                ParseFile(sFile);
+            if(!String.IsNullOrEmpty(_File))
+                ParseFile(_File);
         }
         private void ParseFile(String sFile, bool isDir = false)
         {
-            Regex rg = new Regex(sFilePattern);
+            Regex rg = new Regex(_FilePattern);
             if (!isDir)
             {
                 if (!System.IO.Directory.Exists(sFile))
                 {
-                    if (rg.IsMatch(sFile) && !mw.AnimeCollection.Contains(new AniSharp.MainWindow.Anime(sFile), new AniSharp.MainWindow.AnimeComparer()))
-                        mw.lvFiles_Add(sFile);
+                    lock (_mw.AnimeCollection)
+                    {
+                        if (rg.IsMatch(sFile))
+                            if (!_mw.AnimeCollection.Contains(new AniSharp.MainWindow.Anime(sFile), ac))
+                                _mw.lvFiles_Add(sFile);
+                    }
                 }
                 else
                     ParseFile(sFile, true);
@@ -46,8 +48,11 @@ namespace AniSharp
                 {
                     foreach (String s in Directory.GetFiles(sFile))
                     {
-                        if (rg.IsMatch(s) && !mw.AnimeCollection.Contains(new AniSharp.MainWindow.Anime(s),new AniSharp.MainWindow.AnimeComparer()))
-                            mw.lvFiles_Add(s);
+                        lock (_mw.AnimeCollection)
+                        {
+                            if (rg.IsMatch(s) && !_mw.AnimeCollection.Contains(new AniSharp.MainWindow.Anime(s), ac))
+                                _mw.lvFiles_Add(s);
+                        }
                     }
                 }
                 catch (Exception) { }
@@ -59,6 +64,20 @@ namespace AniSharp
                 catch (Exception) { }
             }
         }
+        /*
+        public void ParseFile(Object sFile)
+        {
+            String sF = (String)sFile;
+            Regex rg = new Regex(sFilePattern);
 
+                if (!System.IO.Directory.Exists(sF))
+                {
+                    if (rg.IsMatch(sF) && !mw.AnimeCollection.Contains(new AniSharp.MainWindow.Anime(sF), ac))
+                        mw.lvFiles_Add(sF);
+                }
+                else
+                    ParseFile(sF, true);
+        }
+        */
     }
 }

@@ -1,6 +1,7 @@
 <Window x:Class="AniSharp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:custom="clr-namespace:AniSharp"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Title="AniSharp" MinHeight="375" MinWidth="580"
         SizeToContent="WidthAndHeight" SizeChanged="Window_SizeChanged" ShowInTaskbar="True" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="300" d:DesignWidth="300" Closing="Window_Closing">
@@ -8,7 +9,12 @@
         <TabControl MinHeight="305" HorizontalAlignment="Left" Margin="0,29,0,0" Name="tabControl1" VerticalAlignment="Top" MinWidth="555">
             <TabItem Header="Rules" Name="tabRules">
                 <Grid>
-                    <TextBox Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="tbRenamePattern" VerticalAlignment="Top" Width="231" />
+                    <TextBox Height="23" HorizontalAlignment="Left" Margin="6,40,0,0" Name="tbRenamePattern" VerticalAlignment="Top" Width="231" />
+                    <Button Content="Save" Height="23" HorizontalAlignment="Left" Margin="243,40,0,0" Name="btSave" VerticalAlignment="Top" Width="75" Click="btSave_Click" />
+                    <Label Content="Rename Pattern:" Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label1" VerticalAlignment="Top" />
+                    <Label Content="Move to:" Height="28" HorizontalAlignment="Left" Margin="6,69,0,0" Name="label2" VerticalAlignment="Top" />
+                    <TextBox Height="23" HorizontalAlignment="Left" Margin="6,103,0,0" Name="tbMove" VerticalAlignment="Top" Width="231" />
+                    <Button Content="Browse" Height="23" HorizontalAlignment="Right" Margin="0,103,227,0" Name="btnBrowse" VerticalAlignment="Top" Width="75" Click="btnBrowse_Click" />
                 </Grid>
             </TabItem>
             <TabItem Header="Settings" Name="tabSettings">
@@ -39,6 +45,7 @@
                                 <ListBoxItem Content="mkv"/>
                                 <ListBoxItem Content="ogm"/>
                                 <ListBoxItem Content="avi"/>
+                                <ListBoxItem Content="ssa"/>
                             </ListBox>
                         </Grid>
                     </GroupBox>
@@ -47,6 +54,11 @@
             <TabItem Header="Files" Name="tabFiles" IsSelected="True">
                 <Grid>
                     <ListView ItemsSource="{Binding AnimeCollection}" MinHeight="275" HorizontalAlignment="Left" Name="lvFiles" VerticalAlignment="Top" MinWidth="550" Drop="lvFiles_Drop" AllowDrop="True">
+                        <ListView.CommandBindings>
+                            <CommandBinding Command="{x:Static custom:MainWindow.DeleteCmd}"
+                                            Executed="DeleteCmdExecuted"
+                                            CanExecute="DeleteCmdCanExecute"/>
+                        </ListView.CommandBindings>
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="File" Width="475" DisplayMemberBinding="{Binding FileName}"/>
@@ -55,10 +67,7 @@
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Show Info"/>
-                                <MenuItem Header="Rehash"/>
-                                <MenuItem Header="Delete"/>
-                                <MenuItem Header="Set fid(force)"/>
+                                <MenuItem Header="Delete" Command="{x:Static custom:MainWindow.DeleteCmd}"/>
                             </ContextMenu>
                         </ListView.ContextMenu>
                     </ListView>
@@ -86,6 +95,5 @@
         <Button Content="Start" Height="23" HorizontalAlignment="Left" Name="btStart" VerticalAlignment="Top" Width="75" Click="btStart_Click" Margin="167,4,0,0" />
         <Button Content="Login" Height="23" HorizontalAlignment="Left" Margin="248,4,0,0" Name="btLogin" VerticalAlignment="Top" Width="75" Click="btLogin_Click" />
         <Button Content="Database Check" Height="23" HorizontalAlignment="Left" Margin="329,4,0,0" Name="btDatabase" VerticalAlignment="Top" Width="93" Click="btDatabase_Click" />
-        <Button Content="Save" Height="23" HorizontalAlignment="Left" Margin="428,4,0,0" Name="btSave" VerticalAlignment="Top" Width="75" Click="btSave_Click" />
     </Grid>
 </Window>
