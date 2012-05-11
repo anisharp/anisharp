@@ -31,5 +31,10 @@ namespace AniSharp.API.Model.Answer
         {
             return Int16.Parse(parts[index]);
         }
+
+        protected Int64 asInt64(int index)
+        {
+            return Int64.Parse(parts[index]);
+        }
     }
 }

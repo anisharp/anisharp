@@ -77,9 +77,9 @@ namespace AniSharp.API
         /// <param name="key">the key</param>
         /// <param name="value">the value</param>
         /// <returns>this</returns>
-        public ApiRequest set(String key, String value)
+        public ApiRequest set(String key, Object value)
         {
-            parameters.Add(key, value);
+            parameters.Add(key, value.ToString());
             return this;
         }
 
