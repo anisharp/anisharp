@@ -64,11 +64,12 @@ namespace AniSharp.Hash
 
              preHashes = new byte[_length / chunkSize + 1][];
 
-            mHashCalculators = new Thread[workerThreads];
+            
             
             mFileReader = new Thread(threadFileReader);
             if (_length > chunkSize)
             {
+                mHashCalculators = new Thread[workerThreads];
                 for (int i = 0; i < workerThreads; i++)
                 {
                     mHashCalculators[i] = new Thread(threadFileHasherBig);
@@ -77,11 +78,11 @@ namespace AniSharp.Hash
             }
             else
             {
-                for (int i = 0; i < workerThreads; i++)
-                {
-                    mHashCalculators[i] = new Thread(threadFileHasherSmall);
-                    mHashCalculators[i].Start();
-                }
+                mHashCalculators = new Thread[1];
+
+                    mHashCalculators[0] = new Thread(threadFileHasherSmall);
+                    mHashCalculators[0].Start();
+                
             }
 
             mFileReader = new Thread(threadFileReader);
@@ -145,10 +146,7 @@ namespace AniSharp.Hash
 
         private void threadFileHasherSmall()
         {
-            MD4 md4 = new MD4();
-            md4.Append(taskQueue.Take().chunk);
-
-            preHashes[0]  = md4.Finish();
+            preHashes[0] = taskQueue.Take().chunk;
         }
 
         private void threadFinalCalculations()
