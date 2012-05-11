@@ -31,6 +31,7 @@ namespace AniSharp.Hash
         private static int workerThreads = Environment.ProcessorCount;
 
         private string ed2kLink = null;
+        private string ed2kHash = null;
 
         class Job
         {
@@ -48,6 +49,17 @@ namespace AniSharp.Hash
             get
             {
                 return ed2kLink;
+            }
+        }
+
+        /// <summary>
+        /// Returns the Ed2k-Hash of the file, or null, if not yet finished hashing
+        /// </summary>
+        public String Ed2kHash
+        {
+            get
+            {
+                return ed2kHash;
             }
         }
 
@@ -172,14 +184,20 @@ namespace AniSharp.Hash
             sb.Append('|');
             sb.Append(_length);
             sb.Append('|');
-   
+
+            StringBuilder sbHash = new StringBuilder();
+
             foreach(byte b in hash)
             {
-                sb.AppendFormat("{0:x2}", b);
+                sbHash.AppendFormat("{0:x2}", b);
             }
+
+            sb.Append(sbHash.ToString());
 
             lock (this)
             {
+                ed2kHash = sbHash.ToString();
+
                 ed2kLink = sb.ToString();
                 Monitor.PulseAll(this);
             }
@@ -188,9 +206,15 @@ namespace AniSharp.Hash
 
         #endregion
 
+        /// <summary>
+        /// Returns the Ed2k-Link, and blocks, until it is known
+        /// </summary>
+        /// <returns>The ed2k-Link</returns>
         public override string ToString()
         {
+            // It's gonna be legen...
             waitForIt();
+            // ..dary!
             return Ed2kLink;
         }
     }

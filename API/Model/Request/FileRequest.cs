@@ -5,6 +5,9 @@ using System.Text;
 
 namespace AniSharp.API.Model.Request
 {
+    /// <summary>
+    /// Requests information about a file from AniDB
+    /// </summary>
     class FileRequest : ApiRequest
     {
         private void setMasks()
@@ -13,6 +16,10 @@ namespace AniSharp.API.Model.Request
             set("amask", AniSharp.Properties.Settings.Default.amask_file);
         }
 
+        /// <summary>
+        /// Search for a file by an fid
+        /// </summary>
+        /// <param name="id">An fid by AniDB</param>
         public FileRequest(int id)
             : base("FILE")
         {
@@ -20,6 +27,11 @@ namespace AniSharp.API.Model.Request
             setMasks();
         }
 
+        /// <summary>
+        /// Search for a file by size and Ed2k-Link
+        /// </summary>
+        /// <param name="size"></param>
+        /// <param name="ed2k"></param>
         public FileRequest(Int64 size, String ed2k)
             : base("FILE")
         {
