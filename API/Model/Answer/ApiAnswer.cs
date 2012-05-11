@@ -70,8 +70,12 @@ namespace AniSharp.API.Model.Answer
                 case ReturnCode.ANIME:
                     return new AnimeAnswer(rc, lines[1]);
                 
+                case ReturnCode.FILE:
+                    return new FileAnswer(rc, lines[1]);
+
                 // generic fails
                 case ReturnCode.NO_SUCH_ANIME:
+                case ReturnCode.NO_SUCH_FILE:
                     return new GenericFailAnswer(rc);
 
     
