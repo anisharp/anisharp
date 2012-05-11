@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AniSharp.API
+namespace AniSharp.API.Model.Request
 {
     /// <summary>
     /// Encapsulates an API-Request to AniDB

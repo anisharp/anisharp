@@ -9,8 +9,9 @@ using System.Text;
 using System.Diagnostics;
 using AniSharp.API.Transport;
 using AniSharp.API.Model.Answer;
+using AniSharp.API.Model.Request;
 
-namespace AniSharp.API
+namespace AniSharp.API.Application
 {
 	/// <summary>
 	/// Sends commands to AniDB, and receives their counterparts

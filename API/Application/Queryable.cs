@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AniSharp.API.Model.Answer;
+using AniSharp.API.Model.Request;
 
-namespace AniSharp.API
+namespace AniSharp.API.Application
 {
     /// <summary>
     /// Defines something, that can be queried
     /// </summary>
-    public interface Queryable
+    interface Queryable
     {
         /// <summary>
         /// Sends a request, and receives the answer. Blocks!

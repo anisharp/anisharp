@@ -55,7 +55,7 @@ namespace AniSharp
         }
         #endregion
         public static RoutedCommand DeleteCmd = new RoutedCommand();
-        private API.ApiSession conn = null;
+        private API.Application.ApiSession conn = null;
         public String FileFilter
         {
             get
@@ -184,7 +184,7 @@ namespace AniSharp
                 Nullable<bool> result = login.ShowDialog();
                 if (result == true)
                 {
-                    conn = new API.ApiSession();
+                    conn = new API.Application.ApiSession();
                     conn.ApiSessionStatusChanged += onApiSessionStatusChange;
                     conn.login(login.sUser, login.sPassword);
                     btLogin.Content = "Logout";

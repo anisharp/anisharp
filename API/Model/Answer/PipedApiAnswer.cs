@@ -8,7 +8,7 @@ namespace AniSharp.API.Model.Answer
     /// <summary>
     /// This answer handles all sort of answers with return data seperated by pipes
     /// </summary>
-    abstract class PipedApiAnswer : ApiAnswer
+    abstract class PipedApiAnswer : GenericPositiveAnswer
     {
         private string[] parts;
 

@@ -8,7 +8,7 @@ namespace AniSharp.API.Model.Answer
     /// <summary>
     /// signals successive login
     /// </summary>
-    class SuccessfulLoginAnswer : ApiAnswer
+    class SuccessfulLoginAnswer : GenericPositiveAnswer
     {
         private readonly string sessionkey;
 
@@ -33,7 +33,7 @@ namespace AniSharp.API.Model.Answer
     /// <summary>
     /// signals failed login
     /// </summary>
-    class FailedLoginAnswer : ApiAnswer
+    class FailedLoginAnswer : GenericFailAnswer
     {
         private readonly string message;
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AniSharp.API.Model.Answer
 {
-    class LogoutAnswer : ApiAnswer
+    class LogoutAnswer : GenericPositiveAnswer
     {
         public LogoutAnswer(ReturnCode code)
             : base(code)

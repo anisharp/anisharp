@@ -83,5 +83,27 @@ namespace AniSharp.API.Model.Answer
             return new GenericFailAnswer(rc);
         }
     }
+
+    /// <summary>
+    /// Signals, that something went wrong...
+    /// </summary>
+    class GenericFailAnswer : ApiAnswer
+    {
+        public GenericFailAnswer(ReturnCode rc)
+            : base(rc)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Signals, that everything is alright
+    /// </summary>
+    class GenericPositiveAnswer : ApiAnswer
+    {
+        public GenericPositiveAnswer(ReturnCode code)
+            : base(code)
+        {
+        }
+    }
 }
 

@@ -1,7 +1,7 @@
 using System;
 
 
-namespace AniSharp.API
+namespace AniSharp.API.Model.Answer
 {
 	public enum ReturnCode
 	{

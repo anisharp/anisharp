@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using AniSharp.API.Model.Request;
 using AniSharp.API.Model.Answer;
 
-namespace AniSharp.API
+namespace AniSharp.API.Application
 {
     /// <summary>
     /// Acts like a regular ApiAdapter, but also handles Sessions
