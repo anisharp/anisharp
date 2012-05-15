@@ -79,7 +79,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="API\Model\Answer\FileAnswer.cs" />
+    <Compile Include="API\Model\Answer\MyListEntryAddedAnswer.cs" />
     <Compile Include="API\Model\Request\FileRequest.cs" />
+    <Compile Include="API\Model\Request\MyListAddRequest.cs" />
     <Compile Include="Settings.cs" />
     <Page Include="Login.xaml">
       <SubType>Designer</SubType>
