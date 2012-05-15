@@ -78,10 +78,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\Anime.cs" />
     <Compile Include="API\Model\Answer\FileAnswer.cs" />
     <Compile Include="API\Model\Answer\MyListEntryAddedAnswer.cs" />
     <Compile Include="API\Model\Request\FileRequest.cs" />
-    <Compile Include="API\Model\Request\MyListAddRequest.cs" />
+    <Compile Include="API\Model\Request\MyListAddRequest.cs" />    
     <Compile Include="Glue.cs" />
     <Compile Include="Helper\Anime.cs" />
     <Compile Include="Helper\AnimeComparer.cs" />
@@ -120,6 +121,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DB\DatabaseConnection.cs" />
+    <Compile Include="Helper\FileParser.cs" />
+    <Compile Include="Helper\FileRenamer.cs" />
     <Compile Include="Hash\Ed2kHashGenerator.cs" />
     <Compile Include="Hash\MD4.cs" />
     <Compile Include="Login.xaml.cs">
@@ -192,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\AniSharpDB.sdf" />
+    <Resource Include="Images\shana.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
