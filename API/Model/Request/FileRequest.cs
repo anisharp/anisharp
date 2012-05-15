@@ -37,6 +37,7 @@ namespace AniSharp.API.Model.Request
         {
             set("size", size);
             set("ed2k", ed2k);
+            setMasks();
         }
     }
 
