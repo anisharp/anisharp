@@ -19,7 +19,7 @@ namespace AniSharp.API.Model.Answer
                 animeId = x.asInt(0),
                 episodeId = x.asInt(1),
                 groupId = x.asInt(2),
-                state = x.asString(3),
+                state = x.asInt16(3),
                 size = x.asInt64(4),
                 ed2k = x.asString(5),
                 md5 = x.asString(6),
