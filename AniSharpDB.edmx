@@ -41,14 +41,14 @@
     <Property Name="epName" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="epRomajiName" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="epKanjiName" Type="nvarchar" Nullable="true" MaxLength="4000" />
-    <Property Name="state" Type="nvarchar" Nullable="true" />
+    <Property Name="state" Type="smallint" Nullable="true" />
   </EntityType>
   <EntityType Name="groups">
     <Key>
       <PropertyRef Name="groupsId" />
     </Key>
     <Property Name="groupsId" Type="int" Nullable="false" />
-    <Property Name="rating" Type="smallint" Nullable="true" />
+    <Property Name="rating" Type="int" Nullable="true" />
     <Property Name="name" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="shortName" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="ircChannel" Type="nvarchar" Nullable="true" MaxLength="4000" />
@@ -65,11 +65,11 @@
     <Property Name="kanjiName" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="englishName" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="episodes" Type="int" Nullable="true" />
-    <Property Name="rating" Type="smallint" Nullable="true" />
-    <Property Name="tempRating" Type="smallint" Nullable="true" />
+    <Property Name="rating" Type="int" Nullable="true" />
+    <Property Name="tempRating" Type="int" Nullable="true" />
     <Property Name="otherName" Type="nvarchar" Nullable="false" />
-    <Property Name="highestNoEp" Type="smallint" Nullable="false" />
-    <Property Name="specialEpCount" Type="smallint" Nullable="false" />
+    <Property Name="highestNoEp" Type="int" Nullable="false" />
+    <Property Name="specialEpCount" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK_epsiode_groups">
     <End Role="groups" Type="AniSharpDBModel.Store.groups" Multiplicity="0..1" />
@@ -137,14 +137,14 @@
           <Property Type="String" Name="epKanjiName" MaxLength="4000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="groups" Relationship="AniSharpDBModel.FK_epsiode_groups" FromRole="episode" ToRole="groups" />
           <NavigationProperty Name="serie" Relationship="AniSharpDBModel.FK_epsiode_serie" FromRole="episode" ToRole="serie" />
-          <Property Type="String" Name="state" />
+          <Property Type="Int16" Name="state" />
         </EntityType>
         <EntityType Name="groups">
           <Key>
             <PropertyRef Name="groupsId" />
           </Key>
           <Property Type="Int32" Name="groupsId" Nullable="false" />
-          <Property Type="Int16" Name="rating" />
+          <Property Type="Int32" Name="rating" />
           <Property Type="String" Name="name" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="shortName" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ircChannel" MaxLength="4000" FixedLength="false" Unicode="true" />
@@ -162,12 +162,12 @@
           <Property Type="String" Name="kanjiName" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="englishName" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="episodes" />
-          <Property Type="Int16" Name="rating" />
-          <Property Type="Int16" Name="tempRating" />
+          <Property Type="Int32" Name="rating" />
+          <Property Type="Int32" Name="tempRating" />
           <NavigationProperty Name="episode" Relationship="AniSharpDBModel.FK_epsiode_serie" FromRole="serie" ToRole="episode" />
           <Property Type="String" Name="otherName" Nullable="false" />
-          <Property Type="Int16" Name="highestNoEp" Nullable="false" />
-          <Property Type="Int16" Name="specialEpCount" Nullable="false" />
+          <Property Type="Int32" Name="highestNoEp" Nullable="false" />
+          <Property Type="Int32" Name="specialEpCount" Nullable="false" />
         </EntityType>
         <Association Name="FK_epsiode_groups">
           <End Type="AniSharpDBModel.groups" Role="groups" Multiplicity="0..1" />

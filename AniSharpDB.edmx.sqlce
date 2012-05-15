@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server Compact Edition
 -- --------------------------------------------------
--- Date Created: 05/11/2012 10:23:53
+-- Date Created: 05/15/2012 18:24:09
 -- Generated from EDMX file: D:\VS_Projects\anisharp\AniSharpDB.edmx
 -- --------------------------------------------------
 
@@ -53,14 +53,14 @@ CREATE TABLE [episode] (
     [epName] nvarchar(4000)  NULL,
     [epRomajiName] nvarchar(4000)  NULL,
     [epKanjiName] nvarchar(4000)  NULL,
-    [state] nvarchar(4000)  NULL
+    [state] smallint  NULL
 );
 GO
 
 -- Creating table 'groups'
 CREATE TABLE [groups] (
     [groupsId] int  NOT NULL,
-    [rating] smallint  NULL,
+    [rating] int  NULL,
     [name] nvarchar(4000)  NULL,
     [shortName] nvarchar(4000)  NULL,
     [ircChannel] nvarchar(4000)  NULL,
@@ -77,11 +77,11 @@ CREATE TABLE [serie] (
     [kanjiName] nvarchar(4000)  NULL,
     [englishName] nvarchar(4000)  NULL,
     [episodes] int  NULL,
-    [rating] smallint  NULL,
-    [tempRating] smallint  NULL,
+    [rating] int  NULL,
+    [tempRating] int  NULL,
     [otherName] nvarchar(4000)  NOT NULL,
-    [highestNoEp] smallint  NOT NULL,
-    [specialEpCount] smallint  NOT NULL
+    [highestNoEp] int  NOT NULL,
+    [specialEpCount] int  NOT NULL
 );
 GO
 
