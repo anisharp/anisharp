@@ -118,8 +118,11 @@ namespace AniSharp
             foreach (Anime s in _AnimeCollection)
             {
                 Glue g = new Glue(s, conn);
+                System.Threading.Thread pattexing = new System.Threading.Thread(g.run);
+                pattexing.Start();
+                GC.Collect();
             }
-           // System.Threading.Thread hash = new System.Threading.Thread();
+           // 
             // hash.Start();
 
 
