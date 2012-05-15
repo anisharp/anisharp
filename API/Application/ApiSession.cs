@@ -16,7 +16,7 @@ namespace AniSharp.API.Application
     /// Acts like a regular ApiAdapter, but also handles Sessions
     /// Therefore, username and password is needed to login
     /// </summary>
-	class ApiSession
+	class ApiSession : Queryable
 	{
         /// <summary>
         /// called to notify of changes in the api-session
