@@ -65,6 +65,8 @@ namespace AniSharp.API.Model.Answer
                 case ReturnCode.LOGGED_OUT:
                     return new LogoutAnswer(rc);
                 case ReturnCode.NOT_LOGGED_IN:
+                case ReturnCode.LOGIN_FIRST:
+                case ReturnCode.ACCESS_DENIED:
                     return new GenericFailAnswer(rc);
 
                 case ReturnCode.ANIME:
