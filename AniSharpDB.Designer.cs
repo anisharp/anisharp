@@ -623,7 +623,7 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String state
+        public Nullable<global::System.Int16> state
         {
             get
             {
@@ -633,13 +633,13 @@ namespace AniSharp
             {
                 OnstateChanging(value);
                 ReportPropertyChanging("state");
-                _state = StructuralObject.SetValidValue(value, true);
+                _state = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("state");
                 OnstateChanged();
             }
         }
-        private global::System.String _state;
-        partial void OnstateChanging(global::System.String value);
+        private Nullable<global::System.Int16> _state;
+        partial void OnstateChanging(Nullable<global::System.Int16> value);
         partial void OnstateChanged();
 
         #endregion
@@ -781,7 +781,7 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int16> rating
+        public Nullable<global::System.Int32> rating
         {
             get
             {
@@ -796,8 +796,8 @@ namespace AniSharp
                 OnratingChanged();
             }
         }
-        private Nullable<global::System.Int16> _rating;
-        partial void OnratingChanging(Nullable<global::System.Int16> value);
+        private Nullable<global::System.Int32> _rating;
+        partial void OnratingChanging(Nullable<global::System.Int32> value);
         partial void OnratingChanged();
     
         /// <summary>
@@ -942,7 +942,7 @@ namespace AniSharp
         /// <param name="otherName">Initial value of the otherName property.</param>
         /// <param name="highestNoEp">Initial value of the highestNoEp property.</param>
         /// <param name="specialEpCount">Initial value of the specialEpCount property.</param>
-        public static serie Createserie(global::System.Int32 serienId, global::System.String otherName, global::System.Int16 highestNoEp, global::System.Int16 specialEpCount)
+        public static serie Createserie(global::System.Int32 serienId, global::System.String otherName, global::System.Int32 highestNoEp, global::System.Int32 specialEpCount)
         {
             serie serie = new serie();
             serie.serienId = serienId;
@@ -1131,7 +1131,7 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int16> rating
+        public Nullable<global::System.Int32> rating
         {
             get
             {
@@ -1146,8 +1146,8 @@ namespace AniSharp
                 OnratingChanged();
             }
         }
-        private Nullable<global::System.Int16> _rating;
-        partial void OnratingChanging(Nullable<global::System.Int16> value);
+        private Nullable<global::System.Int32> _rating;
+        partial void OnratingChanging(Nullable<global::System.Int32> value);
         partial void OnratingChanged();
     
         /// <summary>
@@ -1155,7 +1155,7 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int16> tempRating
+        public Nullable<global::System.Int32> tempRating
         {
             get
             {
@@ -1170,8 +1170,8 @@ namespace AniSharp
                 OntempRatingChanged();
             }
         }
-        private Nullable<global::System.Int16> _tempRating;
-        partial void OntempRatingChanging(Nullable<global::System.Int16> value);
+        private Nullable<global::System.Int32> _tempRating;
+        partial void OntempRatingChanging(Nullable<global::System.Int32> value);
         partial void OntempRatingChanged();
     
         /// <summary>
@@ -1203,7 +1203,7 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int16 highestNoEp
+        public global::System.Int32 highestNoEp
         {
             get
             {
@@ -1218,8 +1218,8 @@ namespace AniSharp
                 OnhighestNoEpChanged();
             }
         }
-        private global::System.Int16 _highestNoEp;
-        partial void OnhighestNoEpChanging(global::System.Int16 value);
+        private global::System.Int32 _highestNoEp;
+        partial void OnhighestNoEpChanging(global::System.Int32 value);
         partial void OnhighestNoEpChanged();
     
         /// <summary>
@@ -1227,7 +1227,7 @@ namespace AniSharp
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int16 specialEpCount
+        public global::System.Int32 specialEpCount
         {
             get
             {
@@ -1242,8 +1242,8 @@ namespace AniSharp
                 OnspecialEpCountChanged();
             }
         }
-        private global::System.Int16 _specialEpCount;
-        partial void OnspecialEpCountChanging(global::System.Int16 value);
+        private global::System.Int32 _specialEpCount;
+        partial void OnspecialEpCountChanging(global::System.Int32 value);
         partial void OnspecialEpCountChanged();
 
         #endregion
