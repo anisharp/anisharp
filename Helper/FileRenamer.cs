@@ -37,7 +37,7 @@ namespace AniSharp
                 this.sPattern = sPattern;
         }
 
-        public void renameTo(MainWindow.Anime animeFile)
+        public void renameTo(Anime animeFile)
         {
             if (!String.IsNullOrEmpty(sPattern))
             {

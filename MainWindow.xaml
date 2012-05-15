@@ -21,20 +21,20 @@
                 <Grid Height="275" Width="550">
                 <GroupBox Header="Mylist" MinHeight="270" HorizontalAlignment="Left" Margin="6,6,0,0" Name="groupBox1" VerticalAlignment="Top" Width="330">
                     <Grid>
-                        <CheckBox Content="Add files to mylist automatically" Height="16" HorizontalAlignment="Left" Margin="8,11,0,0" Name="chkAdd" VerticalAlignment="Top" IsChecked="True" Unchecked="chkAdd_Unchecked" Checked="chkAdd_Checked" />
+                        <CheckBox Content="Add files to mylist automatically" Height="16" HorizontalAlignment="Left" Margin="8,11,0,0" x:Name="chkAdd" VerticalAlignment="Top" IsChecked="True"/>
                             <Label Content="State:" Height="28" HorizontalAlignment="Left" Margin="8,33,0,0" Name="lblState" VerticalAlignment="Top" />
                             <Label Content="Source:" Height="28" HorizontalAlignment="Left" Margin="8,67,0,0" Name="lblSource" VerticalAlignment="Top" />
                             <Label Content="Storage:" Height="28" HorizontalAlignment="Left" Margin="8,101,0,0" Name="lblStorage" VerticalAlignment="Top" />
-                            <ComboBox Height="23" HorizontalAlignment="Left" Margin="83,38,0,0" Name="cbState" VerticalAlignment="Top" Width="223">
+                            <ComboBox Height="23" HorizontalAlignment="Left" Margin="83,38,0,0" Name="cbState" VerticalAlignment="Top" Width="223" IsEnabled="{Binding ElementName=chkAdd, Path=IsChecked}">
                                 <ComboBoxItem Content="Unkown" />
                                 <ComboBoxItem Content="On HDD" IsSelected="True" />
                                 <ComboBoxItem Content="On CD" />
                                 <ComboBoxItem Content="Deleted" />
                             </ComboBox>
-                            <TextBox Height="23" HorizontalAlignment="Left" Margin="83,69,0,0" Name="tbSource" VerticalAlignment="Top" Width="223" />
-                            <TextBox Height="23" HorizontalAlignment="Left" Margin="83,101,0,0" Name="tbStorage" VerticalAlignment="Top" Width="223" />
-                            <CheckBox Content="Watched" Height="16" HorizontalAlignment="Left" Margin="8,130,0,0" Name="chkWatched" VerticalAlignment="Top" />
-                        <TextBox Height="110" HorizontalAlignment="Left" Margin="83,130,0,0" Name="tbOther" VerticalAlignment="Top" Width="223" />
+                            <TextBox Height="23" HorizontalAlignment="Left" Margin="83,69,0,0" Name="tbSource" VerticalAlignment="Top" Width="223" IsEnabled="{Binding ElementName=chkAdd, Path=IsChecked}"/>
+                            <TextBox Height="23" HorizontalAlignment="Left" Margin="83,101,0,0" Name="tbStorage" VerticalAlignment="Top" Width="223" IsEnabled="{Binding ElementName=chkAdd, Path=IsChecked}"/>
+                            <CheckBox Content="Watched" Height="16" HorizontalAlignment="Left" Margin="8,130,0,0" Name="chkWatched" VerticalAlignment="Top" IsEnabled="{Binding ElementName=chkAdd, Path=IsChecked}"/>
+                            <TextBox Height="110" HorizontalAlignment="Left" Margin="83,130,0,0" Name="tbOther" VerticalAlignment="Top" Width="223" IsEnabled="{Binding ElementName=chkAdd, Path=IsChecked}"/>
                     </Grid>
                 </GroupBox>
                     <GroupBox Header="Extensions" Height="269" HorizontalAlignment="Left" Margin="346,6,0,0" Name="groupBox2" VerticalAlignment="Top" Width="200">

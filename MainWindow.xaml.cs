@@ -27,33 +27,12 @@ namespace AniSharp
         #region variables
         ObservableCollection<Anime> _AnimeCollection =
         new ObservableCollection<Anime>();
-        #region Hilfsklassen
+
         public ObservableCollection<Anime> AnimeCollection
-        { get { return _AnimeCollection; } }
-        public class Anime
         {
-            public string FileName { get; set; }
-            public string FileState { get; set; }
-            public string FileHash { get; set; }
-            public Anime(String s, String d = "", String f = "") { FileName = s; FileState = d; FileHash = f; }
+            get { return _AnimeCollection; }
         }
 
-        public class AnimeComparer : IEqualityComparer<Anime>
-        {
-
-            public bool Equals(Anime a1, Anime a2)
-            {
-                return a1.FileName == a2.FileName;
-            }
-            
-            public int GetHashCode(Anime a)
-            {
-                int hCode = a.FileHash.GetHashCode();
-                return hCode.GetHashCode();
-            }
-
-        }
-        #endregion
         public static RoutedCommand DeleteCmd = new RoutedCommand();
         private API.Application.ApiSession conn = null;
         public String FileFilter
@@ -85,18 +64,9 @@ namespace AniSharp
 
         void lvFiles_Drop(object sender, DragEventArgs e)
         {
-            //fileParser = new FileParser(this, FileFilter);
-
-            foreach (String s in (String[])e.Data.GetData(DataFormats.FileDrop))
-            {
-                FileParser fp = new FileParser(s, this, FileFilter);
-                System.Threading.Thread t = new System.Threading.Thread(fp.ParseFile);
-                t.Start();
-                /*
-                System.Threading.Thread t = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(fileParser.ParseFile));
-                t.IsBackground = true;
-                t.Start(s);*/
-            }
+            FileParser fp = new FileParser((String[])e.Data.GetData(DataFormats.FileDrop), this, FileFilter);
+            System.Threading.Thread t = new System.Threading.Thread(fp.ParseFile);
+            t.Start();
         }
 
         public void activateStart()
@@ -106,11 +76,15 @@ namespace AniSharp
         
         private void hashGen()
         {
-            foreach (Anime s in AnimeCollection)
+            lock (AnimeCollection)
             {
-                lbLog_Add(new Hash.Ed2kHashGenerator(s.FileName).ToString());
-
-                System.GC.Collect();
+                foreach (Anime s in AnimeCollection)
+                {
+                    s.FileState = "hashing...";
+                    lbLog_Add(new Hash.Ed2kHashGenerator(s.FileName).ToString());
+                    s.FileState = "WAIT/ID";
+                    System.GC.Collect();
+                }
             }
             activateStart();
         }
@@ -169,10 +143,6 @@ namespace AniSharp
                 FileParser fp = new FileParser(dlg.FileName, this, FileFilter);
                 System.Threading.Thread t = new System.Threading.Thread(fp.ParseFile);
                 t.Start();
-                /*System.Threading.Thread t = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(fileParser.ParseFile));
-                t.IsBackground = true;
-                t.Start(dlg.FileName);
-                 * */
             }
         }
 
@@ -211,10 +181,6 @@ namespace AniSharp
                 FileParser fp = new FileParser(dlg.SelectedPath, this, FileFilter);
                 System.Threading.Thread t = new System.Threading.Thread(fp.ParseFile);
                 t.Start();
-                /*
-                System.Threading.Thread t = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(fileParser.ParseFile));
-                t.IsBackground = true;
-                t.Start(dlg.SelectedPath);*/
             }
         }
 
@@ -255,33 +221,12 @@ namespace AniSharp
             }
         }
 
-        private void chkAdd_Unchecked(object sender, RoutedEventArgs e)
-        {
-            cbState.IsEnabled = false;
-            tbSource.IsEnabled = false;
-            tbStorage.IsEnabled = false;
-            chkWatched.IsEnabled = false;
-            tbOther.IsEnabled = false;
-        }
-
-        private void chkAdd_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                cbState.IsEnabled = true;
-                tbSource.IsEnabled = true;
-                tbStorage.IsEnabled = true;
-                chkWatched.IsEnabled = true;
-                tbOther.IsEnabled = true;
-            }
-            catch (Exception) { }//fängt fehler bei der initialisierung
-        }
-
         private void btDatabase_Click(object sender, RoutedEventArgs e)
         {
             DatabaseConnection dc = new DatabaseConnection();
             episode ep = dc.getEpisode("1q2w3e");
             MessageBox.Show(ep.epKanjiName);
+            
         }
 
         public void onApiSessionStatusChange(bool loggedIn, bool shouldRetry, string Message)
