@@ -73,22 +73,6 @@ namespace AniSharp
         {
             Dispatcher.Invoke(new Action(() => { btStart.IsEnabled = true; }));
         }
-        
-        private void hashGen()
-        {
-            lock (AnimeCollection)
-            {
-                foreach (Anime s in AnimeCollection)
-                {
-                    s.FileState = "hashing...";
-                    lbLog_Add(new Hash.Ed2kHashGenerator(s.FileName).ToString());
-                    s.FileState = "WAIT/ID";
-                    System.GC.Collect();
-                }
-            }
-            activateStart();
-        }
-
         #region window functions
         /// <summary>
         /// Passt die ListBoxen an die größe des Fensters an
@@ -130,8 +114,16 @@ namespace AniSharp
         {
             btStart.IsEnabled = false;
             lbLog.Items.Clear();
-            System.Threading.Thread hash = new System.Threading.Thread(hashGen);
-            hash.Start();
+
+            foreach (Anime s in _AnimeCollection)
+            {
+                Glue g = new Glue(s, conn);
+            }
+           // System.Threading.Thread hash = new System.Threading.Thread();
+            // hash.Start();
+
+
+            activateStart();
         }
 
         private void btFiles_Click(object sender, RoutedEventArgs e)
