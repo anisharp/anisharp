@@ -41,14 +41,14 @@
     <Property Name="epName" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="epRomajiName" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="epKanjiName" Type="nvarchar" Nullable="true" MaxLength="4000" />
-    <Property Name="state" Type="nvarchar" Nullable="true" />
+    <Property Name="state" Type="smallint" Nullable="true" />
   </EntityType>
   <EntityType Name="groups">
     <Key>
       <PropertyRef Name="groupsId" />
     </Key>
     <Property Name="groupsId" Type="int" Nullable="false" />
-    <Property Name="rating" Type="smallint" Nullable="true" />
+    <Property Name="rating" Type="int" Nullable="true" />
     <Property Name="name" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="shortName" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="ircChannel" Type="nvarchar" Nullable="true" MaxLength="4000" />
@@ -65,11 +65,11 @@
     <Property Name="kanjiName" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="englishName" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="episodes" Type="int" Nullable="true" />
-    <Property Name="rating" Type="smallint" Nullable="true" />
-    <Property Name="tempRating" Type="smallint" Nullable="true" />
+    <Property Name="rating" Type="int" Nullable="true" />
+    <Property Name="tempRating" Type="int" Nullable="true" />
     <Property Name="otherName" Type="nvarchar" Nullable="false" />
-    <Property Name="highestNoEp" Type="smallint" Nullable="false" />
-    <Property Name="specialEpCount" Type="smallint" Nullable="false" />
+    <Property Name="highestNoEp" Type="int" Nullable="false" />
+    <Property Name="specialEpCount" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK_epsiode_groups">
     <End Role="groups" Type="AniSharpDBModel.Store.groups" Multiplicity="0..1" />
