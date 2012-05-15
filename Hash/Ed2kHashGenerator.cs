@@ -64,6 +64,17 @@ namespace AniSharp.Hash
         }
 
         /// <summary>
+        /// returns the size of the file in bytes
+        /// </summary>
+        public long FileSize
+        {
+            get
+            {
+                return _length;
+            }
+        }
+
+        /// <summary>
         /// Hashes the given file. Hashing starts immediateley after construction
         /// </summary>
         /// <param name="sFile">The path to the file</param>
