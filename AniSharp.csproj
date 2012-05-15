@@ -78,16 +78,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Helper\Anime.cs" />
     <Compile Include="API\Model\Answer\FileAnswer.cs" />
     <Compile Include="API\Model\Answer\MyListEntryAddedAnswer.cs" />
     <Compile Include="API\Model\Request\FileRequest.cs" />
-    <Compile Include="API\Model\Request\MyListAddRequest.cs" />    
+    <Compile Include="API\Model\Request\MyListAddRequest.cs" />
     <Compile Include="Glue.cs" />
     <Compile Include="Helper\Anime.cs" />
     <Compile Include="Helper\AnimeComparer.cs" />
-    <Compile Include="Helper\FileParser.cs" />
-    <Compile Include="Helper\FileRenamer.cs" />
     <Compile Include="Settings.cs" />
     <Page Include="Login.xaml">
       <SubType>Designer</SubType>

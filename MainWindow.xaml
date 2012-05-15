@@ -4,7 +4,7 @@
         xmlns:custom="clr-namespace:AniSharp"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Title="AniSharp" MinHeight="375" MinWidth="580"
-        SizeToContent="WidthAndHeight" SizeChanged="Window_SizeChanged" ShowInTaskbar="True" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="300" d:DesignWidth="300" Closing="Window_Closing" Icon="/AniSharp;component/Images/shana01.png">
+        SizeToContent="WidthAndHeight" SizeChanged="Window_SizeChanged" ShowInTaskbar="True" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="300" d:DesignWidth="300" Closing="Window_Closing" Icon="/AniSharp;component/Images/shana.png">
     <Grid>
         <TabControl MinHeight="305" HorizontalAlignment="Left" Margin="0,29,0,0" Name="tabControl1" VerticalAlignment="Top" MinWidth="555">
             <TabItem Header="Rules" Name="tabRules">
