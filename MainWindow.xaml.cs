@@ -119,13 +119,9 @@ namespace AniSharp
             {
                 Glue g = new Glue(s, conn);
                 System.Threading.Thread pattexing = new System.Threading.Thread(g.run);
-                pattexing.Start();
-                GC.Collect();
+                pattexing.Start();                
             }
-           // 
-            // hash.Start();
-
-
+            GC.Collect();
             activateStart();
         }
 
