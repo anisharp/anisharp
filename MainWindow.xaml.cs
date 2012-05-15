@@ -117,7 +117,7 @@ namespace AniSharp
 
             foreach (Anime s in _AnimeCollection)
             {
-                Glue g = new Glue(s, conn);
+                Glue g = new Glue(s, conn, this);
                 System.Threading.Thread pattexing = new System.Threading.Thread(g.run);
                 pattexing.Start();
                 GC.Collect();
@@ -226,6 +226,14 @@ namespace AniSharp
 
         public void onApiSessionStatusChange(bool loggedIn, bool shouldRetry, string Message)
         {
+            if (loggedIn)
+            {
+                MessageBox.Show("Logged in");
+            }
+            else
+            {
+                MessageBox.Show("Not logged in: " + shouldRetry + " msg == " + Message);
+            }
             /*
             if (loggedIn)
             {
