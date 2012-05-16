@@ -24,7 +24,7 @@ namespace AniSharp.API.Model.Answer
             return new groups
             {
                 groupsId = c.asInt(0),
-                rating = c.asInt16(1),
+                rating = c.asInt(1),
                 ircChannel = c.asString(7),
                 ircServer = c.asString(8),
                 name = c.asString(5),
