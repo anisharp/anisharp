@@ -79,7 +79,7 @@ namespace AniSharp.API.Application
         public ApiAnswer query(ApiRequest req)
         {
             // set a tag
-            String tag = generateTag();
+            String tag = generateUniqueTag();
             req["tag"] = tag;
 
             if (req.Command.Equals("AUTH"))
@@ -113,32 +113,48 @@ namespace AniSharp.API.Application
                     }
                 }
                 System.Diagnostics.Debug.Print("command enqueued, waiting for result");
- 
+
                 lock (results)
                 {
-                    Monitor.Wait(results, ((int) Math.Pow(2, i)) * WAITING_BETWEEN_PACKETS);
+                    Monitor.Wait(results, ((int)Math.Pow(2, i)) * WAITING_BETWEEN_PACKETS);
                 }
             }
             System.Diagnostics.Debug.Print("and we have result");
             String result = results[tag];
-            // drop answer from dictionary?
+
+            results.Remove(tag);
+            lock (givenTags)
+            {
+                givenTags.Remove(tag);
+            }
+
             return ApiAnswer.parse(result);
         }
 
-        //TODO: uniquify TAGS!
+        private HashSet<string> givenTags = new HashSet<string>();
 
         private static Random RND = new Random();
         private static String TAG_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         private static int TAG_LEN = 5;
-        private static String generateTag()
+        private String generateUniqueTag()
         {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < TAG_LEN; i++)
+            while (true)
             {
-
-                sb.Append(TAG_CHARS[RND.Next(TAG_CHARS.Length)]);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < TAG_LEN; i++)
+                {
+                    sb.Append(TAG_CHARS[RND.Next(TAG_CHARS.Length)]);
+                }
+                String tag = sb.ToString();
+                lock (givenTags)
+                {
+                    if (!givenTags.Contains(tag))
+                    {
+                        givenTags.Add(tag);
+                        return tag;
+                    }
+                }
             }
-            return sb.ToString();
         }
 
         private void receiverThreadStart()
@@ -160,7 +176,7 @@ namespace AniSharp.API.Application
                     String firstElem = returnData.Substring(0, index);
                     if (firstElem.Length == 3 && Int32.Parse(firstElem) > 0)
                     {
-                        // not tagged
+                        // not tagged -- this is highly improbable
                         results.Add(TAG_NOT_GIVEN_TAG, returnData);
                     }
                     else
