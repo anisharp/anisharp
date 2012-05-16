@@ -9,6 +9,7 @@ namespace AniSharp
     {
         Anime anime;
         API.Application.Queryable conn;
+        DatabaseConnection db;
         private MainWindow mainwin;
 
         private static Semaphore semHash = new Semaphore(1, 1);
@@ -19,6 +20,7 @@ namespace AniSharp
         {
             this.anime = anime;
             this.conn = conn;
+            db = new DatabaseConnection();
             this.mainwin = mw;
         }
 
@@ -32,19 +34,41 @@ namespace AniSharp
             anime.FileHash = hash.Ed2kHash;
 
             semApi.WaitOne();
+            API.Model.Answer.ApiAnswer answer = sendFileRequest(hash);
             mainwin.lbLog_Add("querying api with " + hash.Ed2kHash);
-            API.Model.Answer.ApiAnswer answer = sendToAPI(hash);
             mainwin.lbLog_Add("got answer for " + hash.Ed2kHash + ", it is " + answer.GetType().Name + " with code " + answer.Code);
-            semApi.Release();
 
             if (answer is API.Model.Answer.FileAnswer)
             {
                 API.Model.Answer.FileAnswer fa = (API.Model.Answer.FileAnswer)answer;
                 episode e = (episode)fa;
 
-                semDb.WaitOne();
-                writeToDB(e);
-                semDb.Release();
+                if (!checkIfGroupExists(e))
+                {
+                    API.Model.Answer.ApiAnswer ganswer = sendGroupRequest((int)e.groupId);
+                    if (ganswer is API.Model.Answer.GroupAnswer)
+                    {
+                        API.Model.Answer.GroupAnswer ga = (API.Model.Answer.GroupAnswer)ganswer;
+                        groups g = (groups)ga;
+                        db.addEntry(g);
+                        mainwin.lbLog_Add("Group was missing...added");
+                    }
+                }
+
+                if (!checkIfSerieExists(e))
+                {
+                    API.Model.Answer.ApiAnswer aanswer = sendAnimeRequest((int)e.animeId);
+                    if (aanswer is API.Model.Answer.AnimeAnswer)
+                    {
+                        API.Model.Answer.AnimeAnswer aa = (API.Model.Answer.AnimeAnswer)aanswer;
+                        serie s = (serie)aa; 
+                        db.addEntry(s);
+                        mainwin.lbLog_Add("Serie was missing...added");
+                    }   
+                }
+                semApi.Release();
+                db.addEntry(e);
+                mainwin.lbLog_Add("Episode added");
             }
             else if (answer is API.Model.Answer.GenericFailAnswer)
             {
@@ -59,7 +83,7 @@ namespace AniSharp
             return hash;
         }
 
-        private API.Model.Answer.ApiAnswer sendToAPI(Hash.Ed2kHashGenerator hash)
+        private API.Model.Answer.ApiAnswer sendFileRequest(Hash.Ed2kHashGenerator hash)
         {
             API.Model.Request.FileRequest fr = new API.Model.Request.FileRequest(hash.FileSize, hash.Ed2kHash);
 
@@ -68,9 +92,46 @@ namespace AniSharp
             return answer;
         }
 
-        private void writeToDB(episode e){
-            //DatabaseConnection db = new DatabaseConnection();
-            //db.addEntry(e);
+        private API.Model.Answer.ApiAnswer sendGroupRequest(int groupId)
+        {
+            API.Model.Request.GroupRequest gr = new API.Model.Request.GroupRequest(groupId);
+
+            API.Model.Answer.ApiAnswer answer = conn.query(gr);
+
+            return answer;
+        }
+
+        private API.Model.Answer.ApiAnswer sendAnimeRequest(int animeId)
+        {
+            API.Model.Request.AnimeRequest ar = new API.Model.Request.AnimeRequest(animeId);
+
+            API.Model.Answer.ApiAnswer answer = conn.query(ar);
+
+            return answer;
+        }
+
+        private bool checkIfGroupExists(episode e) {
+            groups g = db.getGroup((int)e.groupId);
+            if (g != null) {
+                return true;
+            }
+            else
+            {
+                return false;
+            }            
+        }
+
+        private bool checkIfSerieExists(episode e)
+        {
+            serie s = db.getSeries((int)e.animeId);
+            if (s != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
