@@ -215,6 +215,8 @@ namespace AniSharp.Hash
             }
             preHashes = null;
             taskQueue = null;
+
+            _FileStream.Close();
         }
 
         #endregion
