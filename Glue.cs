@@ -94,6 +94,9 @@ namespace AniSharp
             {
                 MessageBox.Show("Server failed.");
             }
+
+            FileRenamer fr = FileRenamer.getInstance();
+            fr.renameTo(anime);
         }
 
         private Hash.Ed2kHashGenerator hashGen()
