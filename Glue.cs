@@ -52,29 +52,35 @@ namespace AniSharp
             {
                 API.Model.Answer.FileAnswer fa = (API.Model.Answer.FileAnswer)answer;
                 episode e = (episode)fa;
-                semGruppe.WaitOne();
                 if (!checkIfGroupExists(e))
                 {
-                    API.Model.Answer.ApiAnswer ganswer = sendGroupRequest((int)e.groupId);
-                    if (ganswer is API.Model.Answer.GroupAnswer)
+                    semGruppe.WaitOne();
+                    if (!checkIfGroupExists(e))
                     {
-                        API.Model.Answer.GroupAnswer ga = (API.Model.Answer.GroupAnswer)ganswer;
-                        groups g = (groups)ga;
-                        db.addEntry(g);
-                        mainwin.lbLog_Add("Group was missing...added");
+                        API.Model.Answer.ApiAnswer ganswer = sendGroupRequest((int)e.groupId);
+                        if (ganswer is API.Model.Answer.GroupAnswer)
+                        {
+                            API.Model.Answer.GroupAnswer ga = (API.Model.Answer.GroupAnswer)ganswer;
+                            groups g = (groups)ga;
+                            db.addEntry(g);
+                            mainwin.lbLog_Add("Group was missing...added");
+                        }
                     }
                 }
                 semGruppe.Release();
-                semSerie.WaitOne();
                 if (!checkIfSerieExists(e))
                 {
-                    API.Model.Answer.ApiAnswer aanswer = sendAnimeRequest((int)e.animeId);
-                    if (aanswer is API.Model.Answer.AnimeAnswer)
+                    semSerie.WaitOne();
+                    if (!checkIfSerieExists(e))
                     {
-                        API.Model.Answer.AnimeAnswer aa = (API.Model.Answer.AnimeAnswer)aanswer;
-                        serie s = (serie)aa;
-                        db.addEntry(s);
-                        mainwin.lbLog_Add("Serie was missing...added");
+                        API.Model.Answer.ApiAnswer aanswer = sendAnimeRequest((int)e.animeId);
+                        if (aanswer is API.Model.Answer.AnimeAnswer)
+                        {
+                            API.Model.Answer.AnimeAnswer aa = (API.Model.Answer.AnimeAnswer)aanswer;
+                            serie s = (serie)aa;
+                            db.addEntry(s);
+                            mainwin.lbLog_Add("Serie was missing...added");
+                        }
                     }
                 }
                 semSerie.Release();
