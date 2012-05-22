@@ -96,7 +96,9 @@ namespace AniSharp
             }
 
             FileRenamer fr = FileRenamer.getInstance();
+            mainwin.lbLog_Add("Rename File....move File");
             fr.renameTo(anime);
+            anime.FileState = "Finished";
         }
 
         private Hash.Ed2kHashGenerator hashGen()
