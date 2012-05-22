@@ -1,7 +1,8 @@
 ﻿<Window x:Class="AniSharp.Login"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Login" Height="146" Width="261">
+        Title="Login" Height="146" Width="261"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Content="Benutzername:" Height="28" HorizontalAlignment="Left" Margin="12,12,0,0" Name="lblUser" VerticalAlignment="Top" />
         <Label Content="Passwort:" Height="28" HorizontalAlignment="Left" Margin="12,46,0,0" Name="lblPassword" VerticalAlignment="Top" />

@@ -122,7 +122,7 @@ namespace AniSharp
                 pattexing.Start();                
             }
             GC.Collect();
-            activateStart();
+            //activateStart();
         }
 
         private void btFiles_Click(object sender, RoutedEventArgs e)
@@ -145,10 +145,11 @@ namespace AniSharp
                 Nullable<bool> result = login.ShowDialog();
                 if (result == true)
                 {
+                    btLogin.IsEnabled = false;
                     conn = new API.Application.ApiSession();
                     conn.ApiSessionStatusChanged += onApiSessionStatusChange;
                     conn.login(login.sUser, login.sPassword);
-                    btLogin.Content = "Logout";
+                    //btLogin.Content = "Logout";
                 }
             }
             else
@@ -224,37 +225,14 @@ namespace AniSharp
         {
             if (loggedIn)
             {
+                btLogin.Content = "Logout";
                 MessageBox.Show("Logged in");
             }
             else
             {
                 MessageBox.Show("Not logged in: " + shouldRetry + " msg == " + Message);
             }
-            /*
-            if (loggedIn)
-            {
-                System.Diagnostics.Debug.Print("logged in, query starts");
-                ApiAnswer aa = conn.query(new AnimeRequest(1));
-                System.Diagnostics.Debug.Print("we have an answer...");
-
-                if (aa is AnimeAnswer)
-                {
-                    AnimeAnswer ana = (AnimeAnswer)aa;
-                    serie s = (serie)ana;
-                    System.Diagnostics.Debug.Print("WOOHOO!");
-                    MessageBox.Show("ID 1 == " + s.englishName);
-                }
-                else
-                {
-                    System.Diagnostics.Debug.Print("did not work .. will fail");
-                    FailedLoginAnswer e = (FailedLoginAnswer)aa;
-                }
-            }
-            else
-            {
-                System.Diagnostics.Debug.Print("something wrong..." + loggedIn + " " + shouldRetry + ". msg " + Message);
-            }
-            */
+            btLogin.IsEnabled = true;
         }
 
         private void btSave_Click(object sender, RoutedEventArgs e)

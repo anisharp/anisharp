@@ -90,10 +90,10 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button Content="Files..." Height="23" HorizontalAlignment="Left" Name="btFiles" VerticalAlignment="Top" Width="75" Margin="5,4,0,0" Click="btFiles_Click" />
-        <Button Content="Folders..." Height="23" HorizontalAlignment="Left" Margin="86,4,0,0" Name="btFolders" VerticalAlignment="Top" Width="75" Click="btFolders_Click" />
-        <Button Content="Start" Height="23" HorizontalAlignment="Left" Name="btStart" VerticalAlignment="Top" Width="75" Click="btStart_Click" Margin="167,4,0,0" />
-        <Button Content="Login" Height="23" HorizontalAlignment="Left" Margin="248,4,0,0" Name="btLogin" VerticalAlignment="Top" Width="75" Click="btLogin_Click" />
+        <Button Content="Files..." Height="23" HorizontalAlignment="Left" Name="btFiles" VerticalAlignment="Top" Width="75" Margin="5,4,0,0" Click="btFiles_Click" ToolTip="Add file you want to hash"/>
+        <Button Content="Folders..." Height="23" HorizontalAlignment="Left" Margin="86,4,0,0" Name="btFolders" VerticalAlignment="Top" Width="75" Click="btFolders_Click" ToolTip="Add folders with files you want to hash"/>
+        <Button Content="Start" Height="23" HorizontalAlignment="Left" Name="btStart" VerticalAlignment="Top" Width="75" Click="btStart_Click" Margin="167,4,0,0" ToolTip="Start the disk operation thread (hashing and moving)" />
+        <Button Content="Login" Height="23" HorizontalAlignment="Left" Margin="248,4,0,0" Name="btLogin" VerticalAlignment="Top" Width="75" Click="btLogin_Click" ToolTip="Log on/off the AniDB UDP Service"/>
         <Button Content="Database Check" Height="23" HorizontalAlignment="Left" Margin="329,4,0,0" Name="btDatabase" VerticalAlignment="Top" Width="93" Click="btDatabase_Click" />
     </Grid>
 </Window>

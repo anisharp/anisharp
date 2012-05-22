@@ -18,7 +18,7 @@ using System.Runtime.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("AniSharpDBModel", "FK_epsiode_groups", "groups", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(AniSharp.groups), "episode", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(AniSharp.episode), true)]
+[assembly: EdmRelationshipAttribute("AniSharpDBModel", "FK_epsiode_groups", "groups", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(AniSharp.groups), "episode", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(AniSharp.episode), true)]
 [assembly: EdmRelationshipAttribute("AniSharpDBModel", "FK_epsiode_serie", "serie", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(AniSharp.serie), "episode", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(AniSharp.episode), true)]
 
 #endregion
@@ -169,11 +169,13 @@ namespace AniSharp
         /// </summary>
         /// <param name="animeId">Initial value of the animeId property.</param>
         /// <param name="episodeId">Initial value of the episodeId property.</param>
-        public static episode Createepisode(global::System.Int32 animeId, global::System.Int32 episodeId)
+        /// <param name="groupId">Initial value of the groupId property.</param>
+        public static episode Createepisode(global::System.Int32 animeId, global::System.Int32 episodeId, global::System.Int32 groupId)
         {
             episode episode = new episode();
             episode.animeId = animeId;
             episode.episodeId = episodeId;
+            episode.groupId = groupId;
             return episode;
         }
 
@@ -237,9 +239,9 @@ namespace AniSharp
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> groupId
+        public global::System.Int32 groupId
         {
             get
             {
@@ -254,8 +256,8 @@ namespace AniSharp
                 OngroupIdChanged();
             }
         }
-        private Nullable<global::System.Int32> _groupId;
-        partial void OngroupIdChanging(Nullable<global::System.Int32> value);
+        private global::System.Int32 _groupId;
+        partial void OngroupIdChanging(global::System.Int32 value);
         partial void OngroupIdChanged();
     
         /// <summary>
