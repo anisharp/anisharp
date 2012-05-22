@@ -4,6 +4,7 @@ namespace AniSharp
 {
     public class Anime : INotifyPropertyChanged
     {
+        String _FileName;
         String _FileState;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -16,7 +17,21 @@ namespace AniSharp
             }
         }
 
-        public string FileName { get; set; }
+        public string FileName
+        {
+            get
+            {
+                return _FileName;
+            }
+            set
+            {
+                if (value != _FileName)
+                {
+                    _FileName = value;
+                    NotifyPropertyChanged("FileName");
+                }
+            }
+        }
         public string FileState 
         { 
             get { 

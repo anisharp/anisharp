@@ -25,6 +25,7 @@ namespace AniSharp
     public partial class MainWindow : Window
     {
         #region variables
+        FileRenamer _fr = FileRenamer.getInstance();
         ObservableCollection<Anime> _AnimeCollection =
         new ObservableCollection<Anime>();
 
@@ -54,6 +55,8 @@ namespace AniSharp
         {
             InitializeComponent();
             tbRenamePattern.Text = AniSharp.Properties.Settings.Default.RenamePattern;
+            _fr.setPattern(AniSharp.Properties.Settings.Default.RenamePattern);
+            _fr.setMainWindow(this);
         }
 
         public void lvFiles_DragOver(object sender, DragEventArgs e)
@@ -227,6 +230,7 @@ namespace AniSharp
             {
                 btLogin.Content = "Logout";
                 MessageBox.Show("Logged in");
+                activateStart();
             }
             else
             {
@@ -237,6 +241,12 @@ namespace AniSharp
 
         private void btSave_Click(object sender, RoutedEventArgs e)
         {
+            if (AniSharp.Properties.Settings.Default.RenamePattern != tbRenamePattern.Text)     
+            {
+                AniSharp.Properties.Settings.Default.RenamePattern = tbRenamePattern.Text;
+                AniSharp.Properties.Settings.Default.Save();
+                _fr.setPattern(tbRenamePattern.Text);
+            }
         }
 
         #region CommandEventHandler
