@@ -16,26 +16,26 @@ namespace AniSharp.API.Model.Answer
         {
             return new episode
             {
-                animeId = x.asInt(0),
-                episodeId = x.asInt(1),
-                groupId = x.asInt(2),
-                state = x.asInt16(3),
-                size = x.asInt64(4),
-                ed2k = x.asString(5),
-                md5 = x.asString(6),
-                sha1 = x.asString(7),
-                crc32 = x.asString(8),
-                quality = x.asString(9),
-                source = x.asString(10),
-                videoCodec = x.asString(11),
-                videoResolution = x.asString(12),
-                dubLanguage = x.asString(13),
-                subLanguage = x.asString(14),
+                animeId = x.asInt(1),
+                episodeId = x.asInt(2),
+                groupId = x.asInt(3),
+                state = x.asInt16(4),
+                size = x.asInt64(5),
+                ed2k = x.asString(6),
+                md5 = x.asString(7),
+                sha1 = x.asString(8),
+                crc32 = x.asString(9),
+                quality = x.asString(10),
+                source = x.asString(11),
+                videoCodec = x.asString(12),
+                videoResolution = x.asString(13),
+                dubLanguage = x.asString(14),
+                subLanguage = x.asString(15),
 
-                epno = x.asString(15),
-                epName = x.asString(16),
-                epRomajiName = x.asString(17),
-                epKanjiName = x.asString(18)
+                epno = x.asString(16),
+                epName = x.asString(17),
+                epRomajiName = x.asString(18),
+                epKanjiName = x.asString(19)
             };
         }
     }
