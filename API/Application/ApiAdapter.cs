@@ -25,7 +25,7 @@ namespace AniSharp.API.Application
 
         private UdpAdapter udpadapter;
 
-        public const int WAITING_BETWEEN_PACKETS = 4000;
+        public const int WAITING_BETWEEN_PACKETS = 5000;
         public const string TAG_NOT_GIVEN_TAG = "";
 
         public ApiAdapter()
