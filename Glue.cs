@@ -13,6 +13,8 @@ namespace AniSharp
         private MainWindow mainwin;
 
         private static Semaphore semHash = new Semaphore(1, 1);
+        private static Semaphore semGruppe = new Semaphore(1, 1);
+        private static Semaphore semSerie = new Semaphore(1, 1);
         private static Semaphore semApi = new Semaphore(20, 20);
         private static Semaphore semDb = new Semaphore(20, 20);
 
@@ -44,11 +46,13 @@ namespace AniSharp
                 mainwin.lbLog_Add("querying api with " + hash.Ed2kHash);
                 mainwin.lbLog_Add("got answer for " + hash.Ed2kHash + ", it is " + answer.GetType().Name + " with code " + answer.Code);
             }
+            System.GC.Collect();
             if (answer is API.Model.Answer.FileAnswer)
             {
                 API.Model.Answer.FileAnswer fa = (API.Model.Answer.FileAnswer)answer;
                 episode e = (episode)fa;
 
+                semGruppe.WaitOne();
                 if (!checkIfGroupExists(e))
                 {
                     API.Model.Answer.ApiAnswer ganswer = sendGroupRequest((int)e.groupId);
@@ -60,7 +64,8 @@ namespace AniSharp
                         mainwin.lbLog_Add("Group was missing...added");
                     }
                 }
-
+                semGruppe.Release();
+                semSerie.WaitOne();
                 if (!checkIfSerieExists(e))
                 {
                     API.Model.Answer.ApiAnswer aanswer = sendAnimeRequest((int)e.animeId);
@@ -72,10 +77,18 @@ namespace AniSharp
                         mainwin.lbLog_Add("Serie was missing...added");
                     }
                 }
+                semSerie.Release();
                 anime.FileState = "Wait/Move";
                 semApi.Release();
-                db.addEntry(e);
-                mainwin.lbLog_Add("Episode added");
+                if (!checkIfEpisodeExists(e))
+                {
+                    db.addEntry(e);
+                    mainwin.lbLog_Add("Episode added");
+                }
+                else
+                {
+                    mainwin.lbLog_Add("Episode already in database");
+                }
             }
             else if (answer is API.Model.Answer.GenericFailAnswer)
             {
@@ -83,7 +96,7 @@ namespace AniSharp
             }
         }
 
-       private Hash.Ed2kHashGenerator hashGen()
+        private Hash.Ed2kHashGenerator hashGen()
         {
             Hash.Ed2kHashGenerator hash = new Hash.Ed2kHashGenerator(anime.FileName);
             hash.waitForIt();
@@ -117,15 +130,17 @@ namespace AniSharp
             return answer;
         }
 
-        private bool checkIfGroupExists(episode e) {
+        private bool checkIfGroupExists(episode e)
+        {
             groups g = db.getGroup((int)e.groupId);
-            if (g != null) {
+            if (g != null)
+            {
                 return true;
             }
             else
             {
                 return false;
-            }            
+            }
         }
 
         private bool checkIfSerieExists(episode e)
@@ -139,6 +154,11 @@ namespace AniSharp
             {
                 return false;
             }
+        }
+        private bool checkIfEpisodeExists(episode e)
+        {
+            episode s = db.getEpisode(e.ed2k);
+            return s != null ? true : false;
         }
     }
 }
