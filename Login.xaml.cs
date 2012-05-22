@@ -32,7 +32,7 @@ namespace AniSharp
             tbUser.Text = AniSharp.Properties.Settings.Default.Username ?? "";
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void LoginCommand_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(sUser) || string.IsNullOrWhiteSpace(sPassword))
                 this.DialogResult = false;
@@ -47,6 +47,12 @@ namespace AniSharp
                  * }
                  */
             }
+        }
+
+        private void Password_Enter(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                LoginCommand_Click(this, null);
         }
     }
 }
