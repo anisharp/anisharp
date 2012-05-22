@@ -94,7 +94,7 @@ namespace AniSharp.API.Application
             // after that, an error is thrown
             for (int i = 0; !results.ContainsKey(tag); i++)
             {
-                if (i > 3)
+                if (i > 0)
                 {
                     System.Diagnostics.Debug.Print("command " + req.Command + " did not return result");
                     throw new Exception("command did not return");
@@ -116,7 +116,8 @@ namespace AniSharp.API.Application
 
                 lock (results)
                 {
-                    Monitor.Wait(results, ((int)Math.Pow(2, i)) * WAITING_BETWEEN_PACKETS);
+                    //Monitor.Wait(results, ((int)Math.Pow(2, i)) * WAITING_BETWEEN_PACKETS);
+                    Monitor.Wait(results);
                 }
             }
             System.Diagnostics.Debug.Print("and we have result");
