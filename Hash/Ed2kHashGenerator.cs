@@ -212,7 +212,8 @@ namespace AniSharp.Hash
                 ed2kLink = sb.ToString();
                 Monitor.PulseAll(this);
             }
-
+            preHashes = null;
+            taskQueue = null;
         }
 
         #endregion
