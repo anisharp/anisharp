@@ -119,7 +119,7 @@
           </Key>
           <Property Type="Int32" Name="animeId" Nullable="false" />
           <Property Type="Int32" Name="episodeId" Nullable="false" />
-          <Property Type="Int32" Name="groupId" />
+          <Property Type="Int32" Name="groupId" Nullable="false" />
           <Property Type="Int64" Name="size" />
           <Property Type="String" Name="ed2k" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="md5" MaxLength="4000" FixedLength="false" Unicode="true" />
@@ -170,7 +170,7 @@
           <Property Type="Int32" Name="specialEpCount" Nullable="false" />
         </EntityType>
         <Association Name="FK_epsiode_groups">
-          <End Type="AniSharpDBModel.groups" Role="groups" Multiplicity="0..1" />
+          <End Type="AniSharpDBModel.groups" Role="groups" Multiplicity="1" />
           <End Type="AniSharpDBModel.episode" Role="episode" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="groups">

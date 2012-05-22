@@ -43,7 +43,15 @@ namespace AniSharp
             using (AniSharpDBEntities context = new AniSharpDBEntities())
             {
                 var episodes = (from o in context.episode where o.ed2k.Equals(hash) select o);
-                return episodes.First();
+                try
+                {
+                    return episodes.First();
+                }
+                catch (InvalidOperationException)
+                {
+                    return null;
+                }
+                
             }
         }
 
@@ -52,7 +60,14 @@ namespace AniSharp
             using (AniSharpDBEntities context = new AniSharpDBEntities())
             {
                 var series = (from o in context.serie where o.serienId.Equals(id) select o);
-                return series.First();
+                try
+                {
+                    return series.First();
+                }
+                catch (InvalidOperationException)
+                {
+                    return null;
+                }
             }
         }
 
@@ -61,7 +76,14 @@ namespace AniSharp
             using (AniSharpDBEntities context = new AniSharpDBEntities())
             {
                 var group = (from o in context.groups where o.groupsId.Equals(id) select o);
-                return group.First();
+                try
+                {
+                    return group.First();
+                }
+                catch (InvalidOperationException)
+                {
+                    return null;
+                }
             }
         }
     }
