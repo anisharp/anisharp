@@ -79,6 +79,7 @@ namespace AniSharp.API.Model.Answer
                     return new FileAnswer(rc, lines[1]);
 
                 case ReturnCode.MYLIST_ENTRY_ADDED:
+                case ReturnCode.FILE_ALREADY_IN_MYLIST:
                     return new MyListEntryAddedAnswer(rc, lines[1]);
 
 
