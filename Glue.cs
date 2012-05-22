@@ -29,12 +29,13 @@ namespace AniSharp
 
         public void run()
         {
+            Hash.Ed2kHashGenerator hash;
             semHash.WaitOne();
             API.Model.Answer.ApiAnswer answer;
             anime.FileState = "hashing...";
             // hashing done in new block
             {
-                Hash.Ed2kHashGenerator hash = hashGen();
+                hash = hashGen();
                 mainwin.lbLog_Add("finished hashing " + anime.FileName);
 
                 semHash.Release();
@@ -105,6 +106,8 @@ namespace AniSharp
             mainwin.lbLog_Add("Rename File....move File");
             fr.renameTo(anime);
             anime.FileState = "Finished";
+            new API.Model.Request.MyListAddRequest(hash.FileSize,hash.Ed2kHash);
+            mainwin.lbLog_Add("Add to Mylist");
         }
 
         private Hash.Ed2kHashGenerator hashGen()
