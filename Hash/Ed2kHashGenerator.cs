@@ -90,12 +90,14 @@ namespace AniSharp.Hash
             
             
             mFileReader = new Thread(threadFileReader);
+            mFileReader.Name = "FR " + _sFile;
             if (_length > chunkSize)
             {
                 mHashCalculators = new Thread[workerThreads];
                 for (int i = 0; i < workerThreads; i++)
                 {
                     mHashCalculators[i] = new Thread(threadFileHasherBig);
+                    mHashCalculators[i].Name = "HC " + i + " " + _sFile;
                     mHashCalculators[i].Start();
                 }
             }
@@ -104,16 +106,15 @@ namespace AniSharp.Hash
                 mHashCalculators = new Thread[1];
 
                     mHashCalculators[0] = new Thread(threadFileHasherSmall);
+                    mHashCalculators[0].Name = "HC simple " + _sFile;
                     mHashCalculators[0].Start();
                 
             }
 
-            mFileReader = new Thread(threadFileReader);
-
             mFileReader.Start();
 
-
             mFinalCalculator = new Thread(threadFinalCalculations);
+            mFinalCalculator.Name = "FC " + _sFile;
             mFinalCalculator.Start();
         }
 
