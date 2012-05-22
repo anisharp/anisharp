@@ -66,8 +66,8 @@ namespace AniSharp
                             mainwin.lbLog_Add("Group was missing...added");
                         }
                     }
+                    semGruppe.Release();
                 }
-                semGruppe.Release();
                 if (!checkIfSerieExists(e))
                 {
                     semSerie.WaitOne();
@@ -81,9 +81,9 @@ namespace AniSharp
                             db.addEntry(s);
                             mainwin.lbLog_Add("Serie was missing...added");
                         }
-                    }
+                     }
+                    semSerie.Release();
                 }
-                semSerie.Release();
                 anime.FileState = "Wait/Move";
                 semApi.Release();
                 if (!checkIfEpisodeExists(e))
