@@ -27,19 +27,23 @@ namespace AniSharp
         public void run()
         {
             semHash.WaitOne();
+            API.Model.Answer.ApiAnswer answer;
             anime.FileState = "hashing...";
-            Hash.Ed2kHashGenerator hash = hashGen();
-            mainwin.lbLog_Add("finished hashing " + anime.FileName);
-            semHash.Release();
-            anime.FileState = "Wait/ID";
-            anime.FileHash = hash.Ed2kHash;
+            // hashing done in new block
+            {
+                Hash.Ed2kHashGenerator hash = hashGen();
+                mainwin.lbLog_Add("finished hashing " + anime.FileName);
 
-            semApi.WaitOne();
-            anime.FileState = "identifying...";
-            API.Model.Answer.ApiAnswer answer = sendFileRequest(hash);
-            mainwin.lbLog_Add("querying api with " + hash.Ed2kHash);
-            mainwin.lbLog_Add("got answer for " + hash.Ed2kHash + ", it is " + answer.GetType().Name + " with code " + answer.Code);
+                semHash.Release();
+                anime.FileState = "Wait/ID";
+                anime.FileHash = hash.Ed2kHash;
 
+                semApi.WaitOne();
+                anime.FileState = "identifying...";
+                answer = sendFileRequest(hash);
+                mainwin.lbLog_Add("querying api with " + hash.Ed2kHash);
+                mainwin.lbLog_Add("got answer for " + hash.Ed2kHash + ", it is " + answer.GetType().Name + " with code " + answer.Code);
+            }
             if (answer is API.Model.Answer.FileAnswer)
             {
                 API.Model.Answer.FileAnswer fa = (API.Model.Answer.FileAnswer)answer;
@@ -63,10 +67,10 @@ namespace AniSharp
                     if (aanswer is API.Model.Answer.AnimeAnswer)
                     {
                         API.Model.Answer.AnimeAnswer aa = (API.Model.Answer.AnimeAnswer)aanswer;
-                        serie s = (serie)aa; 
+                        serie s = (serie)aa;
                         db.addEntry(s);
                         mainwin.lbLog_Add("Serie was missing...added");
-                    }   
+                    }
                 }
                 anime.FileState = "Wait/Move";
                 semApi.Release();
