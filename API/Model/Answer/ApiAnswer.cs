@@ -69,6 +69,9 @@ namespace AniSharp.API.Model.Answer
                 case ReturnCode.ACCESS_DENIED:
                     return new GenericFailAnswer(rc);
 
+                case ReturnCode.GROUP:
+                    return new GroupAnswer(rc, lines[1]);
+
                 case ReturnCode.ANIME:
                     return new AnimeAnswer(rc, lines[1]);
                 
