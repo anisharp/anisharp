@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace AniSharp
 {
@@ -13,8 +14,8 @@ namespace AniSharp
         private MainWindow mainwin;
 
         private static Semaphore semHash = new Semaphore(1, 1);
-        private static Semaphore semGruppe = new Semaphore(1, 1);
         private static Semaphore semSerie = new Semaphore(1, 1);
+        private static Semaphore semGruppe = new Semaphore(1, 1);
         private static Semaphore semApi = new Semaphore(20, 20);
         private static Semaphore semDb = new Semaphore(20, 20);
 
@@ -51,7 +52,6 @@ namespace AniSharp
             {
                 API.Model.Answer.FileAnswer fa = (API.Model.Answer.FileAnswer)answer;
                 episode e = (episode)fa;
-
                 semGruppe.WaitOne();
                 if (!checkIfGroupExists(e))
                 {
@@ -92,7 +92,7 @@ namespace AniSharp
             }
             else if (answer is API.Model.Answer.GenericFailAnswer)
             {
-                //fail message
+                MessageBox.Show("Server failed.");
             }
         }
 
@@ -133,32 +133,18 @@ namespace AniSharp
         private bool checkIfGroupExists(episode e)
         {
             groups g = db.getGroup((int)e.groupId);
-            if (g != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return g != null ? true : false;
         }
 
         private bool checkIfSerieExists(episode e)
         {
             serie s = db.getSeries((int)e.animeId);
-            if (s != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return s != null ? true : false;
         }
         private bool checkIfEpisodeExists(episode e)
         {
-            episode s = db.getEpisode(e.ed2k);
-            return s != null ? true : false;
+            episode ep = db.getEpisode(e.ed2k);
+            return ep != null ? true : false;
         }
     }
 }
