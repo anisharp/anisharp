@@ -27,13 +27,15 @@ namespace AniSharp
         public void run()
         {
             semHash.WaitOne();
+            anime.FileState = "hashing...";
             Hash.Ed2kHashGenerator hash = hashGen();
             mainwin.lbLog_Add("finished hashing " + anime.FileName);
             semHash.Release();
-
+            anime.FileState = "Wait/ID";
             anime.FileHash = hash.Ed2kHash;
 
             semApi.WaitOne();
+            anime.FileState = "identifying...";
             API.Model.Answer.ApiAnswer answer = sendFileRequest(hash);
             mainwin.lbLog_Add("querying api with " + hash.Ed2kHash);
             mainwin.lbLog_Add("got answer for " + hash.Ed2kHash + ", it is " + answer.GetType().Name + " with code " + answer.Code);
@@ -66,6 +68,7 @@ namespace AniSharp
                         mainwin.lbLog_Add("Serie was missing...added");
                     }   
                 }
+                anime.FileState = "Wait/Move";
                 semApi.Release();
                 db.addEntry(e);
                 mainwin.lbLog_Add("Episode added");

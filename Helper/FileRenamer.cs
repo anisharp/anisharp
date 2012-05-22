@@ -77,7 +77,9 @@ namespace AniSharp
                 sName.Replace("%aid",episodes.animeId.ToString());
                 sName.Replace("%eid",episodes.episodeId.ToString());
                 sName.Replace("%gid", group.groupsId.ToString());
+                File.Move(animeFile.FileName, sPath + sName);
             }
+            
             /*
             if (sFile != sNew)
             {
