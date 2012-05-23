@@ -50,6 +50,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>shana.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -194,6 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\AniSharpDB.sdf" />
+    <Resource Include="shana.ico" />
     <Resource Include="Images\shana.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
