@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using AniSharp.API.Model.Request;
 using AniSharp.API.Model.Answer;
 using System.Collections.ObjectModel;
+using System.Net.Sockets;
 
 namespace AniSharp
 {
@@ -149,7 +150,15 @@ namespace AniSharp
                 if (result == true)
                 {
                     btLogin.IsEnabled = false;
-                    conn = new API.Application.ApiSession();
+                    try
+                    {
+                        conn = new API.Application.ApiSession();
+                    }
+                    catch (SocketException)
+                    {
+                        MessageBox.Show("AniDB is unreachable", "Login", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
                     conn.ApiSessionStatusChanged += onApiSessionStatusChange;
                     conn.login(login.sUser, login.sPassword);
                     //btLogin.Content = "Logout";
