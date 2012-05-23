@@ -70,6 +70,27 @@ namespace AniSharp.API.Application
             {
             }
         }
+
+        private void enqueueAndWaitForSend(String outString, String command)
+        {
+            lock (outString)
+            {
+                outQueue.Add(outString);
+
+                if (command.Equals("AUTH")) // allows to change encoding during AUTH
+                {
+                    System.Diagnostics.Debug.Print("waiting for outString to be pulsed");
+                    Monitor.Wait(outString);
+                    System.Diagnostics.Debug.Print("outString pulsed, setting encoding");
+                    udpadapter.TransportEncoding = Encoding.GetEncoding(AniSharp.Properties.Settings.Default.TransportEncoding);
+                }
+                else
+                {
+                    Monitor.Wait(outString);
+                }
+            }
+        }
+
         /// <summary>
         /// sends a command to AniDB. throws InvalidOperationException if session key is not
         /// set, but mandatory
@@ -92,44 +113,55 @@ namespace AniSharp.API.Application
             // implements Exponential Backoff and resend
             // timeouts: 4s 8s 16s 32s == 60s
             // after that, an error is thrown
-            for (int i = 0; !results.ContainsKey(tag); i++)
+            int resendCounter = 0;
+              
+            while (resendCounter < 5)
             {
-                if (i > 0)
-                {
-                    System.Diagnostics.Debug.Print("command " + req.Command + " did not return result");
-                    throw new Exception("command did not return");
-                }
+                enqueueAndWaitForSend(outString, req.Command);
 
-                lock (outString)
-                {
-                    outQueue.Add(outString);
-
-                    if (req.Command.Equals("AUTH")) // allows to change encoding during AUTH
-                    {
-                        System.Diagnostics.Debug.Print("waiting for outString to be pulsed");
-                        Monitor.Wait(outString);
-                        System.Diagnostics.Debug.Print("outString pulsed, setting encoding");
-                        udpadapter.TransportEncoding = Encoding.GetEncoding(AniSharp.Properties.Settings.Default.TransportEncoding);
-                    }
-                }
-                System.Diagnostics.Debug.Print("command enqueued, waiting for result");
+                resendCounter++;
+                System.Diagnostics.Debug.Print("command sent, waiting for result");
 
                 lock (results)
                 {
-                    //Monitor.Wait(results, ((int)Math.Pow(2, i)) * WAITING_BETWEEN_PACKETS);
-                    Monitor.Wait(results);
+                    int faultCounter = 0;
+
+                    while (faultCounter < 5)
+                    {
+
+                        bool waitSuccessful = Monitor.Wait(results, 2 * WAITING_BETWEEN_PACKETS + 1000);
+
+                        // everything is fine, we got our answer
+                        if (results.ContainsKey(tag))
+                        {
+                            System.Diagnostics.Debug.Print("and we have result");
+                            String result = results[tag];
+
+                            results.Remove(tag);
+                            lock (givenTags)
+                            {
+                                givenTags.Remove(tag);
+                            }
+
+                            return ApiAnswer.parse(result);
+                        }
+                        // I was interrupted BEFORE the timeout was reached
+                        // this packet WAS NOT for me
+                        else if (waitSuccessful)
+                        {
+                            faultCounter++;
+                        }
+                        // TIMEOUT reached
+                        else
+                        {
+                            faultCounter = Int32.MaxValue;
+                        }
+
+                    }
                 }
             }
-            System.Diagnostics.Debug.Print("and we have result");
-            String result = results[tag];
 
-            results.Remove(tag);
-            lock (givenTags)
-            {
-                givenTags.Remove(tag);
-            }
-
-            return ApiAnswer.parse(result);
+            throw new Exception("command " + req.Command + " not returned (timeout or lost)");  
         }
 
         private HashSet<string> givenTags = new HashSet<string>();
