@@ -13,14 +13,19 @@ namespace AniSharp
         DatabaseConnection db;
         private MainWindow mainwin;
 
-
-        // hier werden Locks gesetzt (mit Semaphoren)
         private static Semaphore semHash = new Semaphore(1, 1);
         private static Semaphore semSerie = new Semaphore(1, 1);
         private static Semaphore semGruppe = new Semaphore(1, 1);
         private static Semaphore semApi = new Semaphore(20, 20);
         private static Semaphore semDb = new Semaphore(20, 20);
 
+
+        /// <summary>
+        /// constructor for glue class
+        /// </summary>
+        /// <param name="anime">Contains Path, Hash, State</param>
+        /// <param name="conn">Used to send requests</param>
+        /// <param name="mw">Needed to get states and write to log</param>
         public Glue(Anime anime, API.Application.Queryable conn, MainWindow mw)
         {
             this.anime = anime;
@@ -31,11 +36,12 @@ namespace AniSharp
 
         public void run()
         {
+            anime.FileState = "Wait/Hash";
             Hash.Ed2kHashGenerator hash;
             semHash.WaitOne();
             API.Model.Answer.ApiAnswer answer;
             anime.FileState = "hashing...";
-            // hashing done in new block
+            //Hashing done in new block
             {
                 hash = hashGen();
                 mainwin.lbLog_Add("finished hashing " + anime.FileName);
@@ -55,9 +61,11 @@ namespace AniSharp
             {
                 API.Model.Answer.FileAnswer fa = (API.Model.Answer.FileAnswer)answer;
                 episode e = (episode)fa;
+                //First check if group exists (foreign key in table serie not null)
                 if (!checkIfGroupExists(e))
                 {
                     semGruppe.WaitOne();
+                    //Request group information and add it into database
                     if (!checkIfGroupExists(e))
                     {
                         API.Model.Answer.ApiAnswer ganswer = sendGroupRequest((int)e.groupId);
@@ -99,15 +107,19 @@ namespace AniSharp
                     mainwin.lbLog_Add("Episode already in database");
                 }
             }
+            //No or unknown answer
             else if (answer is API.Model.Answer.GenericFailAnswer)
             {
                 MessageBox.Show("Server failed.");
             }
 
+            //Call Filerenamer to rename and move the file
             FileRenamer fr = FileRenamer.getInstance();
             mainwin.lbLog_Add("Rename File....move File");
             fr.renameTo(anime);
             anime.FileState = "Finished";
+
+            //If state is set, send request to update the list on anidb 
             if (mainwin.getAdd() != null || mainwin.getAdd() != false)
             {
                 conn.query(new API.Model.Request.MyListAddRequest(hash.FileSize, hash.Ed2kHash, state:  (API.Model.Request.MyListAddRequest.State)mainwin.getState() ,viewed:mainwin.getViewed(), viewdate:0, source:mainwin.getSource(), storage:mainwin.getStorage(), other:mainwin.getOther()));
