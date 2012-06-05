@@ -110,6 +110,10 @@ namespace AniSharp
             mainwin.lbLog_Add("Add to Mylist");
         }
 
+        /// <summary>
+        /// Generate Ed2k hash from given file
+        /// </summary>
+        /// <returns>Ed2k hash of given file</returns>
         private Hash.Ed2kHashGenerator hashGen()
         {
             Hash.Ed2kHashGenerator hash = new Hash.Ed2kHashGenerator(anime.FileName);
@@ -117,6 +121,11 @@ namespace AniSharp
             return hash;
         }
 
+        /// <summary>
+        /// Send file request to AniDB
+        /// </summary>
+        /// <param name="animeId">Id of file to request</param>
+        /// <returns>The answer the request recieved</returns>
         private API.Model.Answer.ApiAnswer sendFileRequest(Hash.Ed2kHashGenerator hash)
         {
             API.Model.Request.FileRequest fr = new API.Model.Request.FileRequest(hash.FileSize, hash.Ed2kHash);
@@ -126,6 +135,11 @@ namespace AniSharp
             return answer;
         }
 
+        /// <summary>
+        /// Send group request to AniDB
+        /// </summary>
+        /// <param name="animeId">id of group to request</param>
+        /// <returns>The answer the request recieved</returns>
         private API.Model.Answer.ApiAnswer sendGroupRequest(int groupId)
         {
             API.Model.Request.GroupRequest gr = new API.Model.Request.GroupRequest(groupId);
@@ -135,6 +149,11 @@ namespace AniSharp
             return answer;
         }
 
+        /// <summary>
+        /// Send anime request to AniDB
+        /// </summary>
+        /// <param name="animeId">Anime id to request</param>
+        /// <returns>The answer the request recieved</returns>
         private API.Model.Answer.ApiAnswer sendAnimeRequest(int animeId)
         {
             API.Model.Request.AnimeRequest ar = new API.Model.Request.AnimeRequest(animeId);
@@ -144,17 +163,33 @@ namespace AniSharp
             return answer;
         }
 
+        /// <summary>
+        /// check if group exists in db
+        /// </summary>
+        /// <param name="e">group to look up</param>
+        /// <returns>true if group does not exist in db</returns>
         private bool checkIfGroupExists(episode e)
         {
             groups g = db.getGroup((int)e.groupId);
             return g != null ? true : false;
         }
 
+        /// <summary>
+        /// check if anime exists in db
+        /// </summary>
+        /// <param name="e">anime to look up</param>
+        /// <returns>true if anime does not exist in db</returns>
         private bool checkIfSerieExists(episode e)
         {
             serie s = db.getSeries((int)e.animeId);
             return s != null ? true : false;
         }
+
+        /// <summary>
+        /// check if episode exists in db
+        /// </summary>
+        /// <param name="e">episode to look up</param>
+        /// <returns>true if episode does not exist in db</returns>
         private bool checkIfEpisodeExists(episode e)
         {
             episode ep = db.getEpisode(e.ed2k);
