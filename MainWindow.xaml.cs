@@ -17,6 +17,7 @@ using AniSharp.API.Model.Request;
 using AniSharp.API.Model.Answer;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
+using System.Windows.Threading;
 
 namespace AniSharp
 {
@@ -33,41 +34,6 @@ namespace AniSharp
         public ObservableCollection<Anime> AnimeCollection
         {
             get { return _AnimeCollection; }
-        }
-
-        public bool? add
-        {
-            get { return chkAdd.IsChecked; }
-        }
-        public int state
-        {
-            get
-            {
-                switch (cbState.Text)
-                {
-                    case "On HDD": return 1;
-                    case "On CD": return 2;
-                    case "Deleted": return 3;
-                    default: return 0;
-                }
-            }
-
-        }
-        public bool? viewed
-        {
-            get { return chkWatched.IsChecked; }
-        }
-        public string source
-        {
-            get { return tbSource.Text; }
-        }
-        public string storage
-        {
-            get { return tbStorage.Text; }
-        }
-        public string other
-        {
-            get { return tbOther.Text; }
         }
 
         public static RoutedCommand DeleteCmd = new RoutedCommand();
@@ -233,6 +199,60 @@ namespace AniSharp
         #endregion
 
         #region delegate functions
+
+        public bool? getAdd()
+        {
+            bool? ret=false;
+            Dispatcher.Invoke((Action)(() => { ret = chkAdd.IsChecked; }));
+            return ret;
+        }
+
+        public int getState()
+        {
+            int ret = 0;
+            Dispatcher.Invoke((Action)(() =>
+            {
+                switch (cbState.Text)
+                {
+                    case "Unknown": ret = 0; break;
+                    case "On HDD": ret = 1; break;
+                    case "On CD": ret = 2; break;
+                    case "Deleted": ret = 3; break;
+                    default: ret = 0; break;
+                }
+            }));
+            return ret;
+        }
+
+        public bool? getViewed()
+        {
+            bool? ret = false;
+            Dispatcher.Invoke((Action)(() =>
+            { ret = chkWatched.IsChecked; }));
+            return ret;
+        }
+        public string getSource()
+        {
+            string ret="";
+            Dispatcher.Invoke((Action)(() =>
+            { ret = tbSource.Text; }));
+            return ret;
+        }
+        public string getStorage()
+        {
+            string ret = "";
+            Dispatcher.Invoke((Action)(() =>
+            { ret = tbStorage.Text; }));
+            return ret;
+        }
+        public string getOther()
+        {
+            string ret="";
+            Dispatcher.Invoke((Action)(() =>
+            { ret = tbOther.Text; }));
+            return ret;
+        }
+  
         public void lvFiles_Add(String sText)
         {
             Dispatcher.Invoke(new Action(() => { _AnimeCollection.Add(new Anime(sText,"Wait/Hash"));}));

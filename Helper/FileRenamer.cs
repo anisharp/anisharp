@@ -16,6 +16,11 @@ namespace AniSharp
         private MainWindow mw = null;
         private String _Pattern = null;
         private Semaphore _se = new Semaphore(1,1);
+
+        /// <summary>
+        /// returns an instance of the FileRenamer class
+        /// </summary>
+        /// <returns>instance of FileRenamer</returns>
         public static FileRenamer getInstance()
         {
             if(instance==null)
@@ -28,18 +33,30 @@ namespace AniSharp
             return instance;
         }
 
+        /// <summary>
+        /// set the MainWindow reference
+        /// </summary>
+        /// <param name="mw">reference of MainWindow</param>
         public void setMainWindow(MainWindow mw)
         {
             if (this.mw == null)
                 this.mw = mw;
         }
 
+        /// <summary>
+        /// set the renaming pattern for the FileRenamer
+        /// </summary>
+        /// <param name="sPattern">rename pattern</param>
         public void setPattern(String sPattern)
         {
             if (!String.IsNullOrEmpty(sPattern))
                 this._Pattern = sPattern;
         }
 
+        /// <summary>
+        /// rename and move the given Anime file
+        /// </summary>
+        /// <param name="animeFile">Anime file to rename</param>
         public void renameTo(Anime animeFile)
         {
             if (!String.IsNullOrEmpty(_Pattern))
@@ -79,7 +96,6 @@ namespace AniSharp
                 sPattern = sPattern.Replace("%eps", series.highestNoEp.ToString());
                 sPattern = sPattern.Replace("%typ", series.type);
                 sPattern = sPattern.Replace("%gen", series.category);
-//sName.Replace("%fid",
                 sPattern = sPattern.Replace("%aid", episodes.animeId.ToString());
                 sPattern = sPattern.Replace("%eid", episodes.episodeId.ToString());
                 sPattern = sPattern.Replace(":","");
@@ -91,24 +107,10 @@ namespace AniSharp
                 sPattern = sPattern.Replace(">", "");
                 sPattern = sPattern.Replace("|", "");
                 sPattern = sPattern.Replace("\"", "");
-                //MessageBox.Show(sPath + sPattern);
                 File.Move(animeFile.FileName, sPath + sPattern+sType);
                 animeFile.FileName = sPath + sPattern;
                 _se.Release();
             }
-            
-            /*
-            if (sFile != sNew)
-            {
-                String sPath = sFile.Substring(0, sFile.LastIndexOf(@"\"));
-                if (sNew.Contains(sPath))
-                    File.Move(sFile, sNew);
-                else
-                {
-                    String sRename = sNew.Substring(sNew.LastIndexOf(@"\"), sNew.Length);
-                    File.Move(sFile, sNew);
-                }
-            }*/
         }
     }
 }

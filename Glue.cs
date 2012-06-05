@@ -108,9 +108,9 @@ namespace AniSharp
             mainwin.lbLog_Add("Rename File....move File");
             fr.renameTo(anime);
             anime.FileState = "Finished";
-            if (mainwin.add != null || mainwin.add != false)
+            if (mainwin.getAdd() != null || mainwin.getAdd() != false)
             {
-                conn.query(new API.Model.Request.MyListAddRequest(hash.FileSize, hash.Ed2kHash, state: (API.Model.Request.MyListAddRequest.State) mainwin.state ,viewed:mainwin.viewed, viewdate:0, source:mainwin.source, storage:mainwin.storage, other:mainwin.other));
+                conn.query(new API.Model.Request.MyListAddRequest(hash.FileSize, hash.Ed2kHash, state:  (API.Model.Request.MyListAddRequest.State)mainwin.getState() ,viewed:mainwin.getViewed(), viewdate:0, source:mainwin.getSource(), storage:mainwin.getStorage(), other:mainwin.getOther()));
             }
             mainwin.lbLog_Add("Add to Mylist");
         }
