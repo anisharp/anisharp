@@ -10,6 +10,10 @@ namespace AniSharp
 {
     class DatabaseConnection
     {
+        /// <summary>
+        /// Adds new anime to db
+        /// </summary>
+        /// <param name="newSeries">Anime to add</param>
         public void addEntry(serie newSeries)
         {
             using (AniSharpDBEntities context = new AniSharpDBEntities())
@@ -19,6 +23,10 @@ namespace AniSharp
             }
         }
 
+        /// <summary>
+        /// Adds new group to db
+        /// </summary>
+        /// <param name="newGroup">Group to add</param>
         public void addEntry(groups newGroup)
         {
             using (AniSharpDBEntities context = new AniSharpDBEntities())
@@ -28,6 +36,10 @@ namespace AniSharp
             }
         }
 
+        /// <summary>
+        /// Adds new episode to db
+        /// </summary>
+        /// <param name="newEpisode">Episode to add</param>
         public void addEntry(episode newEpisode)
         {
             using (AniSharpDBEntities context = new AniSharpDBEntities())
@@ -37,6 +49,11 @@ namespace AniSharp
             }
         }
 
+        /// <summary>
+        /// Gets episode from db
+        /// </summary>
+        /// <param name="hash">Hash of file</param>
+        /// <returns>Episode from db</returns>
         public episode getEpisode(string hash)
         {
             using (AniSharpDBEntities context = new AniSharpDBEntities())
@@ -54,6 +71,11 @@ namespace AniSharp
             }
         }
 
+        /// <summary>
+        /// Gets anime from db
+        /// </summary>
+        /// <param name="hash">Id of anime</param>
+        /// <returns>Anime from db</returns>
         public serie getSeries(int id)
         {
             using (AniSharpDBEntities context = new AniSharpDBEntities())
@@ -70,6 +92,11 @@ namespace AniSharp
             }
         }
 
+        /// <summary>
+        /// Gets group from db
+        /// </summary>
+        /// <param name="hash">Id of group</param>
+        /// <returns>Group from db</returns>
         public groups getGroup(int id)
         {
             using (AniSharpDBEntities context = new AniSharpDBEntities())
