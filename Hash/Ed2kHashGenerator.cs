@@ -9,6 +9,8 @@ namespace AniSharp.Hash
 {
     /// <summary>
     /// Ed2kHashGenerator
+    /// 
+    /// using an Thread Pool
     /// </summary>
     class Ed2kHashGenerator
     {

@@ -13,6 +13,8 @@ namespace AniSharp
         DatabaseConnection db;
         private MainWindow mainwin;
 
+
+        // hier werden Locks gesetzt (mit Semaphoren)
         private static Semaphore semHash = new Semaphore(1, 1);
         private static Semaphore semSerie = new Semaphore(1, 1);
         private static Semaphore semGruppe = new Semaphore(1, 1);

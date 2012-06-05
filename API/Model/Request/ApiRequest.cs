@@ -96,6 +96,7 @@ namespace AniSharp.API.Model.Request
             sb.Append(this.Command);
             sb.Append(' ');
 
+            // hier ist ein Iterator-Verwendet
             foreach (KeyValuePair<String,String> pair in parameters)
             {
                 sb.Append(pair.Key).Append('=').Append(pair.Value).Append('&');
