@@ -11,6 +11,9 @@ namespace AniSharp.API.Model.Request
     /// DO NOT set the session with the methods
     /// of this class. It will be set immediately
     /// before sending it.
+    /// 
+    /// Dient als Command-Objekt an den anderen
+    /// API-Peer.
     /// </summary>
     public class ApiRequest
     {
