@@ -1,3 +1,4 @@
+#region usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ using AniSharp.API.Model.Answer;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using System.Windows.Threading;
+#endregion
 
 namespace AniSharp
 {
@@ -38,6 +40,9 @@ namespace AniSharp
 
         public static RoutedCommand DeleteCmd = new RoutedCommand();
         private API.Application.ApiSession conn = null;
+        /// <summary>
+        /// gibt einen FileFilter zurueck der die gewuenschten Dateiendungen enthaelt.
+        /// </summary>
         public String FileFilter
         {
             get
@@ -53,6 +58,9 @@ namespace AniSharp
         }
         #endregion
 
+        /// <summary>
+        /// Konstruktor fuer das MainWindow
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -61,19 +69,9 @@ namespace AniSharp
             _fr.setMainWindow(this);
         }
 
-        public void lvFiles_DragOver(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effects = DragDropEffects.Move;
-        }
-
-        void lvFiles_Drop(object sender, DragEventArgs e)
-        {
-            FileParser fp = new FileParser((String[])e.Data.GetData(DataFormats.FileDrop), this, FileFilter);
-            System.Threading.Thread t = new System.Threading.Thread(fp.ParseFile);
-            t.Start();
-        }
-
+        /// <summary>
+        /// Aktiviert den Start Knopf
+        /// </summary>
         public void activateStart()
         {
             Dispatcher.Invoke(new Action(() => { btStart.IsEnabled = true; }));
@@ -91,17 +89,20 @@ namespace AniSharp
                 tabControl1.Height = this.ActualHeight-70;
                 lbLog.Height = this.ActualHeight - 100;
                 lvFiles.Height = this.ActualHeight - 100;
-                lbDatabase.Height = this.ActualHeight - 100;
             }
             if (e.WidthChanged)
             {
                 tabControl1.Width = this.ActualWidth-20;
                 lbLog.Width = this.ActualWidth - 27;
                 lvFiles.Width = this.ActualWidth - 27;
-                lbDatabase.Width = this.ActualWidth - 27;
             }
         }
 
+        /// <summary>
+        /// Event, dass beim schliessen des Hauptfenster alle verbleibenden Verbindungen beendet
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // logout
@@ -115,6 +116,11 @@ namespace AniSharp
 
         #region button functions
 
+        /// <summary>
+        /// Startet den Vorgang um die in der Liste als Wait/Start eingetragenen Dateien zu verarbeiten
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btStart_Click(object sender, RoutedEventArgs e)
         {
             btStart.IsEnabled = false;
@@ -122,14 +128,22 @@ namespace AniSharp
 
             foreach (Anime s in _AnimeCollection)
             {
-                Glue g = new Glue(s, conn, this);
-                System.Threading.Thread pattexing = new System.Threading.Thread(g.run);
-                pattexing.Start();                
+                if (s.FileState.CompareTo("Wait/Start") == 0)
+                {
+                    Glue g = new Glue(s, conn, this);
+                    System.Threading.Thread pattexing = new System.Threading.Thread(g.run);
+                    pattexing.Start();
+                }
             }
             GC.Collect();
-            //activateStart();
+            activateStart();
         }
 
+        /// <summary>
+        /// Oeffnet einen File Dialog um einzelne Dateien zur Liste hinzuzufuegen.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btFiles_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -142,6 +156,11 @@ namespace AniSharp
             }
         }
 
+        /// <summary>
+        /// Oeffnet einen Login Screen mit dem sich der Benutzer anmelden kann. Bei erfolgreicher Eingabe wird die verbindung zum Server hergestellt.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btLogin_Click(object sender, RoutedEventArgs e)
         {
             if (btLogin.Content.ToString() == "Login")
@@ -177,6 +196,11 @@ namespace AniSharp
                 
         }
 
+        /// <summary>
+        /// oeffnet einen Folder Dialog um einen bestimmten Ordner in die Liste hinzuzufuegen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btFolders_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog();
@@ -189,6 +213,11 @@ namespace AniSharp
             }
         }
 
+        /// <summary>
+        /// Opens a browser dialog to set the path the anime files should be moved to
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnBrowse_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog();
@@ -196,10 +225,30 @@ namespace AniSharp
             if (result == System.Windows.Forms.DialogResult.OK)
                 tbMove.Text = dlg.SelectedPath;
         }
+
+        /// <summary>
+        /// Button um das gewaehlte Pattern in den Einstellungen zu speichern.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (AniSharp.Properties.Settings.Default.RenamePattern != tbRenamePattern.Text)
+            {
+                AniSharp.Properties.Settings.Default.RenamePattern = tbRenamePattern.Text;
+                AniSharp.Properties.Settings.Default.Save();
+                _fr.setPattern(tbRenamePattern.Text);
+            }
+        }
         #endregion
 
         #region delegate functions
 
+
+        /// <summary>
+        /// returns the information if the file should be added to AniDB or not
+        /// </summary>
+        /// <returns></returns>
         public bool? getAdd()
         {
             bool? ret=false;
@@ -207,6 +256,10 @@ namespace AniSharp
             return ret;
         }
 
+        /// <summary>
+        /// returns the state of the anime file
+        /// </summary>
+        /// <returns>int state</returns>
         public int getState()
         {
             int ret = 0;
@@ -224,6 +277,10 @@ namespace AniSharp
             return ret;
         }
 
+        /// <summary>
+        /// returns the viewed state of the anime
+        /// </summary>
+        /// <returns>true,false,null</returns>
         public bool? getViewed()
         {
             bool? ret = false;
@@ -231,6 +288,11 @@ namespace AniSharp
             { ret = chkWatched.IsChecked; }));
             return ret;
         }
+
+        /// <summary>
+        /// returns the value of Source
+        /// </summary>
+        /// <returns>string source</returns>
         public string getSource()
         {
             string ret="";
@@ -238,6 +300,11 @@ namespace AniSharp
             { ret = tbSource.Text; }));
             return ret;
         }
+
+        /// <summary>
+        /// returns the value of Storage
+        /// </summary>
+        /// <returns>string storage</returns>
         public string getStorage()
         {
             string ret = "";
@@ -245,6 +312,11 @@ namespace AniSharp
             { ret = tbStorage.Text; }));
             return ret;
         }
+
+        /// <summary>
+        /// returns the value of Other
+        /// </summary>
+        /// <returns>string other</returns>
         public string getOther()
         {
             string ret="";
@@ -253,22 +325,56 @@ namespace AniSharp
             return ret;
         }
   
+        /// <summary>
+        /// delegate der es anderen Threads erlaubt Dateien zur AnimeListe hinzuzufuegen
+        /// </summary>
+        /// <param name="sText"></param>
         public void lvFiles_Add(String sText)
         {
-            Dispatcher.Invoke(new Action(() => { _AnimeCollection.Add(new Anime(sText,"Wait/Hash"));}));
+            Dispatcher.Invoke(new Action(() => { _AnimeCollection.Add(new Anime(sText,"Wait/Start"));}));
         }
 
+        /// <summary>
+        /// delegate der es anderen Threads erlaubt Status Updates in den Log zu schreiben
+        /// </summary>
+        /// <param name="sText"></param>
         public void lbLog_Add(String sText)
         {
             Dispatcher.Invoke(new Action(() => { lbLog.Items.Add(sText); }));
         }
 
-        public void lbDatabase_Add(String sText)
-        {
-            Dispatcher.Invoke(new Action(() => { lbDatabase.Items.Add(sText); }));
-        }
         #endregion
 
+        #region other events
+
+        /// <summary>
+        /// Event, dass den Mauszeiger anpasst sobald gültige Dateien in die Liste gezogen werden
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void lvFiles_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effects = DragDropEffects.Move;
+        }
+
+        /// <summary>
+        /// Event, dass das einfuegen von Dateien per drag and drop erlaubt und diese der Liste hinzufuegt
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void lvFiles_Drop(object sender, DragEventArgs e)
+        {
+            FileParser fp = new FileParser((String[])e.Data.GetData(DataFormats.FileDrop), this, FileFilter);
+            System.Threading.Thread t = new System.Threading.Thread(fp.ParseFile);
+            t.Start();
+        }
+
+        /// <summary>
+        /// Eventhandler der im falle von Enter den in der TextBox Extensions eingegebenen Text zu den erlaubten Dateiendungen hinzuzufügen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tbExtension_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && !String.IsNullOrEmpty(tbExtension.Text.ToString()))
@@ -280,14 +386,12 @@ namespace AniSharp
             }
         }
 
-        private void btDatabase_Click(object sender, RoutedEventArgs e)
-        {
-            DatabaseConnection dc = new DatabaseConnection();
-            episode ep = dc.getEpisode("1q2w3e");
-            MessageBox.Show(ep.epKanjiName);
-            
-        }
-
+        /// <summary>
+        /// Event das im falle eines Login versuchs in AniDB eine benachrichtigung empfaengt ob er erfolgreich war oder gescheitert ist. Im falle eines erfolgreichen Logins wird der Start Button aktiviert.
+        /// </summary>
+        /// <param name="loggedIn"></param>
+        /// <param name="shouldRetry"></param>
+        /// <param name="Message"></param>
         public void onApiSessionStatusChange(bool loggedIn, bool shouldRetry, string Message)
         {
             if (loggedIn)
@@ -302,16 +406,7 @@ namespace AniSharp
             }
             btLogin.IsEnabled = true;
         }
-
-        private void btSave_Click(object sender, RoutedEventArgs e)
-        {
-            if (AniSharp.Properties.Settings.Default.RenamePattern != tbRenamePattern.Text)     
-            {
-                AniSharp.Properties.Settings.Default.RenamePattern = tbRenamePattern.Text;
-                AniSharp.Properties.Settings.Default.Save();
-                _fr.setPattern(tbRenamePattern.Text);
-            }
-        }
+        #endregion
 
         #region CommandEventHandler
         private void DeleteCmdExecuted(object sender, ExecutedRoutedEventArgs e)

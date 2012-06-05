@@ -8,7 +8,10 @@ namespace AniSharp
         String _FileState;
         public event PropertyChangedEventHandler PropertyChanged;
 
-
+        /// <summary>
+        /// Eventhandler falls eins der ueberwachten Felder ein Event triggert
+        /// </summary>
+        /// <param name="info"></param>
         private void NotifyPropertyChanged(String info)
         {
             if (PropertyChanged != null)
@@ -32,20 +35,27 @@ namespace AniSharp
                 }
             }
         }
-        public string FileState 
-        { 
-            get { 
-                return (_FileState); 
-            } 
-            set {
+        public string FileState
+        {
+            get
+            {
+                return (_FileState);
+            }
+            set
+            {
                 if (value != this._FileState)
                 {
                     _FileState = value;
                     NotifyPropertyChanged("FileState");
                 }
-            } 
+            }
         }
         public string FileHash { get; set; }
-        public Anime(String s, String d = "", String f = "") { FileName = s; FileState = d; FileHash = f; }
+        public Anime(String FileName, String FileState = "", String FileHash = "") 
+        { 
+            this.FileName = FileName; 
+            this.FileState = FileState; 
+            this.FileHash = FileHash; 
+        }
     }
 }

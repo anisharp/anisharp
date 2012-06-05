@@ -13,12 +13,26 @@ namespace AniSharp
         private String [] _File;
         private MainWindow _mw;
         private AnimeComparer ac = new AnimeComparer();
+
+        /// <summary>
+        /// Konstruktor fuer den FileParser
+        /// </summary>
+        /// <param name="File">Liste der Dateien die verarbeitet werden sollen</param>
+        /// <param name="mw">Referenz auf das MainWindow</param>
+        /// <param name="sPattern">Filter fuer die zu aktzeptierenden Dateiendungen</param>
         public FileParser(String[] File,MainWindow mw,String sPattern)
         {
             this._File = File;
             this._mw = mw;
             this._FilePattern = sPattern;
         }
+
+        /// <summary>
+        /// Konstruktor fuer den FileParser
+        /// </summary>
+        /// <param name="File">Die Dateien die verarbeitet werden sollen</param>
+        /// <param name="mw">Referenz auf das MainWindow</param>
+        /// <param name="sPattern">Filter fuer die zu aktzeptierenden Dateiendungen</param>
         public FileParser(String File, MainWindow mw, String sPattern)
         {
             this._File = new String[]{File};
@@ -26,12 +40,21 @@ namespace AniSharp
             this._FilePattern = sPattern;
         }
 
+        /// <summary>
+        /// Einstiegspunkt fuer den Thread. Verarbeitet die eingetragenen Dateien und uebergibt diese an die ParseFile funktion.
+        /// </summary>
         public void ParseFile()
         {
            foreach(String s in _File)
             if(!String.IsNullOrEmpty(s))
                 ParseFile(s);
         }
+
+        /// <summary>
+        /// Rekursive Funktion um die uebergebenen Dateien (und Dateien innerhab der uebergebenen Ordner) in die AnimeListe einzutragen.
+        /// </summary>
+        /// <param name="sFile">Datei/Ordner der zur AnimeListe hinzugefuegt werden soll.</param>
+        /// <param name="isDir">Optionaler Parameter: falls die uebergebene Datei ein Ordner ist</param>
         private void ParseFile(String sFile, bool isDir = false)
         {
             Regex rg = new Regex(_FilePattern);
