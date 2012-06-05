@@ -82,7 +82,15 @@ namespace AniSharp
 //sName.Replace("%fid",
                 sPattern = sPattern.Replace("%aid", episodes.animeId.ToString());
                 sPattern = sPattern.Replace("%eid", episodes.episodeId.ToString());
-                sPattern = sPattern.Replace("%gid", group.groupsId.ToString());
+                sPattern = sPattern.Replace(":","");
+                sPattern = sPattern.Replace("?", "");
+                sPattern = sPattern.Replace("/", "");
+                sPattern = sPattern.Replace(@"\", "");
+                sPattern = sPattern.Replace("*", "");
+                sPattern = sPattern.Replace("<", "");
+                sPattern = sPattern.Replace(">", "");
+                sPattern = sPattern.Replace("|", "");
+                sPattern = sPattern.Replace("\"", "");
                 //MessageBox.Show(sPath + sPattern);
                 File.Move(animeFile.FileName, sPath + sPattern+sType);
                 animeFile.FileName = sPath + sPattern;

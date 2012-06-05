@@ -35,6 +35,41 @@ namespace AniSharp
             get { return _AnimeCollection; }
         }
 
+        public bool? add
+        {
+            get { return chkAdd.IsChecked; }
+        }
+        public int state
+        {
+            get
+            {
+                switch (cbState.Text)
+                {
+                    case "On HDD": return 1;
+                    case "On CD": return 2;
+                    case "Deleted": return 3;
+                    default: return 0;
+                }
+            }
+
+        }
+        public bool? viewed
+        {
+            get { return chkWatched.IsChecked; }
+        }
+        public string source
+        {
+            get { return tbSource.Text; }
+        }
+        public string storage
+        {
+            get { return tbStorage.Text; }
+        }
+        public string other
+        {
+            get { return tbOther.Text; }
+        }
+
         public static RoutedCommand DeleteCmd = new RoutedCommand();
         private API.Application.ApiSession conn = null;
         public String FileFilter
