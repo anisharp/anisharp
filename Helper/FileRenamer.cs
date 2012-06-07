@@ -15,6 +15,7 @@ namespace AniSharp
         private static object m_lock=new object();
         private MainWindow mw = null;
         private String _Pattern = null;
+        private String _Path = null;
         private Semaphore _se = new Semaphore(1,1);
 
         /// <summary>
@@ -54,6 +55,15 @@ namespace AniSharp
         }
 
         /// <summary>
+        /// set the moving pattern for the FileRenamer
+        /// </summary>
+        /// <param name="sPattern">rename pattern</param>
+        public void setPath(String sPath)
+        {
+            if (!String.IsNullOrEmpty(sPath))
+                this._Path = sPath;
+        }
+        /// <summary>
         /// rename and move the given Anime file
         /// </summary>
         /// <param name="animeFile">Anime file to rename</param>
@@ -62,55 +72,76 @@ namespace AniSharp
             if (!String.IsNullOrEmpty(_Pattern))
             {
                 _se.WaitOne();
+                animeFile.FileState = "moving";
                 String sPath = animeFile.FileName.Substring(0, animeFile.FileName.LastIndexOf(@"\")+1);
                 String sType = animeFile.FileName.Substring(animeFile.FileName.LastIndexOf(@"."));
-                String sPattern = _Pattern;
+                String sRenamed = _Pattern;
                 episode episodes = db.getEpisode(animeFile.FileHash);
                 serie series = db.getSeries(episodes.animeId);
                 groups group = db.getGroup((int)episodes.groupId) ?? null;
-                sPattern = sPattern.Replace("%ann", series.romajiName);
-                sPattern = sPattern.Replace("%kan", series.kanjiName);
                 String english = (series.englishName != "") ? series.englishName : series.romajiName;
-                sPattern = sPattern.Replace("%eng", english);
-                sPattern = sPattern.Replace("%epn", episodes.epName);
-                sPattern = sPattern.Replace("%epk", episodes.epKanjiName);
-                sPattern = sPattern.Replace("%epr", episodes.epRomajiName);
-                sPattern = sPattern.Replace("%enr", episodes.epno);
-                sPattern = sPattern.Replace("%grp", group.shortName);
-                sPattern = sPattern.Replace("%ed2", episodes.ed2k.ToLower());
-                sPattern = sPattern.Replace("%ED2", episodes.ed2k.ToUpper());
-                sPattern = sPattern.Replace("%md5", episodes.md5.ToLower());
-                sPattern = sPattern.Replace("%MD5", episodes.md5.ToUpper());
-                sPattern = sPattern.Replace("%sha", episodes.sha1.ToLower());
-                sPattern = sPattern.Replace("%SHA", episodes.sha1.ToUpper());
-                sPattern = sPattern.Replace("%crc", episodes.crc32.ToLower());
-                sPattern = sPattern.Replace("%CRC", episodes.crc32.ToUpper());
-                //sName.Replace("%ver",((int)episodes.state)%2);
-                //sName.Replace("%cen",
-                sPattern = sPattern.Replace("%dub", episodes.dubLanguage);
-                sPattern = sPattern.Replace("%sub", episodes.subLanguage);
-                sPattern = sPattern.Replace("%vid", episodes.videoCodec);
-                sPattern = sPattern.Replace("%qua", episodes.quality);
-                sPattern = sPattern.Replace("%src", episodes.source);
-                sPattern = sPattern.Replace("%res", episodes.videoResolution);
-                sPattern = sPattern.Replace("%eps", series.highestNoEp.ToString());
-                sPattern = sPattern.Replace("%typ", series.type);
-                sPattern = sPattern.Replace("%gen", series.category);
-                sPattern = sPattern.Replace("%aid", episodes.animeId.ToString());
-                sPattern = sPattern.Replace("%eid", episodes.episodeId.ToString());
-                sPattern = sPattern.Replace(":","");
-                sPattern = sPattern.Replace("?", "");
-                sPattern = sPattern.Replace("/", "");
-                sPattern = sPattern.Replace(@"\", "");
-                sPattern = sPattern.Replace("*", "");
-                sPattern = sPattern.Replace("<", "");
-                sPattern = sPattern.Replace(">", "");
-                sPattern = sPattern.Replace("|", "");
-                sPattern = sPattern.Replace("\"", "");
-                File.Move(animeFile.FileName, sPath + sPattern+sType);
-                animeFile.FileName = sPath + sPattern;
+                if (!String.IsNullOrEmpty(_Path))
+                {
+                    sPath = rename(_Path, episodes, series, group,true);
+                    if (!sPath.EndsWith(@"\"))
+                        sPath += @"\";
+                }
+                sRenamed = rename(_Pattern, episodes, series, group)+sType;
+                if (!Directory.Exists(sPath))
+                    Directory.CreateDirectory(sPath);
+                File.Move(animeFile.FileName, sPath + sRenamed);
+                animeFile.FileName = sPath + sRenamed;
                 _se.Release();
             }
+        }
+        private String rename(String toRename,episode episodes, serie series, groups group, bool isPath = false)
+        {
+            String english = (series.englishName != "") ? series.englishName : series.romajiName;
+            StringBuilder sb = new StringBuilder(toRename)
+                .Replace("%ann", series.romajiName)
+                .Replace("%kan", series.kanjiName)
+                .Replace("%eng", english)
+                .Replace("%epn", episodes.epName)
+                .Replace("%epk", episodes.epKanjiName)
+                .Replace("%epr", episodes.epRomajiName)
+                .Replace("%enr", episodes.epno)
+                .Replace("%grp", group.shortName)
+                .Replace("%ed2", episodes.ed2k.ToLower())
+                .Replace("%ED2", episodes.ed2k.ToUpper())
+                .Replace("%md5", episodes.md5.ToLower())
+                .Replace("%MD5", episodes.md5.ToUpper())
+                .Replace("%sha", episodes.sha1.ToLower())
+                .Replace("%SHA", episodes.sha1.ToUpper())
+                .Replace("%crc", episodes.crc32.ToLower())
+                .Replace("%CRC", episodes.crc32.ToUpper())
+                .Replace("%dub", episodes.dubLanguage)
+                .Replace("%sub", episodes.subLanguage)
+                .Replace("%vid", episodes.videoCodec)
+                .Replace("%qua", episodes.quality)
+                .Replace("%src", episodes.source)
+                .Replace("%res", episodes.videoResolution)
+                .Replace("%eps", series.highestNoEp.ToString())
+                .Replace("%typ", series.type)
+                .Replace("%gen", series.category)
+                .Replace("%aid", episodes.animeId.ToString())
+                .Replace("%eid", episodes.episodeId.ToString());
+            if (isPath)
+            {
+                int i=sb.ToString().IndexOf(":")+1;
+                sb.Replace(":", "", i, sb.Length - i);
+            }
+            else
+                sb.Replace(":", "");
+            sb.Replace("?", "")
+                .Replace("/", "")
+                .Replace("*", "")
+                .Replace("<", "")
+                .Replace(">", "")
+                .Replace("|", "")
+                .Replace("\"", "")
+                .Replace("´", "")
+                .Replace("`", "");
+            return sb.ToString();
         }
     }
 }
