@@ -72,25 +72,36 @@ namespace AniSharp
             if (!String.IsNullOrEmpty(_Pattern))
             {
                 _se.WaitOne();
-                animeFile.FileState = "moving";
-                String sPath = animeFile.FileName.Substring(0, animeFile.FileName.LastIndexOf(@"\")+1);
-                String sType = animeFile.FileName.Substring(animeFile.FileName.LastIndexOf(@"."));
-                String sRenamed = _Pattern;
-                episode episodes = db.getEpisode(animeFile.FileHash);
-                serie series = db.getSeries(episodes.animeId);
-                groups group = db.getGroup((int)episodes.groupId) ?? null;
-                String english = (series.englishName != "") ? series.englishName : series.romajiName;
-                if (!String.IsNullOrEmpty(_Path))
+                try
                 {
-                    sPath = rename(_Path, episodes, series, group,true);
-                    if (!sPath.EndsWith(@"\"))
-                        sPath += @"\";
+                    animeFile.FileState = "moving";
+                    String sPath = animeFile.FileName.Substring(0, animeFile.FileName.LastIndexOf(@"\") + 1);
+                    String sType = animeFile.FileName.Substring(animeFile.FileName.LastIndexOf(@"."));
+                    String sRenamed = _Pattern;
+                    episode episodes = db.getEpisode(animeFile.FileHash);
+                    serie series = db.getSeries(episodes.animeId);
+                    groups group = db.getGroup((int)episodes.groupId) ?? null;
+                    String english = (series.englishName != "") ? series.englishName : series.romajiName;
+                    if (!String.IsNullOrEmpty(_Path))
+                    {
+                        sPath = rename(_Path, episodes, series, group, true);
+                        if (!sPath.EndsWith(@"\"))
+                            sPath += @"\";
+                    }
+                    sRenamed = rename(_Pattern, episodes, series, group) + sType;
+                    if (!Directory.Exists(sPath))
+                        Directory.CreateDirectory(sPath);
+                    File.Move(animeFile.FileName, sPath + sRenamed);
+                    animeFile.FileName = sPath + sRenamed;
                 }
-                sRenamed = rename(_Pattern, episodes, series, group)+sType;
-                if (!Directory.Exists(sPath))
-                    Directory.CreateDirectory(sPath);
-                File.Move(animeFile.FileName, sPath + sRenamed);
-                animeFile.FileName = sPath + sRenamed;
+                catch (Exception e)
+                {
+#if DEBUG
+                    mw.lbLog_Add("error while moving file "+animeFile.FileName+" text:"+e.Message);
+#else
+                    mw.lbLog_Add("error while moving file "+animeFile.FileName+" text:");
+#endif
+                }
                 _se.Release();
             }
         }

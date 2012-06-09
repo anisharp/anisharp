@@ -39,6 +39,7 @@ namespace AniSharp
         }
 
         public static RoutedCommand DeleteCmd = new RoutedCommand();
+        public static RoutedCommand CopyCmd = new RoutedCommand();
         private API.Application.ApiSession conn = null;
         /// <summary>
         /// gibt einen FileFilter zurueck der die gewuenschten Dateiendungen enthaelt.
@@ -147,10 +148,16 @@ namespace AniSharp
         private void btFiles_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Multiselect = true;
+            StringBuilder sb = new StringBuilder();
+            foreach (ListBoxItem s in lbExtensions.Items)
+                sb.Append("*.").Append(s.Content).Append(";");
+            sb.Remove(sb.Length - 1, 1);
+            dlg.Filter = "Videodateien ("+sb.ToString()+")|"+sb.ToString();
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {
-                FileParser fp = new FileParser(dlg.FileName, this, FileFilter);
+                FileParser fp = new FileParser(dlg.FileNames, this, FileFilter);
                 System.Threading.Thread t = new System.Threading.Thread(fp.ParseFile);
                 t.Start();
             }
@@ -411,14 +418,36 @@ namespace AniSharp
         #region CommandEventHandler
         private void DeleteCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            if(lvFiles.SelectedItem!=null)
-                AnimeCollection.Remove((Anime)lvFiles.SelectedItem);
+            if (lvFiles.SelectedItems != null)
+            {
+                Anime[] anim = new Anime[lvFiles.SelectedItems.Count];
+                lvFiles.SelectedItems.CopyTo(anim, 0);
+                foreach (Anime a in anim)
+                {
+                    AnimeCollection.Remove((Anime)a);
+                }
+            }
         }
 
         private void DeleteCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
+        private void CopyCmdExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (lbLog.SelectedItem != null)
+                Clipboard.SetData(DataFormats.Text, (Object)lbLog.SelectedItem);
+        }
+
+        private void CopyCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
         #endregion
+
+        private void tbMove_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _fr.setPath(tbMove.Text);
+        }
     }
 }
