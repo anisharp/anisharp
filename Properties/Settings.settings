@@ -38,5 +38,8 @@
     <Setting Name="TransportEncoding" Type="System.String" Scope="Application">
       <Value Profile="(Default)">UTF-8</Value>
     </Setting>
+    <Setting Name="MovePattern" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

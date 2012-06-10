@@ -30,9 +30,16 @@ namespace AniSharp
     {
         #region variables
         FileRenamer _fr = FileRenamer.getInstance();
+
+        ObservableCollection<String> _Log =
+        new ObservableCollection<String>();
         ObservableCollection<Anime> _AnimeCollection =
         new ObservableCollection<Anime>();
 
+        public ObservableCollection<String> Log
+        {
+            get { return _Log; }
+        }
         public ObservableCollection<Anime> AnimeCollection
         {
             get { return _AnimeCollection; }
@@ -66,7 +73,9 @@ namespace AniSharp
         {
             InitializeComponent();
             tbRenamePattern.Text = AniSharp.Properties.Settings.Default.RenamePattern;
+            tbMove.Text = AniSharp.Properties.Settings.Default.MovePattern;
             _fr.setPattern(AniSharp.Properties.Settings.Default.RenamePattern);
+            _fr.setPath(AniSharp.Properties.Settings.Default.MovePattern);
             _fr.setMainWindow(this);
         }
 
@@ -125,7 +134,7 @@ namespace AniSharp
         private void btStart_Click(object sender, RoutedEventArgs e)
         {
             btStart.IsEnabled = false;
-            lbLog.Items.Clear();
+            //lbLog.Items.Clear();
 
             foreach (Anime s in _AnimeCollection)
             {
@@ -246,6 +255,12 @@ namespace AniSharp
                 AniSharp.Properties.Settings.Default.Save();
                 _fr.setPattern(tbRenamePattern.Text);
             }
+            if (AniSharp.Properties.Settings.Default.MovePattern != tbMove.Text)
+            {
+                AniSharp.Properties.Settings.Default.MovePattern = tbMove.Text;
+                AniSharp.Properties.Settings.Default.Save();
+                _fr.setPath(tbMove.Text);
+            }
         }
         #endregion
 
@@ -347,7 +362,7 @@ namespace AniSharp
         /// <param name="sText"></param>
         public void lbLog_Add(String sText)
         {
-            Dispatcher.Invoke(new Action(() => { lbLog.Items.Add(sText); }));
+            Dispatcher.Invoke(new Action(() => { Log.Add(sText); }));
         }
 
         #endregion
@@ -394,7 +409,8 @@ namespace AniSharp
         }
 
         /// <summary>
-        /// Event das im falle eines Login versuchs in AniDB eine benachrichtigung empfaengt ob er erfolgreich war oder gescheitert ist. Im falle eines erfolgreichen Logins wird der Start Button aktiviert.
+        /// Event das im falle eines Login versuchs in AniDB eine benachrichtigung empfaengt ob er erfolgreich war oder gescheitert ist. 
+        /// Im falle eines erfolgreichen Logins wird der Start Button aktiviert.
         /// </summary>
         /// <param name="loggedIn"></param>
         /// <param name="shouldRetry"></param>
@@ -416,6 +432,13 @@ namespace AniSharp
         #endregion
 
         #region CommandEventHandler
+
+        /// <summary>
+        /// Funktion die bei erfolgreichem Rechtsklick auf ein Eintrag in der Liste ausgefuehrt werden kann.
+        /// Loescht den ausgewhaehlten Eintrag aus der Liste
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             if (lvFiles.SelectedItems != null)
@@ -429,22 +452,44 @@ namespace AniSharp
             }
         }
 
+        /// <summary>
+        /// Ueberprueft ob die Funktion Delete ausgewaehlt werden darf
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
+        
+        /// <summary>
+        /// Funktion die bei erfolgreichem Rechtsklick auf ein Eintrag in der Liste ausgefuehrt werden kann.
+        /// Kopiert den ausgewaehlten Eintrag aus der Liste in die Zwischenablage
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CopyCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             if (lbLog.SelectedItem != null)
                 Clipboard.SetData(DataFormats.Text, (Object)lbLog.SelectedItem);
         }
 
+        /// <summary>
+        /// Ueberprueft ob die Funktion Copy ausgewaehlt werden darf
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CopyCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
         #endregion
 
+        /// <summary>
+        /// Aktualisiert das Move Pattern sobald der Text verändert wird.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tbMove_TextChanged(object sender, TextChangedEventArgs e)
         {
             _fr.setPath(tbMove.Text);

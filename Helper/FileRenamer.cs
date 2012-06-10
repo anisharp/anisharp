@@ -7,6 +7,10 @@ using System.Windows.Forms;
 using System.Threading;
 namespace AniSharp
 {
+    /// <summary>
+    /// Eine Klasse um ein Anime nach einem bestimmten Muster umzubennen.
+    /// Verwendet das Singelton-Pattern
+    /// </summary>
     class FileRenamer
     {
         private FileRenamer() {}   
@@ -64,7 +68,7 @@ namespace AniSharp
                 this._Path = sPath;
         }
         /// <summary>
-        /// rename and move the given Anime file
+        /// calls the rename function and moves the given Anime
         /// </summary>
         /// <param name="animeFile">Anime file to rename</param>
         public void renameTo(Anime animeFile)
@@ -105,6 +109,16 @@ namespace AniSharp
                 _se.Release();
             }
         }
+
+        /// <summary>
+        /// rename the given string as the pattern says
+        /// </summary>
+        /// <param name="toRename">String to rename</param>
+        /// <param name="episodes">episode object</param>
+        /// <param name="series">series object</param>
+        /// <param name="group">group object</param>
+        /// <param name="isPath">special case if the given string is a path</param>
+        /// <returns>the renamed string</returns>
         private String rename(String toRename,episode episodes, serie series, groups group, bool isPath = false)
         {
             String english = (series.englishName != "") ? series.englishName : series.romajiName;
