@@ -116,12 +116,13 @@
           <Key>
             <PropertyRef Name="animeId" />
             <PropertyRef Name="episodeId" />
+            <PropertyRef Name="ed2k" />
           </Key>
           <Property Type="Int32" Name="animeId" Nullable="false" />
           <Property Type="Int32" Name="episodeId" Nullable="false" />
           <Property Type="Int32" Name="groupId" Nullable="false" />
           <Property Type="Int64" Name="size" />
-          <Property Type="String" Name="ed2k" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ed2k" MaxLength="4000" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Type="String" Name="md5" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="sha1" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="crc32" MaxLength="4000" FixedLength="false" Unicode="true" />

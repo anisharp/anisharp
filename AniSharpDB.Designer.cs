@@ -170,12 +170,14 @@ namespace AniSharp
         /// <param name="animeId">Initial value of the animeId property.</param>
         /// <param name="episodeId">Initial value of the episodeId property.</param>
         /// <param name="groupId">Initial value of the groupId property.</param>
-        public static episode Createepisode(global::System.Int32 animeId, global::System.Int32 episodeId, global::System.Int32 groupId)
+        /// <param name="ed2k">Initial value of the ed2k property.</param>
+        public static episode Createepisode(global::System.Int32 animeId, global::System.Int32 episodeId, global::System.Int32 groupId, global::System.String ed2k)
         {
             episode episode = new episode();
             episode.animeId = animeId;
             episode.episodeId = episodeId;
             episode.groupId = groupId;
+            episode.ed2k = ed2k;
             return episode;
         }
 
@@ -287,7 +289,7 @@ namespace AniSharp
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.String ed2k
         {
@@ -297,11 +299,14 @@ namespace AniSharp
             }
             set
             {
-                Oned2kChanging(value);
-                ReportPropertyChanging("ed2k");
-                _ed2k = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("ed2k");
-                Oned2kChanged();
+                if (_ed2k != value)
+                {
+                    Oned2kChanging(value);
+                    ReportPropertyChanging("ed2k");
+                    _ed2k = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("ed2k");
+                    Oned2kChanged();
+                }
             }
         }
         private global::System.String _ed2k;
