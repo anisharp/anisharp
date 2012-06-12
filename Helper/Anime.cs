@@ -2,10 +2,16 @@
 using System.ComponentModel;
 namespace AniSharp
 {
+    /// <summary>
+    /// Anime Klasse zum verwalten einzelner files, hash und deren states
+    /// </summary>
     public class Anime : INotifyPropertyChanged
     {
         String _FileName;
         String _FileState;
+        /// <summary>
+        /// Event, wenn eins der Elemente geaendert wurde
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
@@ -20,6 +26,10 @@ namespace AniSharp
             }
         }
 
+        /// <summary>
+        /// FileName des Animes.
+        /// Feuert PropertyChanged wenn sich der Wert aendert.
+        /// </summary>
         public string FileName
         {
             get
@@ -35,6 +45,11 @@ namespace AniSharp
                 }
             }
         }
+
+        /// <summary>
+        /// FileState des Animes.
+        /// Feuert PropertyChanged wenn sich der Wert aendert.
+        /// </summary>
         public string FileState
         {
             get
@@ -50,7 +65,15 @@ namespace AniSharp
                 }
             }
         }
+        
+        /// <summary>
+        /// FileHash des Animes.
+        /// </summary>
         public string FileHash { get; set; }
+
+        /// <summary>
+        /// Konstruktor der Anime Klasse
+        /// </summary>
         public Anime(String FileName, String FileState = "", String FileHash = "") 
         { 
             this.FileName = FileName; 

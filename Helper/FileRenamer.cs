@@ -61,7 +61,7 @@ namespace AniSharp
         /// <summary>
         /// set the moving pattern for the FileRenamer
         /// </summary>
-        /// <param name="sPattern">rename pattern</param>
+        /// <param name="sPath">rename path</param>
         public void setPath(String sPath)
         {
             if (!String.IsNullOrEmpty(sPath))

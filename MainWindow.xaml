@@ -58,6 +58,9 @@
                             <CommandBinding Command="{x:Static custom:MainWindow.DeleteCmd}"
                                             Executed="DeleteCmdExecuted"
                                             CanExecute="DeleteCmdCanExecute"/>
+                            <CommandBinding Command="{x:Static custom:MainWindow.PlayCmd}"
+                                            Executed="PlayCmdExecuted"
+                                            CanExecute="PlayCmdCanExecute"/>                            
                         </ListView.CommandBindings>
                         <ListView.View>
                             <GridView>
@@ -67,6 +70,7 @@
                         </ListView.View>
                         <ListView.ContextMenu>
                             <ContextMenu>
+                                <MenuItem Header="Play" Command="{x:Static custom:MainWindow.PlayCmd}"/>
                                 <MenuItem Header="Delete" Command="{x:Static custom:MainWindow.DeleteCmd}"/>
                             </ContextMenu>
                         </ListView.ContextMenu>

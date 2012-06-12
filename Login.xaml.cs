@@ -18,10 +18,17 @@ namespace AniSharp
     /// </summary>
     public partial class Login : Window
     {
+        /// <summary>
+        /// Gibt den eingetragenen Usernamen zurueck
+        /// </summary>
         public String sUser
         {
             get { return tbUser.Text; }
         }
+
+        /// <summary>
+        /// Gibt das eingetragenen Passwort zurueck
+        /// </summary>
         public String sPassword
         {
             get { return pbPassword.Password; }

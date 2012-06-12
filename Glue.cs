@@ -141,7 +141,7 @@ namespace AniSharp
         /// <summary>
         /// Send file request to AniDB
         /// </summary>
-        /// <param name="animeId">Id of file to request</param>
+        /// <param name="hash">Id of file to request</param>
         /// <returns>The answer the request recieved</returns>
         private API.Model.Answer.ApiAnswer sendFileRequest(Hash.Ed2kHashGenerator hash)
         {
@@ -155,7 +155,7 @@ namespace AniSharp
         /// <summary>
         /// Send group request to AniDB
         /// </summary>
-        /// <param name="animeId">id of group to request</param>
+        /// <param name="groupId">id of group to request</param>
         /// <returns>The answer the request recieved</returns>
         private API.Model.Answer.ApiAnswer sendGroupRequest(int groupId)
         {

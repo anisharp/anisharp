@@ -36,10 +36,19 @@ namespace AniSharp
         ObservableCollection<Anime> _AnimeCollection =
         new ObservableCollection<Anime>();
 
+        /// <summary>
+        /// Liste die alle vorhandenen Ereignisse enthaelt.
+        /// Wird per Databinding mit der Listbox verknuepft
+        /// </summary>
         public ObservableCollection<String> Log
         {
             get { return _Log; }
         }
+
+        /// <summary>
+        /// Liste die alle vorhandenen Anime enthaelt.
+        /// Wird per Databinding mit der Listview verknuepft
+        /// </summary>
         public ObservableCollection<Anime> AnimeCollection
         {
             get { return _AnimeCollection; }
@@ -47,6 +56,7 @@ namespace AniSharp
 
         public static RoutedCommand DeleteCmd = new RoutedCommand();
         public static RoutedCommand CopyCmd = new RoutedCommand();
+        public static RoutedCommand PlayCmd = new RoutedCommand();
         private API.Application.ApiSession conn = null;
         /// <summary>
         /// gibt einen FileFilter zurueck der die gewuenschten Dateiendungen enthaelt.
@@ -190,7 +200,7 @@ namespace AniSharp
                     {
                         conn = new API.Application.ApiSession();
                     }
-                    catch (SocketException)
+                    catch (Exception)
                     {
                         MessageBox.Show("AniDB is unreachable", "Login", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
@@ -482,6 +492,28 @@ namespace AniSharp
         private void CopyCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
+        }
+
+        /// <summary>
+        /// Funktion die bei erfolgreichem Rechtsklick auf ein Eintrag in der Liste ausgefuehrt werden kann.
+        /// Spielt die ausgewaehlte Datei ab
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PlayCmdExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(((Anime)lvFiles.SelectedItem).FileName);
+        }
+
+        /// <summary>
+        /// Ueberprueft ob die Funktion Play ausgewaehlt werden darf
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PlayCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if(((Anime)lvFiles.SelectedItem).FileName.Contains("Finished"))
+                e.CanExecute = true;
         }
         #endregion
 
