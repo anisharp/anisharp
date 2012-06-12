@@ -22,12 +22,13 @@
     <Key>
       <PropertyRef Name="animeId" />
       <PropertyRef Name="episodeId" />
+      <PropertyRef Name="ed2k" />
     </Key>
     <Property Name="animeId" Type="int" Nullable="false" />
     <Property Name="episodeId" Type="int" Nullable="false" />
-    <Property Name="groupId" Type="int" Nullable="true" />
+    <Property Name="groupId" Type="int" Nullable="false" />
     <Property Name="size" Type="bigint" Nullable="true" />
-    <Property Name="ed2k" Type="nvarchar" Nullable="true" MaxLength="4000" />
+    <Property Name="ed2k" Type="nvarchar" Nullable="false" MaxLength="4000" />
     <Property Name="md5" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="sha1" Type="nvarchar" Nullable="true" MaxLength="4000" />
     <Property Name="crc32" Type="nvarchar" Nullable="true" MaxLength="4000" />
@@ -72,7 +73,7 @@
     <Property Name="specialEpCount" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK_epsiode_groups">
-    <End Role="groups" Type="AniSharpDBModel.Store.groups" Multiplicity="0..1" />
+    <End Role="groups" Type="AniSharpDBModel.Store.groups" Multiplicity="1" />
     <End Role="episode" Type="AniSharpDBModel.Store.episode" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="groups">
@@ -205,9 +206,9 @@
         <MappingFragment StoreEntitySet="episode">
           <ScalarProperty Name="animeId" ColumnName="animeId" />
           <ScalarProperty Name="episodeId" ColumnName="episodeId" />
+          <ScalarProperty Name="ed2k" ColumnName="ed2k" />
           <ScalarProperty Name="groupId" ColumnName="groupId" />
           <ScalarProperty Name="size" ColumnName="size" />
-          <ScalarProperty Name="ed2k" ColumnName="ed2k" />
           <ScalarProperty Name="md5" ColumnName="md5" />
           <ScalarProperty Name="sha1" ColumnName="sha1" />
           <ScalarProperty Name="crc32" ColumnName="crc32" />
@@ -274,7 +275,7 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="AniSharpDB" ZoomLevel="98" >
+      <Diagram Name="AniSharpDB" ZoomLevel="94" >
         <EntityTypeShape EntityType="AniSharpDBModel.episode" Width="1.5" PointX="3" PointY="1.125" Height="5.0571093749999987" />
         <EntityTypeShape EntityType="AniSharpDBModel.groups" Width="1.5" PointX="0.75" PointY="2.5" Height="2.3648893229166679" />
         <EntityTypeShape EntityType="AniSharpDBModel.serie" Width="1.5" PointX="0.75" PointY="7.25" Height="3.5186979166666656" />

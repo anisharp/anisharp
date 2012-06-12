@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server Compact Edition
 -- --------------------------------------------------
--- Date Created: 05/15/2012 18:24:09
+-- Date Created: 06/12/2012 13:23:28
 -- Generated from EDMX file: D:\VS_Projects\anisharp\AniSharpDB.edmx
 -- --------------------------------------------------
 
@@ -37,9 +37,9 @@ GO
 CREATE TABLE [episode] (
     [animeId] int  NOT NULL,
     [episodeId] int  NOT NULL,
-    [groupId] int  NULL,
+    [groupId] int  NOT NULL,
     [size] bigint  NULL,
-    [ed2k] nvarchar(4000)  NULL,
+    [ed2k] nvarchar(4000)  NOT NULL,
     [md5] nvarchar(4000)  NULL,
     [sha1] nvarchar(4000)  NULL,
     [crc32] nvarchar(4000)  NULL,
@@ -89,10 +89,10 @@ GO
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
 
--- Creating primary key on [animeId], [episodeId] in table 'episode'
+-- Creating primary key on [animeId], [episodeId], [ed2k] in table 'episode'
 ALTER TABLE [episode]
 ADD CONSTRAINT [PK_episode]
-    PRIMARY KEY ([animeId], [episodeId] );
+    PRIMARY KEY ([animeId], [episodeId], [ed2k] );
 GO
 
 -- Creating primary key on [groupsId] in table 'groups'
