@@ -74,7 +74,7 @@ namespace AniSharp
         /// <summary>
         /// Gets anime from db
         /// </summary>
-        /// <param name="hash">Id of anime</param>
+        /// <param name="id">Id of anime</param>
         /// <returns>Anime from db</returns>
         public serie getSeries(int id)
         {
@@ -95,7 +95,7 @@ namespace AniSharp
         /// <summary>
         /// Gets group from db
         /// </summary>
-        /// <param name="hash">Id of group</param>
+        /// <param name="id">Id of group</param>
         /// <returns>Group from db</returns>
         public groups getGroup(int id)
         {

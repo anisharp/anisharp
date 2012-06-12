@@ -54,8 +54,17 @@ namespace AniSharp
             get { return _AnimeCollection; }
         }
 
+        /// <summary>
+        /// Delete Kommando fuer die ListView
+        /// </summary>
         public static RoutedCommand DeleteCmd = new RoutedCommand();
+        /// <summary>
+        /// Copy Kommando fuer die ListView
+        /// </summary>
         public static RoutedCommand CopyCmd = new RoutedCommand();
+        /// <summary>
+        /// Play Kommando fuer die ListView
+        /// </summary>
         public static RoutedCommand PlayCmd = new RoutedCommand();
         private API.Application.ApiSession conn = null;
         /// <summary>

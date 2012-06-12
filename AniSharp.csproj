@@ -87,6 +87,7 @@
     <Compile Include="API\Model\Answer\MyListEntryAddedAnswer.cs" />
     <Compile Include="API\Model\Request\FileRequest.cs" />
     <Compile Include="API\Model\Request\GroupRequest.cs" />
+    <Compile Include="API\Model\Request\MessageRequest.cs" />
     <Compile Include="API\Model\Request\MyListAddRequest.cs" />
     <Compile Include="Glue.cs" />
     <Compile Include="Helper\Anime.cs" />

@@ -160,7 +160,6 @@ namespace AniSharp.API.Application
                     }
                 }
             }
-
             throw new Exception("command " + req.Command + " not returned (timeout or lost)");  
         }
 

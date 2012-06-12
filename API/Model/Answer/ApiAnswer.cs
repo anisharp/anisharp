@@ -88,7 +88,8 @@ namespace AniSharp.API.Model.Answer
                 case ReturnCode.NO_SUCH_GROUP:
                     return new GenericFailAnswer(rc);
 
-
+                case ReturnCode.SENDMESSAGE_SUCCESSFUL:
+                    return new GenericPositiveAnswer(rc);
             }
 
             return new GenericFailAnswer(rc);

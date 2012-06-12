@@ -7,6 +7,9 @@ using System.IO;
 
 namespace AniSharp
 {
+    /// <summary>
+    /// FileParser Klasse um einen Ordner/Datei zu durchsuchen und anschließend zur AnimeListe hinzuzufuegen
+    /// </summary>
     class FileParser
     {
         private String _FilePattern;
