@@ -84,6 +84,8 @@ namespace AniSharp
             }
         }
         #endregion
+      
+        #region window functions
 
         /// <summary>
         /// Konstruktor fuer das MainWindow
@@ -105,7 +107,6 @@ namespace AniSharp
         {
             Dispatcher.Invoke(new Action(() => { btStart.IsEnabled = true; }));
         }
-        #region window functions
         /// <summary>
         /// Passt die ListBoxen an die größe des Fensters an
         /// </summary>
@@ -161,6 +162,7 @@ namespace AniSharp
                 {
                     Glue g = new Glue(s, conn, this);
                     System.Threading.Thread pattexing = new System.Threading.Thread(g.run);
+                    pattexing.IsBackground = true;
                     pattexing.Start();
                 }
             }
@@ -448,6 +450,16 @@ namespace AniSharp
             }
             btLogin.IsEnabled = true;
         }
+
+        /// <summary>
+        /// Aktualisiert das Move Pattern sobald der Text verändert wird.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tbMove_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _fr.setPath(tbMove.Text);
+        }
         #endregion
 
         #region CommandEventHandler
@@ -521,19 +533,10 @@ namespace AniSharp
         /// <param name="e"></param>
         private void PlayCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if(((Anime)lvFiles.SelectedItem).FileName.Contains("Finished"))
+            if(lvFiles.SelectedItem!=null)
+            if(((Anime)lvFiles.SelectedItem).FileState.Contains("Finished"))
                 e.CanExecute = true;
         }
-        #endregion
-
-        /// <summary>
-        /// Aktualisiert das Move Pattern sobald der Text verändert wird.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tbMove_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            _fr.setPath(tbMove.Text);
-        }
+        #endregion  
     }
 }

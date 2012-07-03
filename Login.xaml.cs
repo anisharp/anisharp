@@ -55,14 +55,13 @@ namespace AniSharp
             else
             {
                 this.DialogResult = true;
-                /* uncomment if ready to publish
-                 * if (AniSharp.Properties.Settings.Default.Username != tbUser.Text)
-                   {
-                 *      AniSharp.Properties.Settings.Default.Username = tbUser.Text;
-                 *      AniSharp.Properties.Settings.Default.Save();
-                 * }
-                 */
-            }
+                
+                 if (AniSharp.Properties.Settings.Default.Username != tbUser.Text)
+                 {
+                      AniSharp.Properties.Settings.Default.Username = tbUser.Text;
+                      AniSharp.Properties.Settings.Default.Save();
+                 }
+                             }
         }
 
         /// <summary>

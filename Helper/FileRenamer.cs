@@ -80,6 +80,7 @@ namespace AniSharp
                 {
                     animeFile.FileState = "moving";
                     String sPath = animeFile.FileName.Substring(0, animeFile.FileName.LastIndexOf(@"\") + 1);
+                    String sOldPath = sPath;
                     String sType = animeFile.FileName.Substring(animeFile.FileName.LastIndexOf(@"."));
                     String sRenamed = _Pattern;
                     episode episodes = db.getEpisode(animeFile.FileHash);
@@ -96,6 +97,8 @@ namespace AniSharp
                     if (!Directory.Exists(sPath))
                         Directory.CreateDirectory(sPath);
                     File.Move(animeFile.FileName, sPath + sRenamed);
+                    if (Directory.GetFiles(sOldPath).Length == 0)
+                        Directory.Delete(sOldPath);
                     animeFile.FileName = sPath + sRenamed;
                 }
                 catch (Exception e)

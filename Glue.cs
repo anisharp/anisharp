@@ -120,7 +120,7 @@ namespace AniSharp
             anime.FileState = "Finished";
 
             //If state is set, send request to update the list on anidb 
-            if (mainwin.getAdd() != null || mainwin.getAdd() != false)
+            if (mainwin.getAdd() != null && mainwin.getAdd() != false)
             {
                 conn.query(new API.Model.Request.MyListAddRequest(hash.FileSize, hash.Ed2kHash, state:  (API.Model.Request.MyListAddRequest.State)mainwin.getState() ,viewed:mainwin.getViewed(), viewdate:0, source:mainwin.getSource(), storage:mainwin.getStorage(), other:mainwin.getOther()));
                 mainwin.lbLog_Add("Add to Mylist");
