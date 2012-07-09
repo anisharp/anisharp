@@ -10,6 +10,7 @@ namespace AniSharp.API.Model.Answer
         public MyListEntryAddedAnswer(ReturnCode rc, String data)
             : base(rc, data)
         {
+            set("viewed", 1);
         }
 
         public int MyListId
