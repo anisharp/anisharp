@@ -44,8 +44,14 @@ namespace AniSharp
         {
             using (AniSharpDBEntities context = new AniSharpDBEntities())
             {
-                context.episode.AddObject(newEpisode);
-                context.SaveChanges();
+                try
+                {
+                    context.episode.AddObject(newEpisode);
+                    context.SaveChanges();
+                }
+                catch (UpdateException e)
+                {
+                }
             }
         }
 

@@ -106,7 +106,7 @@ namespace AniSharp
 #if DEBUG
                     mw.lbLog_Add("error while moving file "+animeFile.FileName+" text:"+e.Message);
 #else
-                    mw.lbLog_Add("error while moving file "+animeFile.FileName+" text:");
+                    mw.lbLog_Add("error while moving file "+animeFile.FileName+);
 #endif
                 }
                 _se.Release();
