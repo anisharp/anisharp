@@ -73,12 +73,18 @@ namespace AniSharp
         /// <param name="animeFile">Anime file to rename</param>
         public void renameTo(Anime animeFile)
         {
+            _se.WaitOne();
+            animeFile.FileState = "moving";
+            renameAnime(animeFile);
+            _se.Release();
+        }
+
+        private void renameAnime(Anime animeFile, bool shorten = false)
+        {
             if (!String.IsNullOrEmpty(_Pattern))
             {
-                _se.WaitOne();
                 try
                 {
-                    animeFile.FileState = "moving";
                     String sPath = animeFile.FileName.Substring(0, animeFile.FileName.LastIndexOf(@"\") + 1);
                     String sOldPath = sPath;
                     String sType = animeFile.FileName.Substring(animeFile.FileName.LastIndexOf(@"."));
@@ -86,14 +92,13 @@ namespace AniSharp
                     episode episodes = db.getEpisode(animeFile.FileHash);
                     serie series = db.getSeries(episodes.animeId);
                     groups group = db.getGroup((int)episodes.groupId) ?? null;
-                    String english = (series.englishName != "") ? series.englishName : series.romajiName;
                     if (!String.IsNullOrEmpty(_Path))
                     {
                         sPath = rename(_Path, episodes, series, group, true);
                         if (!sPath.EndsWith(@"\"))
                             sPath += @"\";
                     }
-                    sRenamed = rename(_Pattern, episodes, series, group) + sType;
+                    sRenamed = rename(_Pattern, episodes, series, group,shorten:shorten) + sType;
                     if (!Directory.Exists(sPath))
                         Directory.CreateDirectory(sPath);
                     File.Move(animeFile.FileName, sPath + sRenamed);
@@ -104,12 +109,19 @@ namespace AniSharp
                 catch (Exception e)
                 {
 #if DEBUG
-                    mw.lbLog_Add("error while moving file "+animeFile.FileName+" text:"+e.Message);
+                    mw.lbLog_Add("error while moving file " + animeFile.FileName + " text:" + e.Message);
 #else
                     mw.lbLog_Add("error while moving file "+animeFile.FileName+);
 #endif
+                    if (!shorten)
+                    {
+                        renameAnime(animeFile, true);
+                    }
+                    else
+                    {
+                        mw.lbLog_Add("error while moving file " + animeFile.FileName + " shortening failed");
+                    }
                 }
-                _se.Release();
             }
         }
 
@@ -122,13 +134,14 @@ namespace AniSharp
         /// <param name="group">group object</param>
         /// <param name="isPath">special case if the given string is a path</param>
         /// <returns>the renamed string</returns>
-        private String rename(String toRename,episode episodes, serie series, groups group, bool isPath = false)
+        private String rename(String toRename,episode episodes, serie series, groups group, bool isPath = false,bool shorten=false)
         {
             String english = (series.englishName != "") ? series.englishName : series.romajiName;
             StringBuilder sb = new StringBuilder(toRename)
-                .Replace("%ann", series.romajiName)
-                .Replace("%kan", series.kanjiName)
-                .Replace("%eng", english)
+                .Replace("%ann", (!shorten) ? series.romajiName : series.shortName)
+                .Replace("%kan", (!shorten) ? series.kanjiName : series.shortName)
+                .Replace("%eng", (!shorten) ? english : series.shortName)
+                .Replace("%asn", series.shortName)
                 .Replace("%epn", episodes.epName)
                 .Replace("%epk", episodes.epKanjiName)
                 .Replace("%epr", episodes.epRomajiName)

@@ -92,8 +92,28 @@ namespace AniSharp
                             db.addEntry(s);
                             mainwin.lbLog_Add("Serie was missing...added");
                         }
-                     }
+                    }
                     semSerie.Release();
+                }
+                else
+                {
+                    if (mainwin.getUpdate())
+                    {
+                        semSerie.WaitOne();
+
+                        if (!checkIfSerieExists(e))
+                        {
+                            API.Model.Answer.ApiAnswer aanswer = sendAnimeRequest((int)e.animeId);
+                            if (aanswer is API.Model.Answer.AnimeAnswer)
+                            {
+                                API.Model.Answer.AnimeAnswer aa = (API.Model.Answer.AnimeAnswer)aanswer;
+                                serie s = (serie)aa;
+                                db.updateEntry(s);
+                                mainwin.lbLog_Add("Serie existed already ... updated");
+                            }
+                        }
+                        semSerie.Release();
+                    }
                 }
                 anime.FileState = "Wait/Move";
                 semApi.Release();
@@ -110,7 +130,8 @@ namespace AniSharp
             //No or unknown answer
             else if (answer is API.Model.Answer.GenericFailAnswer)
             {
-                MessageBox.Show("Server failed.");
+                anime.FileState = "Error";
+                return;
             }
 
             //Call Filerenamer to rename and move the file

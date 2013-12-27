@@ -35,7 +35,8 @@
                             <TextBox Height="23" HorizontalAlignment="Left" Margin="83,101,0,0" Name="tbStorage" VerticalAlignment="Top" Width="223" IsEnabled="{Binding ElementName=chkAdd, Path=IsChecked}"/>
                             <CheckBox Content="Watched" Height="16" HorizontalAlignment="Left" Margin="8,130,0,0" Name="chkWatched" VerticalAlignment="Top" IsEnabled="{Binding ElementName=chkAdd, Path=IsChecked}"/>
                             <TextBox Height="110" HorizontalAlignment="Left" Margin="83,130,0,0" Name="tbOther" VerticalAlignment="Top" Width="223" IsEnabled="{Binding ElementName=chkAdd, Path=IsChecked}"/>
-                    </Grid>
+                            <CheckBox Content="Update DB" Height="18" HorizontalAlignment="Left" Margin="8,0,0,77" Name="chkUpdate" VerticalAlignment="Bottom" Width="77" />
+                        </Grid>
                 </GroupBox>
                     <GroupBox Header="Extensions" Height="269" HorizontalAlignment="Left" Margin="346,6,0,0" Name="groupBox2" VerticalAlignment="Top" Width="200">
                         <Grid >

@@ -95,6 +95,10 @@ namespace AniSharp
                 {
                     return null;
                 }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
         }
 
@@ -115,6 +119,33 @@ namespace AniSharp
                 catch (InvalidOperationException)
                 {
                     return null;
+                }
+            }
+        }
+
+        public void updateEntry(serie updateSerie)
+        {
+            using (AniSharpDBEntities context = new AniSharpDBEntities())
+            {
+                try
+                {
+                    serie s= context.serie.First(i => i.serienId == updateSerie.serienId);
+                    //context.serie.AddObject(updateSerie);
+                    s.category = updateSerie.category;
+                    s.englishName = updateSerie.englishName;
+                    s.highestNoEp = updateSerie.highestNoEp;
+                    s.kanjiName = updateSerie.kanjiName;
+                    s.otherName= updateSerie.otherName;
+                    s.rating= updateSerie.rating;
+                    s.romajiName = updateSerie.romajiName;
+                    s.shortName = updateSerie.shortName;
+                    s.specialEpCount = updateSerie.specialEpCount;
+                    s.tempRating = updateSerie.tempRating;
+                    s.type = updateSerie.type;
+                    context.SaveChanges();
+                }
+                catch (UpdateException e)
+                {
                 }
             }
         }

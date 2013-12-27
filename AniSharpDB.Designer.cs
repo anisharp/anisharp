@@ -8,12 +8,13 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
+using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.EntityClient;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
@@ -120,6 +121,7 @@ namespace AniSharp
         private ObjectSet<serie> _serie;
 
         #endregion
+
         #region AddTo Methods
     
         /// <summary>
@@ -147,11 +149,11 @@ namespace AniSharp
         }
 
         #endregion
+
     }
-    
 
     #endregion
-    
+
     #region Entities
     
     /// <summary>
@@ -182,6 +184,7 @@ namespace AniSharp
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -650,6 +653,7 @@ namespace AniSharp
         partial void OnstateChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -730,6 +734,7 @@ namespace AniSharp
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -754,6 +759,7 @@ namespace AniSharp
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -904,6 +910,7 @@ namespace AniSharp
         partial void OnircServerChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -930,6 +937,7 @@ namespace AniSharp
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -960,6 +968,7 @@ namespace AniSharp
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1252,8 +1261,33 @@ namespace AniSharp
         private global::System.Int32 _specialEpCount;
         partial void OnspecialEpCountChanging(global::System.Int32 value);
         partial void OnspecialEpCountChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String shortName
+        {
+            get
+            {
+                return _shortName;
+            }
+            set
+            {
+                OnshortNameChanging(value);
+                ReportPropertyChanging("shortName");
+                _shortName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("shortName");
+                OnshortNameChanged();
+            }
+        }
+        private global::System.String _shortName;
+        partial void OnshortNameChanging(global::System.String value);
+        partial void OnshortNameChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1280,8 +1314,10 @@ namespace AniSharp
         }
 
         #endregion
+
     }
 
     #endregion
+
     
 }

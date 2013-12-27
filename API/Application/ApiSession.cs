@@ -77,7 +77,6 @@ namespace AniSharp.API.Application
 
                         if (rl.Code == ReturnCode.LOGIN_ACCEPTED_NEW_VERSION)
                         {
-                            //MessageBox.Show("New Version available - please update");
                             ApiSessionStatusChanged(true, false, "New Version available - please update");
                         }
                         else
@@ -88,7 +87,6 @@ namespace AniSharp.API.Application
                     if (loginAnswer is FailedLoginAnswer)
                     {
                         FailedLoginAnswer fla = (FailedLoginAnswer)loginAnswer;
-                        //MessageBox.Show("Login failed -- " + fla.Message);
                         if (fla.Code == ReturnCode.LOGIN_FAILED)
                         {
                             ApiSessionStatusChanged(false, true, "Invalid credentials");
@@ -109,9 +107,8 @@ namespace AniSharp.API.Application
 		public void shutdown()
 		{
 			ApiAnswer logoutA = query(new LogoutRequest());
-            MessageBox.Show(logoutA.GetMessage());
-
             decorated.shutdown();
+            ApiSessionStatusChanged(false, true, logoutA.GetMessage());
 		}
 
 		public ApiAnswer query(ApiRequest req)

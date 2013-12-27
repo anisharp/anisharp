@@ -17,18 +17,19 @@ namespace AniSharp.API.Model.Answer
         {
             return new serie
             {
-                serienId        = x.asInt(0),
-                type            = x.asString(1),
-                category        = x.asString(2),
-                romajiName      = x.asString(3),
-                kanjiName       = x.asString(4),
-                englishName     = x.asString(5),
-                otherName       = x.asString(6),
-                episodes        = x.asInt(7),
-                highestNoEp     = x.asInt(8),
-                specialEpCount  = x.asInt(9),
-                rating          = x.asInt(10),
-                tempRating      = x.asInt(11)
+                serienId = x.asInt(0),
+                type = x.asString(1),
+                category = x.asString(2),
+                romajiName = x.asString(3),
+                kanjiName = x.asString(4),
+                englishName = x.asString(5),
+                otherName = x.asString(6),
+                shortName = x.asString(7),
+                episodes = x.asInt(8),
+                highestNoEp = x.asInt(9),
+                specialEpCount = x.asInt(10),
+                rating = x.asInt(11),
+                tempRating = x.asInt(12)
             };
         }
     }
@@ -44,6 +45,7 @@ namespace AniSharp.API.Model.Answer
  * kanji name, 
  * english name, 
  * other name, 
+ * short name,
  * episodes, int4
  * highest episode no., int4
  * special ep count, int4

@@ -71,6 +71,7 @@
     <Property Name="otherName" Type="nvarchar" Nullable="false" />
     <Property Name="highestNoEp" Type="int" Nullable="false" />
     <Property Name="specialEpCount" Type="int" Nullable="false" />
+    <Property Name="shortName" Type="nvarchar" Nullable="true" MaxLength="4000" />
   </EntityType>
   <Association Name="FK_epsiode_groups">
     <End Role="groups" Type="AniSharpDBModel.Store.groups" Multiplicity="1" />
@@ -170,6 +171,7 @@
           <Property Type="String" Name="otherName" Nullable="false" />
           <Property Type="Int32" Name="highestNoEp" Nullable="false" />
           <Property Type="Int32" Name="specialEpCount" Nullable="false" />
+          <Property Type="String" Name="shortName" MaxLength="4000" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_epsiode_groups">
           <End Type="AniSharpDBModel.groups" Role="groups" Multiplicity="1" />
@@ -253,6 +255,7 @@
           <ScalarProperty Name="otherName" ColumnName="otherName" />
           <ScalarProperty Name="highestNoEp" ColumnName="highestNoEp" />
           <ScalarProperty Name="specialEpCount" ColumnName="specialEpCount" />
+          <ScalarProperty Name="shortName" ColumnName="shortName" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

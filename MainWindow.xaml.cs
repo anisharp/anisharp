@@ -103,9 +103,9 @@ namespace AniSharp
         /// <summary>
         /// Aktiviert den Start Knopf
         /// </summary>
-        public void activateStart()
+        public void triggerStartButton()
         {
-            Dispatcher.Invoke(new Action(() => { btStart.IsEnabled = true; }));
+            Dispatcher.Invoke(new Action(() => { btStart.IsEnabled = !btStart.IsEnabled; }));
         }
         /// <summary>
         /// Passt die ListBoxen an die größe des Fensters an
@@ -167,7 +167,7 @@ namespace AniSharp
                 }
             }
             GC.Collect();
-            activateStart();
+            triggerStartButton();
         }
 
         /// <summary>
@@ -218,21 +218,25 @@ namespace AniSharp
                     }
                     conn.ApiSessionStatusChanged += onApiSessionStatusChange;
                     conn.login(login.sUser, login.sPassword);
-                    //btLogin.Content = "Logout";
                 }
             }
             else
             {
-                if (conn != null)
-                {
-                    conn.shutdown();
-                    conn = null;
-                }
-                btLogin.Content = "Login";
+                new System.Threading.Thread(disconnect).Start();
+                triggerStartButton();
+                btLogin.IsEnabled = false;
             }
                 
         }
 
+        private void disconnect()
+        {
+            if (conn != null)
+            {
+                conn.shutdown();
+                conn = null;
+            }
+        }
         /// <summary>
         /// oeffnet einen Folder Dialog um einen bestimmten Ordner in die Liste hinzuzufuegen
         /// </summary>
@@ -297,6 +301,17 @@ namespace AniSharp
             bool? ret=false;
             Dispatcher.Invoke((Action)(() => { ret = chkAdd.IsChecked; }));
             return ret;
+        }
+
+        /// <summary>
+        /// returns the information if the database should be updated or not (if file already exists)
+        /// </summary>
+        /// <returns></returns>
+        public bool getUpdate()
+        {
+            bool? ret = false;
+            Dispatcher.Invoke((Action)(() => { ret = chkUpdate.IsChecked; }));
+            return ret??false;
         }
 
         /// <summary>
@@ -409,8 +424,7 @@ namespace AniSharp
         void lvFiles_Drop(object sender, DragEventArgs e)
         {
             FileParser fp = new FileParser((String[])e.Data.GetData(DataFormats.FileDrop), this, FileFilter);
-            System.Threading.Thread t = new System.Threading.Thread(fp.ParseFile);
-            t.Start();
+            new System.Threading.Thread(fp.ParseFile).Start();
         }
 
         /// <summary>
@@ -440,15 +454,24 @@ namespace AniSharp
         {
             if (loggedIn)
             {
-                btLogin.Content = "Logout";
-                MessageBox.Show("Logged in");
-                activateStart();
+                    btLogin.Content = "Logout";
+                    MessageBox.Show("Logged in");
+                    triggerStartButton();
+
             }
             else
             {
-                MessageBox.Show("Not logged in: " + shouldRetry + " msg == " + Message);
+                if (Message.Contains("LOGGED_OUT"))
+                {
+                    Dispatcher.Invoke(new Action(() => { btLogin.Content = "Login"; })); 
+                }
+                else
+                {
+                    MessageBox.Show("Not logged in: " + shouldRetry + " msg == " + Message);
+                }
             }
-            btLogin.IsEnabled = true;
+            Dispatcher.Invoke(new Action(() => { btLogin.IsEnabled = true; }));
+            
         }
 
         /// <summary>
