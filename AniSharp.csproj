@@ -157,7 +157,7 @@
     </EmbeddedResource>
     <EntityDeploy Include="AniSharpDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AniSharpDB.Designer.cs</LastGenOutput>
+      <LastGenOutput>AniSharpDB1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="AniSharpDB.edmx.sqlce" />
     <None Include="App.Config">

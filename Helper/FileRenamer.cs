@@ -19,7 +19,8 @@ namespace AniSharp
         private static object m_lock=new object();
         private MainWindow mw = null;
         private String _Pattern = null;
-        private String _Path = null;
+        private String _RootPath = null;
+        private String _DirectoryPattern = null;
         private Semaphore _se = new Semaphore(1,1);
 
         /// <summary>
@@ -59,13 +60,23 @@ namespace AniSharp
         }
 
         /// <summary>
-        /// set the moving pattern for the FileRenamer
+        /// set the root directory to where the FileRenamer should move the file
         /// </summary>
-        /// <param name="sPath">rename path</param>
-        public void setPath(String sPath)
+        /// <param name="sRootPath">root directory</param>
+        public void setRootPath(String sRootPath)
         {
-            if (!String.IsNullOrEmpty(sPath))
-                this._Path = sPath;
+            if (!String.IsNullOrEmpty(sRootPath))
+                this._RootPath = sRootPath;
+        }
+
+        /// <summary>
+        /// set the directory pattern for the FileRenamer
+        /// </summary>
+        /// <param name="sDirectoryPattern">directory name pattern</param>
+        public void setDirectoryPatern(String sDirectoryPattern)
+        {
+            if (!String.IsNullOrEmpty(sDirectoryPattern))
+                this._DirectoryPattern = sDirectoryPattern;
         }
         /// <summary>
         /// calls the rename function and moves the given Anime
@@ -92,11 +103,21 @@ namespace AniSharp
                     episode episodes = db.getEpisode(animeFile.FileHash);
                     serie series = db.getSeries(episodes.animeId);
                     groups group = db.getGroup((int)episodes.groupId) ?? null;
-                    if (!String.IsNullOrEmpty(_Path))
+                    if (!String.IsNullOrEmpty(_RootPath))
                     {
-                        sPath = rename(_Path, episodes, series, group, true);
+                        String sDirectoryName = "";
+                        if(!String.IsNullOrEmpty(_DirectoryPattern))
+                        {
+                            sDirectoryName = rename(_DirectoryPattern, episodes, series, group);
+                            if(!sDirectoryName.EndsWith(@"\"))
+                            {
+                                sDirectoryName+=@"\";
+                            }
+                        }
+                        sPath = rename(_RootPath, episodes, series, group, true);
                         if (!sPath.EndsWith(@"\"))
                             sPath += @"\";
+                        sPath+=sDirectoryName;
                     }
                     sRenamed = rename(_Pattern, episodes, series, group,shorten:shorten) + sType;
                     if (!Directory.Exists(sPath))

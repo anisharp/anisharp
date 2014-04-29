@@ -95,8 +95,10 @@ namespace AniSharp
             InitializeComponent();
             tbRenamePattern.Text = AniSharp.Properties.Settings.Default.RenamePattern;
             tbMove.Text = AniSharp.Properties.Settings.Default.MovePattern;
+            tbDirectoryPattern.Text = AniSharp.Properties.Settings.Default.DirectoryPattern;
             _fr.setPattern(AniSharp.Properties.Settings.Default.RenamePattern);
-            _fr.setPath(AniSharp.Properties.Settings.Default.MovePattern);
+            _fr.setRootPath(AniSharp.Properties.Settings.Default.MovePattern);
+            _fr.setDirectoryPatern(AniSharp.Properties.Settings.Default.DirectoryPattern);
             _fr.setMainWindow(this);
         }
 
@@ -284,7 +286,13 @@ namespace AniSharp
             {
                 AniSharp.Properties.Settings.Default.MovePattern = tbMove.Text;
                 AniSharp.Properties.Settings.Default.Save();
-                _fr.setPath(tbMove.Text);
+                _fr.setRootPath(tbMove.Text);
+            }
+            if (AniSharp.Properties.Settings.Default.DirectoryPattern != tbDirectoryPattern.Text)
+            {
+                AniSharp.Properties.Settings.Default.DirectoryPattern = tbDirectoryPattern.Text;
+                AniSharp.Properties.Settings.Default.Save();
+                _fr.setDirectoryPatern(tbDirectoryPattern.Text);
             }
         }
         #endregion
@@ -481,7 +489,17 @@ namespace AniSharp
         /// <param name="e"></param>
         private void tbMove_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _fr.setPath(tbMove.Text);
+            _fr.setRootPath(tbMove.Text);
+        }
+
+        /// <summary>
+        /// Aktualisiert das Directory Pattern sobald der Text verändert wird.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tbDirectoryPattern_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _fr.setDirectoryPatern(tbDirectoryPattern.Text);
         }
         #endregion
 
