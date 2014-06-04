@@ -65,8 +65,7 @@ namespace AniSharp
         /// <param name="sRootPath">root directory</param>
         public void setRootPath(String sRootPath)
         {
-            if (!String.IsNullOrEmpty(sRootPath))
-                this._RootPath = sRootPath;
+            this._RootPath = sRootPath;
         }
 
         /// <summary>
@@ -75,8 +74,7 @@ namespace AniSharp
         /// <param name="sDirectoryPattern">directory name pattern</param>
         public void setDirectoryPatern(String sDirectoryPattern)
         {
-            if (!String.IsNullOrEmpty(sDirectoryPattern))
-                this._DirectoryPattern = sDirectoryPattern;
+            this._DirectoryPattern = sDirectoryPattern;
         }
         /// <summary>
         /// calls the rename function and moves the given Anime
@@ -105,37 +103,29 @@ namespace AniSharp
                     groups group = db.getGroup((int)episodes.groupId) ?? null;
                     if (!String.IsNullOrEmpty(_RootPath))
                     {
-                        String sDirectoryName = "";
-                        if(!String.IsNullOrEmpty(_DirectoryPattern))
-                        {
-                            sDirectoryName = rename(_DirectoryPattern, episodes, series, group);
-                            if(!sDirectoryName.EndsWith(@"\"))
-                            {
-                                sDirectoryName+=@"\";
-                            }
-                        }
-                        sPath = rename(_RootPath, episodes, series, group, true);
-                        if (!sPath.EndsWith(@"\"))
-                            sPath += @"\";
-                        sPath+=sDirectoryName;
+                        sPath = ModifyPathEnding(rename(_RootPath, episodes, series, group, isPath:true, shorten: shorten));
+                    }
+                    if (!String.IsNullOrEmpty(_DirectoryPattern))
+                    {
+                        sPath += ModifyPathEnding(rename(_DirectoryPattern, episodes, series, group, shorten: shorten));
                     }
                     sRenamed = rename(_Pattern, episodes, series, group,shorten:shorten) + sType;
                     if (!Directory.Exists(sPath))
+                    {
                         Directory.CreateDirectory(sPath);
+                    }
                     File.Move(animeFile.FileName, sPath + sRenamed);
                     if (Directory.GetFiles(sOldPath).Length == 0)
+                    {
                         Directory.Delete(sOldPath);
+                    }
                     animeFile.FileName = sPath + sRenamed;
                 }
                 catch (Exception e)
                 {
-#if DEBUG
-                    mw.lbLog_Add("error while moving file " + animeFile.FileName + " text:" + e.Message);
-#else
-                    mw.lbLog_Add("error while moving file "+animeFile.FileName+);
-#endif
                     if (!shorten)
                     {
+                        mw.lbLog_Add("error while moving file " + animeFile.FileName + " text:" + e.Message);
                         renameAnime(animeFile, true);
                     }
                     else
@@ -176,8 +166,8 @@ namespace AniSharp
                 .Replace("%SHA", episodes.sha1.ToUpper())
                 .Replace("%crc", episodes.crc32.ToLower())
                 .Replace("%CRC", episodes.crc32.ToUpper())
-                .Replace("%dub", episodes.dubLanguage)
-                .Replace("%sub", episodes.subLanguage)
+                .Replace("%dub", CleanLanguageString(episodes.dubLanguage))
+                .Replace("%sub", CleanLanguageString(episodes.subLanguage))
                 .Replace("%vid", episodes.videoCodec)
                 .Replace("%qua", episodes.quality)
                 .Replace("%src", episodes.source)
@@ -204,6 +194,34 @@ namespace AniSharp
                 .Replace("´", "")
                 .Replace("`", "");
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// cleans the given language String of duplicates and "unkown" languages
+        /// </summary>
+        /// <param name="languageString"></param>
+        /// <returns></returns>
+        private String CleanLanguageString(String languageString)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (String language in languageString.Split('\''))
+            {
+                if ("unknown".Equals(language) || sb.ToString().Contains(language))
+                {
+                    continue;
+                }
+                sb.Append(language).Append("'");
+            }
+            sb.Remove(sb.Length - 1, 1); //strip the last '
+            return sb.ToString();
+        }
+
+        private String ModifyPathEnding(String path){
+            if (!path.EndsWith(@"\"))
+            {
+                return path += @"\";
+            }
+            return path;
         }
     }
 }
