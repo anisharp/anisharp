@@ -406,7 +406,7 @@ namespace AniSharp
         /// <param name="sText"></param>
         public void lbLog_Add(String sText)
         {
-            Dispatcher.Invoke(new Action(() => { Log.Add(sText); }));
+            Dispatcher.Invoke(new Action(() => { Log.Add(sText); lbLog.SelectedIndex = Log.Count - 1; }));
         }
 
         #endregion

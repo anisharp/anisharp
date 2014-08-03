@@ -92,6 +92,7 @@
     <Compile Include="Glue.cs" />
     <Compile Include="Helper\Anime.cs" />
     <Compile Include="Helper\AnimeComparer.cs" />
+    <Compile Include="Helper\FileAlreadyExistsException.cs" />
     <Compile Include="Settings.cs" />
     <Page Include="Login.xaml">
       <SubType>Designer</SubType>

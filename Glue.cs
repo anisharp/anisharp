@@ -137,8 +137,15 @@ namespace AniSharp
             //Call Filerenamer to rename and move the file
             FileRenamer fr = FileRenamer.getInstance();
             mainwin.lbLog_Add("Rename File....move File");
-            fr.renameTo(anime);
-            anime.FileState = "Finished";
+            try
+            {
+                fr.renameTo(anime);
+                anime.FileState = "Finished";
+            }
+            catch (AniSharp.Helper.FileAlreadyExistsException e)
+            {
+                anime.FileState = "File already exists";
+            }
 
             //If state is set, send request to update the list on anidb 
             if (mainwin.getAdd() != null && mainwin.getAdd() != false)

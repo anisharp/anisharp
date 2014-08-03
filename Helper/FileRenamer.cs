@@ -5,6 +5,8 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 using System.Threading;
+using AniSharp.Helper;
+
 namespace AniSharp
 {
     /// <summary>
@@ -103,37 +105,50 @@ namespace AniSharp
                     groups group = db.getGroup((int)episodes.groupId) ?? null;
                     if (!String.IsNullOrEmpty(_RootPath))
                     {
-                        sPath = ModifyPathEnding(rename(_RootPath, episodes, series, group, isPath:true, shorten: shorten));
+                        sPath = ModifyPathEnding(rename(_RootPath, episodes, series, group, isPath: true, shorten: shorten));
                     }
                     if (!String.IsNullOrEmpty(_DirectoryPattern))
                     {
                         sPath += ModifyPathEnding(rename(_DirectoryPattern, episodes, series, group, shorten: shorten));
                     }
-                    sRenamed = rename(_Pattern, episodes, series, group,shorten:shorten) + sType;
+                    sRenamed = rename(_Pattern, episodes, series, group, shorten: shorten) + sType;
                     if (!Directory.Exists(sPath))
                     {
                         Directory.CreateDirectory(sPath);
                     }
+                    if (File.Exists(sPath + sRenamed))
+                    {
+                        mw.lbLog_Add("error while moving file " + animeFile.FileName + " already exists");
+                        throw new FileAlreadyExistsException();
+                    }
                     File.Move(animeFile.FileName, sPath + sRenamed);
-                    if (Directory.GetFiles(sOldPath).Length == 0)
+                    animeFile.FileName = sPath + sRenamed;
+                    if (IsDirectoryEmpty(sOldPath))
                     {
                         Directory.Delete(sOldPath);
                     }
-                    animeFile.FileName = sPath + sRenamed;
                 }
-                catch (Exception e)
+                catch (PathTooLongException ptle)
                 {
                     if (!shorten)
                     {
-                        mw.lbLog_Add("error while moving file " + animeFile.FileName + " text:" + e.Message);
                         renameAnime(animeFile, true);
-                    }
-                    else
+                    } 
+                    else 
                     {
-                        mw.lbLog_Add("error while moving file " + animeFile.FileName + " shortening failed");
+                        mw.lbLog_Add("error while moving file " + animeFile.FileName + " " + ptle.Message);
                     }
                 }
+                catch (Exception e)
+                {
+                      mw.lbLog_Add("error while moving file " + animeFile.FileName + " "+e.Message);
+                }
             }
+        }
+
+        private static bool IsDirectoryEmpty(String sOldPath)
+        {
+            return Directory.GetFiles(sOldPath).Length == 0 && Directory.GetDirectories(sOldPath).Length == 0;
         }
 
         /// <summary>
